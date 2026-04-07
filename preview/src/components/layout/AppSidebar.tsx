@@ -32,10 +32,10 @@ const GALLERY_ITEMS: NavItem[] = [
 ];
 
 const BLOCK_ITEMS: NavItem[] = [
+  { id: "marketing", label: "Marketing", icon: Megaphone       },
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
-  { id: "settings", label: "Settings", icon: Settings },
-  { id: "auth", label: "Auth", icon: LogIn },
-  { id: "marketing", label: "Marketing", icon: Megaphone },
+  { id: "settings",  label: "Settings",  icon: Settings        },
+  { id: "auth",      label: "Auth",      icon: LogIn           },
 ];
 
 interface AppSidebarProps {
@@ -54,11 +54,16 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       )}
     >
       {/* Header */}
-      <div className="flex h-14 shrink-0 items-center border-b border-sidebar-border px-3">
+      <div className="flex min-h-14 shrink-0 items-center border-b border-sidebar-border px-3 py-3">
         {!collapsed && (
-          <span className="flex-1 truncate text-sm font-semibold text-sidebar-foreground">
-            JustThemeSwitcher
-          </span>
+          <div className="flex-1 min-w-0">
+            <span className="block truncate text-sm font-semibold text-sidebar-foreground leading-tight">
+              TRV_Aetos
+            </span>
+            <span className="block text-[10px] text-muted-foreground leading-snug mt-0.5">
+              Component library. Design+Motion Token Themes.
+            </span>
+          </div>
         )}
         <button
           onClick={() => setCollapsed((c) => !c)}

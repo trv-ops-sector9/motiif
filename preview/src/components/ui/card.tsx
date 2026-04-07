@@ -18,10 +18,11 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         "rounded-xl border bg-card text-card-foreground shadow-[var(--shadow-sm)]",
         interactive && [
           "cursor-pointer select-none will-change-transform",
-          "[transition-property:translate,box-shadow]",
+          "[transition-property:translate,scale,box-shadow]",
           "[transition-duration:var(--motion-duration-fast)]",
           "[transition-timing-function:var(--motion-curve-navigation)]",
-          "hover:-translate-y-1 hover:shadow-[var(--shadow-lg)]",
+          "hover:-translate-y-[2px] hover:shadow-[var(--shadow-lg)]",
+          "active:[translate:0_1px] active:scale-[0.98] active:shadow-[var(--shadow-sm)]",
           "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
         ],
         className

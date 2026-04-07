@@ -269,7 +269,7 @@ function CardDemo() {
     <Card
       className="w-72 overflow-hidden cursor-pointer select-none"
       style={{
-        translate: pressed ? "0 1px" : hovered ? "0 -4px" : "0 0",
+        translate: pressed ? "0 1px" : hovered ? "0 -2px" : "0 0",
         scale: pressed ? "0.98" : "1",
         boxShadow: hovered && !pressed ? "var(--shadow-lg)" : "var(--shadow-sm)",
         transition: pressed ? "none" : releaseTransition,
@@ -558,12 +558,14 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Navigation"
-          description="Three-panel tab switcher with persistent active state."
+          description="Tab switcher with sliding pill indicator — more tabs means more travel for the animation."
         />
         <Tabs defaultValue="overview" className="w-full max-w-lg">
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
+            <TabsTrigger value="members">Members</TabsTrigger>
+            <TabsTrigger value="activity">Activity</TabsTrigger>
             <TabsTrigger value="settings">Settings</TabsTrigger>
           </TabsList>
           <TabsContent value="overview" className="mt-4">
@@ -574,6 +576,16 @@ export function ComponentGallery() {
           <TabsContent value="analytics" className="mt-4">
             <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
               Analytics — charts, metrics, and usage trends would appear in this panel.
+            </div>
+          </TabsContent>
+          <TabsContent value="members" className="mt-4">
+            <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
+              Members — team roster, roles, and permission management live here.
+            </div>
+          </TabsContent>
+          <TabsContent value="activity" className="mt-4">
+            <div className="rounded-lg border bg-muted/40 p-4 text-sm text-muted-foreground">
+              Activity — audit log, recent changes, and timeline of events belong here.
             </div>
           </TabsContent>
           <TabsContent value="settings" className="mt-4">

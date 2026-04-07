@@ -55,6 +55,21 @@ import { toast } from "sonner";
 import { z } from "zod";
 
 import { useIsMobile } from "@/hooks/use-mobile";
+
+// Read a CSS duration token (e.g. "400ms") from the active motion theme.
+function cssMs(token: string, fallback = 400): number {
+  if (typeof window === "undefined") return fallback;
+  const v = getComputedStyle(document.documentElement).getPropertyValue(token).trim();
+  if (v.endsWith("ms")) return parseFloat(v);
+  if (v.endsWith("s"))  return parseFloat(v) * 1000;
+  return fallback;
+}
+
+// Read a CSS easing token (e.g. "cubic-bezier(...)") from the active motion theme.
+function cssCurve(token: string, fallback = "ease-out"): string {
+  if (typeof window === "undefined") return fallback;
+  return getComputedStyle(document.documentElement).getPropertyValue(token).trim() || fallback;
+}
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -390,6 +405,7 @@ function ChartAreaInteractive() {
           />
           <ChartTooltip
             cursor={false}
+            isAnimationActive={false}
             content={
               <ChartTooltipContent
                 labelFormatter={(value: unknown) =>
@@ -408,6 +424,8 @@ function ChartAreaInteractive() {
             fill="url(#fillMobile)"
             stroke="var(--color-mobile)"
             stackId="a"
+            animationDuration={cssMs("--motion-duration-slow")}
+            animationEasing={cssCurve("--motion-curve-decelerate-max")}
           />
           <Area
             dataKey="desktop"
@@ -415,6 +433,8 @@ function ChartAreaInteractive() {
             fill="url(#fillDesktop)"
             stroke="var(--color-desktop)"
             stackId="a"
+            animationDuration={cssMs("--motion-duration-slow")}
+            animationEasing={cssCurve("--motion-curve-decelerate-max")}
           />
         </AreaChart>
       </ChartContainer>
@@ -504,10 +524,11 @@ function TableCellViewer({ item }: { item: TableRow }) {
                   />
                   <ChartTooltip
                     cursor={false}
+                    isAnimationActive={false}
                     content={<ChartTooltipContent indicator="dot" />}
                   />
-                  <Area dataKey="mobile" type="natural" fill="var(--color-mobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" />
-                  <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" />
+                  <Area dataKey="mobile" type="natural" fill="var(--color-mobile)" fillOpacity={0.4} stroke="var(--color-mobile)" stackId="a" animationDuration={cssMs("--motion-duration-slow")} animationEasing={cssCurve("--motion-curve-decelerate-max")} />
+                  <Area dataKey="desktop" type="natural" fill="var(--color-desktop)" fillOpacity={0.4} stroke="var(--color-desktop)" stackId="a" animationDuration={cssMs("--motion-duration-slow")} animationEasing={cssCurve("--motion-curve-decelerate-max")} />
                 </AreaChart>
               </ChartContainer>
               <Separator />

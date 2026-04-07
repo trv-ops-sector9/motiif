@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { CheckCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -82,8 +82,32 @@ function SaveBar({
   );
 }
 
+type TransitionPhase = "idle" | "exiting" | "entering";
+
 export function SettingsBlock() {
-  const [section, setSection] = useState<SettingsSection>("profile");
+  // activeSection: drives nav highlight (updates immediately on click)
+  // displaySection: what's actually rendered (swaps only after exit animation)
+  const [activeSection,  setActiveSection]  = useState<SettingsSection>("profile");
+  const [displaySection, setDisplaySection] = useState<SettingsSection>("profile");
+  const [phase,          setPhase]          = useState<TransitionPhase>("idle");
+  const pending = useRef<SettingsSection>("profile");
+
+  const navigate = (next: SettingsSection) => {
+    if (next === activeSection || phase !== "idle") return;
+    pending.current = next;
+    setActiveSection(next);  // highlight updates immediately
+    setPhase("exiting");
+  };
+
+  const handleAnimationEnd = () => {
+    if (phase === "exiting") {
+      // Exit done — swap content and start enter
+      setDisplaySection(pending.current);
+      setPhase("entering");
+    } else if (phase === "entering") {
+      setPhase("idle");
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
@@ -96,11 +120,11 @@ export function SettingsBlock() {
           {SECTIONS.map((s) => (
             <button
               key={s.id}
-              onClick={() => setSection(s.id)}
+              onClick={() => navigate(s.id)}
               className={cn(
                 "w-full text-left rounded-md px-3 py-1.5 text-sm font-medium transition-colors cursor-pointer",
                 "hover:bg-accent hover:text-accent-foreground",
-                section === s.id
+                activeSection === s.id
                   ? "bg-primary text-primary-foreground hover:bg-primary hover:text-primary-foreground"
                   : "text-muted-foreground"
               )}
@@ -110,10 +134,24 @@ export function SettingsBlock() {
           ))}
         </nav>
 
-        <div className="flex-1 overflow-y-auto p-6">
-          {section === "profile" && <ProfileSection />}
-          {section === "notifications" && <NotificationsSection />}
-          {section === "appearance" && <AppearanceSection />}
+        {/* overflow-x-hidden clips the horizontal slide of page-enter/exit */}
+        <div className="flex-1 overflow-y-auto overflow-x-hidden">
+          <div
+            key={displaySection}
+            className="p-6"
+            style={{
+              animation: phase === "exiting"
+                ? "var(--anim-page-exit)"
+                : phase === "entering"
+                  ? "var(--anim-page-enter)"
+                  : undefined,
+            }}
+            onAnimationEnd={handleAnimationEnd}
+          >
+            {displaySection === "profile"       && <ProfileSection />}
+            {displaySection === "notifications" && <NotificationsSection />}
+            {displaySection === "appearance"    && <AppearanceSection />}
+          </div>
         </div>
       </div>
     </div>
