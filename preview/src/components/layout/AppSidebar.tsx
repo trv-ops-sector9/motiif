@@ -8,11 +8,13 @@ import {
   PanelLeftOpen,
   Layers,
   Paintbrush,
+  ChevronRight,
+  Copy,
+  Check,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { SidebarThemePicker, SidebarMotionPicker, SidebarSpacingSlider } from "@/components/layout/ThemeSwitcher";
+import { SidebarThemeControls } from "@/components/layout/ThemeSwitcher";
 
 export type View =
   | "components"
@@ -47,6 +49,8 @@ interface AppSidebarProps {
 
 export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
+  const [galleryOpen, setGalleryOpen] = useState(true);
+  const [blocksOpen, setBlocksOpen] = useState(true);
 
   return (
     <aside
@@ -87,82 +91,119 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
 
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
-        {/* Theme picker */}
-        <SidebarThemePicker collapsed={collapsed} />
-
-        {/* Motion theme picker */}
-        <SidebarMotionPicker collapsed={collapsed} />
-
-        {/* Spacing slider */}
-        <SidebarSpacingSlider collapsed={collapsed} />
+        {/* Theme controls — collapsible section */}
+        <SidebarThemeControls collapsed={collapsed} />
 
         <Separator className="my-1 bg-sidebar-border" />
 
         {/* Gallery section */}
-        {!collapsed && (
-          <p className="px-2 pb-0.5 pt-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Gallery
-          </p>
-        )}
-        {GALLERY_ITEMS.map((item) => (
-          <NavButton
-            key={item.id}
-            item={item}
-            active={activeView === item.id}
-            collapsed={collapsed}
-            onClick={() => onViewChange(item.id)}
-          />
-        ))}
+        {!collapsed ? (
+          <button
+            onClick={() => setGalleryOpen((o) => !o)}
+            className="flex w-full cursor-pointer items-center justify-between px-2 pb-0.5 pt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring rounded-sm"
+            aria-expanded={galleryOpen}
+          >
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Gallery
+            </span>
+            <ChevronRight
+              className={cn(
+                "h-3 w-3 shrink-0 text-muted-foreground/60 transition-transform duration-150",
+                galleryOpen && "rotate-90"
+              )}
+            />
+          </button>
+        ) : null}
+        {(collapsed || galleryOpen) &&
+          GALLERY_ITEMS.map((item) => (
+            <NavButton
+              key={item.id}
+              item={item}
+              active={activeView === item.id}
+              collapsed={collapsed}
+              onClick={() => onViewChange(item.id)}
+            />
+          ))}
 
         <Separator className="my-1 bg-sidebar-border" />
 
         {/* Blocks section */}
-        {!collapsed && (
-          <p className="px-2 pb-0.5 pt-1 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-            Blocks
-          </p>
-        )}
-        {BLOCK_ITEMS.map((item) => (
-          <NavButton
-            key={item.id}
-            item={item}
-            active={activeView === item.id}
-            collapsed={collapsed}
-            onClick={() => onViewChange(item.id)}
-          />
-        ))}
+        {!collapsed ? (
+          <button
+            onClick={() => setBlocksOpen((o) => !o)}
+            className="flex w-full cursor-pointer items-center justify-between px-2 pb-0.5 pt-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring rounded-sm"
+            aria-expanded={blocksOpen}
+          >
+            <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+              Blocks
+            </span>
+            <ChevronRight
+              className={cn(
+                "h-3 w-3 shrink-0 text-muted-foreground/60 transition-transform duration-150",
+                blocksOpen && "rotate-90"
+              )}
+            />
+          </button>
+        ) : null}
+        {(collapsed || blocksOpen) &&
+          BLOCK_ITEMS.map((item) => (
+            <NavButton
+              key={item.id}
+              item={item}
+              active={activeView === item.id}
+              collapsed={collapsed}
+              onClick={() => onViewChange(item.id)}
+            />
+          ))}
       </nav>
 
-      {/* Footer — user card */}
-      <div className="shrink-0 border-t border-sidebar-border p-2">
-        <button
-          className={cn(
-            "flex w-full cursor-pointer items-center gap-2.5 rounded-md px-2 py-2 transition-colors",
-            "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-            collapsed && "justify-center px-0"
-          )}
-          aria-label="User menu"
+      {/* Footer */}
+      {!collapsed && (
+        <FooterContact />
+      )}
+    </aside>
+  );
+}
+
+const EMAIL = "traver4@gmail.com";
+
+function FooterContact() {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(EMAIL);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 1500);
+  };
+
+  return (
+    <div className="shrink-0 border-t border-sidebar-border px-4 py-3">
+      <p className="truncate text-xs font-medium text-sidebar-foreground leading-tight">
+        Traver Phillips
+      </p>
+      <div className="flex items-center gap-1.5 mt-0.5">
+        <a
+          href={`mailto:${EMAIL}`}
+          className="truncate text-xs leading-tight text-muted-foreground hover:text-sidebar-foreground transition-colors"
         >
-          <Avatar className="h-7 w-7 shrink-0">
-            <AvatarImage src="" alt="Traver Phillips" />
-            <AvatarFallback className="text-xs">TP</AvatarFallback>
-          </Avatar>
-          {!collapsed && (
-            <>
-              <div className="flex min-w-0 flex-1 flex-col text-left">
-                <span className="truncate text-xs font-medium leading-tight">
-                  Traver Phillips
-                </span>
-                <span className="truncate text-xs leading-tight text-muted-foreground">
-                  traver@example.com
-                </span>
-              </div>
-            </>
+          {EMAIL}
+        </a>
+        <button
+          onClick={handleCopy}
+          aria-label="Copy email address"
+          className={cn(
+            "shrink-0 cursor-pointer rounded p-0.5 transition-colors",
+            "text-muted-foreground hover:text-sidebar-foreground",
+            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-sidebar-ring",
           )}
+        >
+          {copied
+            ? <Check className="h-3 w-3 text-green-500" />
+            : <Copy className="h-3 w-3" />
+          }
         </button>
       </div>
-    </aside>
+    </div>
   );
 }
 
