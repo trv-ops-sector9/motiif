@@ -1,7 +1,9 @@
 import { useEffect, useState, useCallback, useRef } from "react";
+import { Download, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { cn } from "@/lib/utils";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -538,6 +540,83 @@ function SpacingSection() {
   );
 }
 
+// ── Export tokens ────────────────────────────────────────────────────────────
+
+function collectTokens() {
+  const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "fluent2";
+  const colorTheme = document.documentElement.getAttribute("data-theme") || "default";
+
+  const durations: Record<string, string> = {};
+  for (const t of DURATION_TOKENS) {
+    durations[t.name] = getCSSVar(t.name);
+  }
+
+  const curves: Record<string, string> = {};
+  const themeCurves = THEME_CURVES[motionTheme] ?? THEME_CURVES.fluent2;
+  for (const c of themeCurves) {
+    curves[c.name] = getCSSVar(c.name);
+  }
+
+  const bridge: Record<string, string> = {};
+  for (const b of BRIDGE_CURVES) {
+    bridge[b.name] = getCSSVar(b.name);
+  }
+
+  const colors: Record<string, string> = {};
+  for (const group of COLOR_GROUPS) {
+    for (const t of group.tokens) {
+      colors[t.name] = getCSSVar(t.name);
+    }
+  }
+
+  const shadows: Record<string, string> = {};
+  for (const s of SHADOW_TOKENS) {
+    shadows[s.name] = getCSSVar(s.name);
+  }
+
+  return {
+    $schema: "motif-tokens/1.0",
+    motionTheme,
+    colorTheme,
+    spacing: getCSSVar("--spacing") || "0.25rem",
+    motion: { durations, curves, bridge },
+    color: colors,
+    shadows,
+  };
+}
+
+function ExportButton() {
+  const [done, setDone] = useState(false);
+
+  const handleExport = () => {
+    const tokens = collectTokens();
+    const json = JSON.stringify(tokens, null, 2);
+    const blob = new Blob([json], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `motif-tokens-${tokens.motionTheme}-${tokens.colorTheme}.json`;
+    a.click();
+    URL.revokeObjectURL(url);
+    setDone(true);
+    setTimeout(() => setDone(false), 1500);
+  };
+
+  return (
+    <button
+      onClick={handleExport}
+      className={cn(
+        "inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer",
+        "bg-primary text-primary-foreground hover:bg-primary/90",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+      )}
+    >
+      {done ? <Check className="h-3.5 w-3.5" /> : <Download className="h-3.5 w-3.5" />}
+      {done ? "Downloaded" : "Export JSON"}
+    </button>
+  );
+}
+
 // ── Main layout ──────────────────────────────────────────────────────────────
 
 export function TokensView() {
@@ -550,16 +629,19 @@ export function TokensView() {
   return (
     <div className="p-6 space-y-6 max-w-5xl">
       {/* Page header */}
-      <div>
-        <h1 className="text-xl font-bold tracking-tight">Design tokens</h1>
-        <p className="text-sm text-muted-foreground mt-1">
-          Live reference — values update when you switch themes in the sidebar.
-          Currently:{" "}
-          <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
-          {" "}motion /{" "}
-          <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
-          {" "}color
-        </p>
+      <div className="flex items-start justify-between gap-4">
+        <div>
+          <h1 className="text-xl font-bold tracking-tight">Design tokens</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Live reference — values update when you switch themes in the sidebar.
+            Currently:{" "}
+            <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
+            {" "}motion /{" "}
+            <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
+            {" "}color
+          </p>
+        </div>
+        <ExportButton />
       </div>
 
       <Separator />
