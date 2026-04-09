@@ -7,6 +7,7 @@ import {
   PanelLeftClose,
   PanelLeftOpen,
   Layers,
+  Paintbrush,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
@@ -15,6 +16,7 @@ import { SidebarThemePicker, SidebarMotionPicker, SidebarSpacingSlider } from "@
 
 export type View =
   | "components"
+  | "tokens"
   | "dashboard"
   | "settings"
   | "auth"
@@ -28,6 +30,7 @@ interface NavItem {
 
 const GALLERY_ITEMS: NavItem[] = [
   { id: "components", label: "Components", icon: Layers },
+  { id: "tokens",     label: "Tokens",     icon: Paintbrush },
 ];
 
 const BLOCK_ITEMS: NavItem[] = [

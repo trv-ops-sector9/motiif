@@ -3,6 +3,7 @@ import { AppSidebar, type View } from "@/components/layout/AppSidebar";
 import { Toaster } from "@/components/ui/sonner";
 
 const ComponentGallery = lazy(() => import("@/components/gallery/ComponentGallery").then(m => ({ default: m.ComponentGallery })));
+const TokensView       = lazy(() => import("@/components/gallery/TokensView").then(m => ({ default: m.TokensView })));
 const DashboardBlock   = lazy(() => import("@/components/blocks/DashboardBlock").then(m => ({ default: m.DashboardBlock })));
 const SettingsBlock    = lazy(() => import("@/components/blocks/SettingsBlock").then(m => ({ default: m.SettingsBlock })));
 const AuthBlock        = lazy(() => import("@/components/blocks/AuthBlock").then(m => ({ default: m.AuthBlock })));
@@ -12,6 +13,8 @@ function ActiveView({ view }: { view: View }) {
   switch (view) {
     case "components":
       return <ComponentGallery />;
+    case "tokens":
+      return <TokensView />;
     case "dashboard":
       return <DashboardBlock />;
     case "settings":
