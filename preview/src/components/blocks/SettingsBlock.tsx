@@ -334,7 +334,7 @@ function AppearanceSection() {
     <Card className="max-w-lg">
       <CardHeader>
         <CardTitle>Appearance</CardTitle>
-        <CardDescription>Customize how the interface looks and feels.</CardDescription>
+        <CardDescription>Customize how the interface looks and feels. Use the sidebar controls for live theme switching.</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         <div className="space-y-2">

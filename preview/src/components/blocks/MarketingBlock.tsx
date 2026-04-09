@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ArrowRight, Zap, Shield, Layers, Plus, CheckCheck, AlertTriangle, Activity, Users2, Flame, Clock, TrendingUp, GitMerge, MessageSquare } from "lucide-react";
+import { ArrowLeft, ArrowRight, Zap, Shield, Layers, Plus, CheckCheck, AlertTriangle, Activity, Users2, Flame, Clock, TrendingUp, GitMerge, MessageSquare } from "lucide-react";
 import { RadialBar, RadialBarChart } from "recharts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -248,11 +248,16 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
     <div className="min-h-full overflow-y-auto">
       {/* Header */}
       <div className="flex items-center justify-between px-6 py-5 border-b">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Projects</h1>
-          <p className="text-sm text-muted-foreground mt-0.5">5 active · last updated 2h ago</p>
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={onNavigate} aria-label="Back to landing page">
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-xl font-bold tracking-tight">Projects</h1>
+            <p className="text-sm text-muted-foreground mt-0.5">5 active · last updated 2h ago</p>
+          </div>
         </div>
-        <Button onClick={onNavigate}>
+        <Button>
           <Plus className="h-4 w-4" />
           New project
         </Button>
@@ -263,7 +268,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
         {STATS.map((s) => {
           const Icon = s.icon;
           return (
-            <Card key={s.label} interactive onClick={onNavigate}>
+            <Card key={s.label} interactive>
               <CardHeader className="pb-4">
                 <Icon className="h-4 w-4 text-muted-foreground mb-2" />
                 <CardTitle className="text-2xl font-bold tabular-nums">{s.value}</CardTitle>
@@ -286,8 +291,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
             {PROJECTS.map((p) => (
               <div
                 key={p.name}
-                onClick={onNavigate}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg cursor-pointer hover:bg-muted/60 transition-colors group"
+                className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors group"
               >
                 {/* Owner avatar */}
                 <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
@@ -332,8 +336,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
             {TEAM.map((m) => (
               <div
                 key={m.name}
-                onClick={onNavigate}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-muted/60 transition-colors"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
               >
                 <div className="relative shrink-0">
                   <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
@@ -351,7 +354,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
             ))}
 
             <div className="px-3 pt-3 mt-1 border-t">
-              <Button variant="outline" size="sm" className="w-full text-xs" onClick={onNavigate}>
+              <Button variant="outline" size="sm" className="w-full text-xs">
                 <Plus className="h-3 w-3" />
                 Invite member
               </Button>
@@ -363,7 +366,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
       {/* Weekly velocity (radial) + Activity feed */}
       <div className="grid sm:grid-cols-2 gap-4 px-6 pb-4">
         {/* Radial bar chart — tasks completed per weekday */}
-        <Card className="flex flex-col cursor-pointer" onClick={onNavigate}>
+        <Card className="flex flex-col">
           <CardHeader className="items-center pb-0">
             <CardTitle className="text-sm font-semibold">Weekly velocity</CardTitle>
             <CardDescription className="text-[11px]">Tasks completed · Mon – Fri</CardDescription>
@@ -408,8 +411,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
               return (
                 <div
                   key={i}
-                  onClick={onNavigate}
-                  className="flex items-start gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-muted/60 transition-colors"
+                  className="flex items-start gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
                 >
                   <Icon className={cn("h-3.5 w-3.5 mt-0.5 shrink-0", a.accent)} />
                   <div className="flex-1 min-w-0">
@@ -437,8 +439,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
             {PRIORITIES.map((p, i) => (
               <div
                 key={i}
-                onClick={onNavigate}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg cursor-pointer hover:bg-muted/60 transition-colors"
+                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
               >
                 <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0", PRIORITY_COLOR[p.priority])}>
                   {p.priority}
@@ -465,7 +466,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
           </CardHeader>
           <CardContent className="pt-0 px-3 pb-3 space-y-2.5">
             {DEADLINES.map((d, i) => (
-              <div key={i} onClick={onNavigate} className="cursor-pointer group">
+              <div key={i} className="group">
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-xs font-medium truncate">{d.name}</p>
                   <span className={cn("text-[10px] px-1.5 py-0.5 rounded-full font-medium ml-2 shrink-0", DEADLINE_COLOR[d.status])}>
@@ -496,7 +497,7 @@ function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
           </CardHeader>
           <CardContent className="pt-0 px-3 pb-3 space-y-2.5">
             {CATEGORY_BREAKDOWN.map((c, i) => (
-              <div key={i} onClick={onNavigate} className="cursor-pointer">
+              <div key={i}>
                 <div className="flex items-center justify-between mb-1">
                   <p className="text-[11px] text-muted-foreground truncate">{c.label}</p>
                   <span className="text-[11px] font-semibold tabular-nums ml-2 shrink-0">{c.count}</span>

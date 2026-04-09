@@ -1,11 +1,12 @@
-import { useState } from "react";
+import { lazy, Suspense, useState } from "react";
 import { AppSidebar, type View } from "@/components/layout/AppSidebar";
 import { Toaster } from "@/components/ui/sonner";
-import { ComponentGallery } from "@/components/gallery/ComponentGallery";
-import { DashboardBlock } from "@/components/blocks/DashboardBlock";
-import { SettingsBlock } from "@/components/blocks/SettingsBlock";
-import { AuthBlock } from "@/components/blocks/AuthBlock";
-import { MarketingBlock } from "@/components/blocks/MarketingBlock";
+
+const ComponentGallery = lazy(() => import("@/components/gallery/ComponentGallery").then(m => ({ default: m.ComponentGallery })));
+const DashboardBlock   = lazy(() => import("@/components/blocks/DashboardBlock").then(m => ({ default: m.DashboardBlock })));
+const SettingsBlock    = lazy(() => import("@/components/blocks/SettingsBlock").then(m => ({ default: m.SettingsBlock })));
+const AuthBlock        = lazy(() => import("@/components/blocks/AuthBlock").then(m => ({ default: m.AuthBlock })));
+const MarketingBlock   = lazy(() => import("@/components/blocks/MarketingBlock").then(m => ({ default: m.MarketingBlock })));
 
 function ActiveView({ view }: { view: View }) {
   switch (view) {
@@ -30,7 +31,9 @@ export default function App() {
       <AppSidebar activeView={activeView} onViewChange={setActiveView} />
 
       <main className="flex-1 overflow-y-auto">
-        <ActiveView view={activeView} />
+        <Suspense>
+          <ActiveView view={activeView} />
+        </Suspense>
       </main>
       <Toaster />
     </div>
