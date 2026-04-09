@@ -1,13 +1,11 @@
 import { useState } from "react";
-import { Palette, ChevronDown, SlidersHorizontal, RotateCcw, Zap } from "lucide-react";
+import { ChevronDown, ChevronRight, RotateCcw, CircleOff, Palette } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
   DropdownMenuContent,
-  DropdownMenuLabel,
   DropdownMenuRadioGroup,
   DropdownMenuRadioItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -23,7 +21,7 @@ const THEMES = [
 
 type ThemeValue = (typeof THEMES)[number]["value"];
 
-export function SidebarThemePicker({ collapsed }: { collapsed: boolean }) {
+export function SidebarThemePicker() {
   const [theme, setTheme] = useState<ThemeValue>("default");
 
   const handleChange = (value: string) => {
@@ -35,46 +33,41 @@ export function SidebarThemePicker({ collapsed }: { collapsed: boolean }) {
   const currentLabel = THEMES.find((t) => t.value === theme)?.label ?? "Default";
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          title={collapsed ? `Theme: ${currentLabel}` : undefined}
-          aria-label={collapsed ? `Switch theme — current: ${currentLabel}` : "Switch theme"}
-          className={cn(
-            "flex w-full cursor-pointer items-center rounded-md transition-colors",
-            "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-            collapsed ? "h-8 w-8 mx-auto justify-center px-0" : "gap-2.5 px-2 py-1.5"
-          )}
-        >
-          <Palette className="h-4 w-4 shrink-0" />
-          {!collapsed && (
-            <>
-              <span className="flex-1 truncate text-sm font-medium text-left">Theme</span>
-              <span className="shrink-0 text-xs text-muted-foreground">{currentLabel}</span>
-              <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-50" />
-            </>
-          )}
-        </button>
-      </DropdownMenuTrigger>
+    <div className="px-2">
+      <p className="pt-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+        Visual Theme
+      </p>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            aria-label="Switch visual theme"
+            className={cn(
+              "flex w-full cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-sidebar px-2.5 py-1.5 text-xs transition-colors",
+              "text-sidebar-foreground hover:bg-sidebar-accent",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+            )}
+          >
+            <span className="flex-1 truncate text-left">{currentLabel}</span>
+            <ChevronDown className="h-3 w-3 shrink-0 opacity-50" />
+          </button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent
-        side={collapsed ? "right" : "bottom"}
-        align={collapsed ? "start" : "start"}
-        sideOffset={collapsed ? 8 : 4}
-        className="w-44"
-      >
-        <DropdownMenuLabel>Theme</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={theme} onValueChange={handleChange}>
-          {THEMES.map((t) => (
-            <DropdownMenuRadioItem key={t.value} value={t.value}>
-              {t.label}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <DropdownMenuContent
+          side="bottom"
+          align="start"
+          sideOffset={4}
+          className="w-44"
+        >
+          <DropdownMenuRadioGroup value={theme} onValueChange={handleChange}>
+            {THEMES.map((t) => (
+              <DropdownMenuRadioItem key={t.value} value={t.value}>
+                {t.label}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
@@ -90,7 +83,7 @@ const MOTION_THEMES = [
 
 type MotionThemeValue = (typeof MOTION_THEMES)[number]["value"];
 
-export function SidebarMotionPicker({ collapsed }: { collapsed: boolean }) {
+export function SidebarMotionPicker() {
   const [motionTheme, setMotionTheme] = useState<MotionThemeValue>("fluent2");
 
   const handleChange = (value: string) => {
@@ -102,46 +95,41 @@ export function SidebarMotionPicker({ collapsed }: { collapsed: boolean }) {
   const currentLabel = MOTION_THEMES.find((t) => t.value === motionTheme)?.label ?? "Fluent 2";
 
   return (
-    <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <button
-          title={collapsed ? `Motion: ${currentLabel}` : undefined}
-          aria-label={collapsed ? `Switch motion theme — current: ${currentLabel}` : "Switch motion theme"}
-          className={cn(
-            "flex w-full cursor-pointer items-center rounded-md transition-colors",
-            "text-sidebar-foreground hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-            collapsed ? "h-8 w-8 mx-auto justify-center px-0" : "gap-2.5 px-2 py-1.5"
-          )}
-        >
-          <Zap className="h-4 w-4 shrink-0" />
-          {!collapsed && (
-            <>
-              <span className="flex-1 truncate text-sm font-medium text-left">Motion</span>
-              <span className="shrink-0 text-xs text-muted-foreground">{currentLabel}</span>
-              <ChevronDown className="h-3.5 w-3.5 shrink-0 opacity-50" />
-            </>
-          )}
-        </button>
-      </DropdownMenuTrigger>
+    <div className="px-2">
+      <p className="pt-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+        Motion Theme
+      </p>
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <button
+            aria-label="Switch motion theme"
+            className={cn(
+              "flex w-full cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-sidebar px-2.5 py-1.5 text-xs transition-colors",
+              "text-sidebar-foreground hover:bg-sidebar-accent",
+              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+            )}
+          >
+            <span className="flex-1 truncate text-left">{currentLabel}</span>
+            <ChevronDown className="h-3 w-3 shrink-0 opacity-50" />
+          </button>
+        </DropdownMenuTrigger>
 
-      <DropdownMenuContent
-        side={collapsed ? "right" : "bottom"}
-        align="start"
-        sideOffset={collapsed ? 8 : 4}
-        className="w-44"
-      >
-        <DropdownMenuLabel>Motion Theme</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup value={motionTheme} onValueChange={handleChange}>
-          {MOTION_THEMES.map((t) => (
-            <DropdownMenuRadioItem key={t.value} value={t.value}>
-              {t.label}
-            </DropdownMenuRadioItem>
-          ))}
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
+        <DropdownMenuContent
+          side="bottom"
+          align="start"
+          sideOffset={4}
+          className="w-44"
+        >
+          <DropdownMenuRadioGroup value={motionTheme} onValueChange={handleChange}>
+            {MOTION_THEMES.map((t) => (
+              <DropdownMenuRadioItem key={t.value} value={t.value}>
+                {t.label}
+              </DropdownMenuRadioItem>
+            ))}
+          </DropdownMenuRadioGroup>
+        </DropdownMenuContent>
+      </DropdownMenu>
+    </div>
   );
 }
 
@@ -158,7 +146,7 @@ function densityLabel(value: number) {
   return "Default";
 }
 
-export function SidebarSpacingSlider({ collapsed }: { collapsed: boolean }) {
+export function SidebarSpacingSlider() {
   const [value, setValue] = useState(SPACING_DEFAULT);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -176,24 +164,11 @@ export function SidebarSpacingSlider({ collapsed }: { collapsed: boolean }) {
   const pct = ((value - SPACING_MIN) / (SPACING_MAX - SPACING_MIN)) * 100;
   const label = densityLabel(value);
 
-  if (collapsed) {
-    return (
-      <div
-        title={`Spacing: ${label}`}
-        aria-label={`Spacing — ${label}`}
-        className="flex h-8 w-8 mx-auto items-center justify-center text-sidebar-foreground/40 select-none"
-      >
-        <SlidersHorizontal className="h-4 w-4" />
-      </div>
-    );
-  }
-
   return (
-    <div className="px-2 py-1">
+    <div className="px-2">
       {/* Header row */}
-      <div className="flex items-center gap-2 mb-2">
-        <SlidersHorizontal className="h-4 w-4 shrink-0 text-sidebar-foreground" />
-        <span className="flex-1 text-sm font-medium text-sidebar-foreground">Spacing</span>
+      <div className="flex items-center gap-2 pt-2.5 mb-1">
+        <span className="flex-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Global Spacing</span>
         <span className="text-xs text-muted-foreground tabular-nums">{label}</span>
         {!isDefault && (
           <button
@@ -249,6 +224,118 @@ export function SidebarSpacingSlider({ collapsed }: { collapsed: boolean }) {
         <span className="text-[10px] text-muted-foreground/60">Compact</span>
         <span className="text-[10px] text-muted-foreground/60">Spacious</span>
       </div>
+    </div>
+  );
+}
+
+/* ─── Accent color picker ───────────────────────────────────────────────── */
+
+const ACCENT_COLORS = [
+  { name: "Default", primary: null,                     fg: null               },
+  { name: "Blue",    primary: "oklch(0.55 0.19 245)",   fg: "oklch(0.985 0 0)" },
+  { name: "Violet",  primary: "oklch(0.55 0.22 290)",   fg: "oklch(0.985 0 0)" },
+  { name: "Rose",    primary: "oklch(0.55 0.2 350)",    fg: "oklch(0.985 0 0)" },
+  { name: "Orange",  primary: "oklch(0.65 0.19 55)",    fg: "oklch(0.15 0 0)"  },
+  { name: "Green",   primary: "oklch(0.55 0.16 155)",   fg: "oklch(0.985 0 0)" },
+  { name: "Teal",    primary: "oklch(0.55 0.12 200)",   fg: "oklch(0.985 0 0)" },
+] as const;
+
+export function SidebarAccentPicker() {
+  const [active, setActive] = useState<string>("Default");
+
+  const handleSelect = (color: (typeof ACCENT_COLORS)[number]) => {
+    setActive(color.name);
+    const el = document.documentElement;
+    if (!color.primary) {
+      el.style.removeProperty("--primary");
+      el.style.removeProperty("--primary-foreground");
+      el.style.removeProperty("--sidebar-primary");
+      el.style.removeProperty("--sidebar-primary-foreground");
+      el.style.removeProperty("--ring");
+      return;
+    }
+    el.style.setProperty("--primary", color.primary);
+    el.style.setProperty("--primary-foreground", color.fg);
+    el.style.setProperty("--sidebar-primary", color.primary);
+    el.style.setProperty("--sidebar-primary-foreground", color.fg);
+    el.style.setProperty("--ring", color.primary);
+  };
+
+  return (
+    <div className="px-2">
+      <p className="pt-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+        Accent
+      </p>
+      <div className="flex items-center gap-1.5 flex-wrap">
+        {ACCENT_COLORS.map((color) => (
+          <button
+            key={color.name}
+            onClick={() => handleSelect(color)}
+            title={color.name}
+            aria-label={`Accent: ${color.name}`}
+            className={cn(
+              "h-5 w-5 rounded-full cursor-pointer transition-transform",
+              "hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-1",
+              active === color.name && "ring-2 ring-sidebar-foreground ring-offset-1 ring-offset-sidebar"
+            )}
+            style={color.primary ? { backgroundColor: color.primary } : undefined}
+          >
+            {!color.primary && (
+              <CircleOff className="h-5 w-5 text-muted-foreground" />
+            )}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ─── Collapsible theme controls wrapper ────────────────────────────────── */
+
+export function SidebarThemeControls({ collapsed }: { collapsed: boolean }) {
+  const [open, setOpen] = useState(true);
+
+  if (collapsed) {
+    return (
+      <div
+        title="Theme Controls"
+        className="flex h-8 w-8 mx-auto items-center justify-center text-sidebar-foreground/40 select-none"
+      >
+        <Palette className="h-4 w-4" />
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <button
+        onClick={() => setOpen((o) => !o)}
+        className={cn(
+          "flex w-full cursor-pointer items-center justify-between px-2 pb-0.5 pt-1",
+          "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring rounded-sm",
+        )}
+        aria-expanded={open}
+        aria-label="Toggle theme controls"
+      >
+        <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
+          Theme Controls
+        </span>
+        <ChevronRight
+          className={cn(
+            "h-3 w-3 shrink-0 text-muted-foreground/60 transition-transform duration-150",
+            open && "rotate-90"
+          )}
+        />
+      </button>
+
+      {open && (
+        <div className="mt-1 flex flex-col">
+          <SidebarMotionPicker />
+          <SidebarThemePicker />
+          <SidebarAccentPicker />
+          <SidebarSpacingSlider />
+        </div>
+      )}
     </div>
   );
 }
