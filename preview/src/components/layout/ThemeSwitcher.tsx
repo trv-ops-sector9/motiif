@@ -140,12 +140,6 @@ const SPACING_MIN = 0.2;
 const SPACING_MAX = 0.35;
 const SPACING_STEP = 0.005;
 
-function densityLabel(value: number) {
-  if (value < 0.225) return "Compact";
-  if (value > 0.285) return "Spacious";
-  return "Default";
-}
-
 export function SidebarSpacingSlider() {
   const [value, setValue] = useState(SPACING_DEFAULT);
 
@@ -162,14 +156,12 @@ export function SidebarSpacingSlider() {
 
   const isDefault = Math.abs(value - SPACING_DEFAULT) < 0.001;
   const pct = ((value - SPACING_MIN) / (SPACING_MAX - SPACING_MIN)) * 100;
-  const label = densityLabel(value);
 
   return (
     <div className="px-2">
       {/* Header row */}
       <div className="flex items-center gap-2 pt-2.5 mb-1">
         <span className="flex-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Global Spacing</span>
-        <span className="text-xs text-muted-foreground tabular-nums">{label}</span>
         {!isDefault && (
           <button
             onClick={handleReset}
