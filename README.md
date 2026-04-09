@@ -12,16 +12,16 @@ Motif solves a problem most design systems quietly ignore: motion is an aftertho
 
 This system decouples *how* things move from *what* things are animated. A sidebar, a dialog, and a data table cell all share the same underlying duration and easing vocabulary — but that vocabulary can be swapped at runtime with a single attribute change on the root element.
 
-There are four motion themes:
+There are four motion themes, each with its own curve vocabulary:
 
-- **Fluent 2** — Microsoft's open motion spec, balanced and professional
-- **Balanced** — slower pacing, softer easing, more breathing room
-- **Dense** — compressed durations, minimal transforms; for data-heavy dashboards
-- **Expressive** — spring overshoot on enter, bounce on press-release, fast exits; feels alive
+- **Fluent 2** — Microsoft's open motion spec. 9 curves (accelerate, decelerate, easy-ease families). The canonical reference.
+- **Balanced** — slower pacing, organic feel. 4 curves (ease-out, ease-in, ease-in-out, linear). Shows you don't need 9.
+- **Dense** — compressed durations, minimal transforms. 3 curves (snap, ease-in-out, linear). For data-heavy dashboards where motion should be felt, not watched.
+- **Expressive** — spring overshoot on enter, bounce on press-release, fast exits. 5 curves including two with overshoot. Feels alive.
 
-Every theme supports reduced motion via both `@media (prefers-reduced-motion)` and a `data-motion-theme="reduced"` override. Seven color themes run independently on a separate data attribute. A sidebar slider adjusts global spacing density at runtime.
+Every theme supports reduced motion via both `@media (prefers-reduced-motion)` and a `data-motion-theme="reduced"` override. Seven color themes run independently on a separate data attribute. An accent color picker overrides the primary palette at runtime. A spacing slider scales every gap, padding, and margin in the UI proportionally.
 
-The preview app demonstrates all of this across four full-page mock application views: a SaaS dashboard, a settings page, an auth flow, and a marketing landing page with an embedded project management workspace.
+The preview app demonstrates all of this across four full-page mock application views: a SaaS dashboard, a settings page, an auth flow, and a marketing landing page. The Tokens page provides a live reference of every active token value and an **Export JSON** button that downloads the complete token set for the current theme combination.
 
 ---
 
@@ -31,7 +31,7 @@ The preview app demonstrates all of this across four full-page mock application 
 
 The token system is two layers of pure CSS:
 
-1. **Primitive tokens** — seven duration stops and nine named easing curves, bound to `:root` and `[data-motion-theme="..."]` selectors. No hardcoded values in components.
+1. **Primitive tokens** — seven duration stops and a theme-specific set of named easing curves (3–9 depending on theme), bound to `:root` and `[data-motion-theme="..."]` selectors. No hardcoded values in components.
 
 2. **Alias tokens inside `@theme {}`** — Tailwind v4 reads these and generates `animate-*` utility classes. Each alias is a complete animation declaration that references primitives via `var()`, not hardcoded values. This is the key insight: `@theme` variables resolve at runtime, not at build time, so switching `data-motion-theme` rewires every alias simultaneously without recompiling CSS.
 
@@ -76,8 +76,8 @@ The `@theme {}` block is the linchpin. It's the only mechanism that lets CSS cus
 **Why pure CSS, no token generator?**
 Token generators (Style Dictionary, Theo, etc.) add a pipeline step and a transformation layer between what you write and what ships. The audience for these tokens is CSS — there's no benefit to compiling through JSON or YAML. The token files are readable, editable, and portable to any project that can import a CSS file.
 
-**Why four themes, not infinite?**
-Four named personalities cover the real design space: neutral/spec-faithful, relaxed/editorial, dense/productivity, expressive/consumer. More themes without more distinct personalities would be taxonomy for its own sake. The architecture supports additional themes trivially — just add a new CSS file and bridge section.
+**Why four themes, not infinite? And why different curve counts?**
+Four named personalities cover the real design space: neutral/spec-faithful, relaxed/editorial, dense/productivity, expressive/consumer. More themes without more distinct personalities would be taxonomy for its own sake. The architecture supports additional themes trivially — just add a new CSS file and bridge section. Each theme defines only the curves it needs — Dense has 3 because it doesn't need variety, Fluent 2 has 9 because the spec calls for it. This is a deliberate design decision: a smaller curve vocabulary means tighter consistency, not a lesser theme.
 
 **Why Radix UI?**
 Radix handles accessibility and keyboard interaction primitives so the preview components don't need to. More relevantly: Radix exposes CSS custom properties like `--radix-accordion-content-height` that make height animation possible without JS. Without that, the accordion would need a JavaScript height measurement loop.
