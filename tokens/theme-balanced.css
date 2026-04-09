@@ -1,6 +1,6 @@
 /* ============================================================
    theme-balanced.css
-   Fluent 2 derived — relaxed pacing, softer easing
+   Relaxed pacing, organic curves — fewer tokens, calmer feel
    Layer 1: Primitive tokens — raw values
    Layer 2: Alias tokens — Tailwind v4 animate-* utilities
    ============================================================ */
@@ -79,7 +79,8 @@
 
 /* ----------------------------------------------------------
    Layer 1 — Primitive tokens
-   Durations are ~25–30% longer than fluent2; curves are softer
+   Durations are ~25–30% longer than fluent2.
+   Only 4 curves — standard CSS naming, gentle feel.
    ---------------------------------------------------------- */
 
 [data-motion-theme="balanced"] {
@@ -92,48 +93,43 @@
   --motion-duration-slower:     450ms;
   --motion-duration-ultra-slow: 600ms;
 
-  /* Easing curves — softer derivatives of Fluent 2 */
-  --motion-curve-accelerate-max: cubic-bezier(0.85, 0.1, 0.95, 0.3);
-  --motion-curve-accelerate-mid: cubic-bezier(0.9, 0, 1, 0.9);
-  --motion-curve-accelerate-min: cubic-bezier(0.75, 0, 0.75, 1);
-  --motion-curve-decelerate-max: cubic-bezier(0.15, 0.85, 0.25, 1);
-  --motion-curve-decelerate-mid: cubic-bezier(0, 0, 0.1, 1);
-  --motion-curve-decelerate-min: cubic-bezier(0.3, 0, 0.15, 1);
-  --motion-curve-easy-ease-max:  cubic-bezier(0.75, 0, 0.25, 1);
-  --motion-curve-easy-ease:      cubic-bezier(0.4, 0, 0.6, 1);
-  --motion-curve-linear:         cubic-bezier(0, 0, 1, 1);
+  /* Easing curves — 4 organic curves */
+  --motion-curve-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);      /* enters — gentle decelerate      */
+  --motion-curve-ease-in:     cubic-bezier(0.55, 0, 1, 0.45);     /* exits — gentle accelerate        */
+  --motion-curve-ease-in-out: cubic-bezier(0.45, 0, 0.55, 1);     /* state transitions — symmetrical  */
+  --motion-curve-linear:      cubic-bezier(0, 0, 1, 1);           /* uniform motion                   */
 }
 
 
 /* ----------------------------------------------------------
    Layer 2 — Alias tokens → Tailwind v4 animate-* utilities
-   Enter: decelerate curve  |  Exit: accelerate curve
+   Enter: ease-out  |  Exit: ease-in  |  Symmetric: ease-in-out
    ---------------------------------------------------------- */
 
 @theme {
   /* Fade */
-  --animate-balanced-fade-in:         balanced-fade-in         var(--motion-duration-fast)     var(--motion-curve-decelerate-mid) both;
-  --animate-balanced-fade-out:        balanced-fade-out        var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-balanced-fade-in:         balanced-fade-in         var(--motion-duration-fast)     var(--motion-curve-ease-out)    both;
+  --animate-balanced-fade-out:        balanced-fade-out        var(--motion-duration-fast)     var(--motion-curve-ease-in)     both;
 
   /* Slide up */
-  --animate-balanced-slide-up-in:     balanced-slide-up-in     var(--motion-duration-normal)   var(--motion-curve-decelerate-max) both;
-  --animate-balanced-slide-up-out:    balanced-slide-up-out    var(--motion-duration-fast)     var(--motion-curve-accelerate-max) both;
+  --animate-balanced-slide-up-in:     balanced-slide-up-in     var(--motion-duration-normal)   var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-up-out:    balanced-slide-up-out    var(--motion-duration-fast)     var(--motion-curve-ease-in)     both;
 
   /* Slide down */
-  --animate-balanced-slide-down-in:   balanced-slide-down-in   var(--motion-duration-normal)   var(--motion-curve-decelerate-max) both;
-  --animate-balanced-slide-down-out:  balanced-slide-down-out  var(--motion-duration-fast)     var(--motion-curve-accelerate-max) both;
+  --animate-balanced-slide-down-in:   balanced-slide-down-in   var(--motion-duration-normal)   var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-down-out:  balanced-slide-down-out  var(--motion-duration-fast)     var(--motion-curve-ease-in)     both;
 
   /* Expand */
-  --animate-balanced-expand-in:       balanced-expand-in       var(--motion-duration-normal)   var(--motion-curve-decelerate-mid) both;
-  --animate-balanced-expand-out:      balanced-expand-out      var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-balanced-expand-in:       balanced-expand-in       var(--motion-duration-normal)   var(--motion-curve-ease-out)    both;
+  --animate-balanced-expand-out:      balanced-expand-out      var(--motion-duration-fast)     var(--motion-curve-ease-in)     both;
 
   /* Collapse */
-  --animate-balanced-collapse-in:     balanced-collapse-in     var(--motion-duration-normal)   var(--motion-curve-decelerate-mid) both;
-  --animate-balanced-collapse-out:    balanced-collapse-out    var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-balanced-collapse-in:     balanced-collapse-in     var(--motion-duration-normal)   var(--motion-curve-ease-out)    both;
+  --animate-balanced-collapse-out:    balanced-collapse-out    var(--motion-duration-fast)     var(--motion-curve-ease-in)     both;
 
   /* Page */
-  --animate-balanced-page-enter:      balanced-page-enter      var(--motion-duration-slow)     var(--motion-curve-decelerate-max) both;
-  --animate-balanced-page-exit:       balanced-page-exit       var(--motion-duration-normal)   var(--motion-curve-accelerate-mid) both;
+  --animate-balanced-page-enter:      balanced-page-enter      var(--motion-duration-slow)     var(--motion-curve-ease-out)    both;
+  --animate-balanced-page-exit:       balanced-page-exit       var(--motion-duration-normal)   var(--motion-curve-ease-in)     both;
 }
 
 
