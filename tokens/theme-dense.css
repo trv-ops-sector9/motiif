@@ -1,6 +1,7 @@
 /* ============================================================
    theme-dense.css
-   Fast and tight — compressed durations, minimal movement
+   Fast and tight — compressed durations, minimal movement.
+   Only 3 curves. Motion should be felt, not watched.
    Layer 1: Primitive tokens — raw values
    Layer 2: Alias tokens — Tailwind v4 animate-* utilities
    ============================================================ */
@@ -79,7 +80,7 @@
 
 /* ----------------------------------------------------------
    Layer 1 — Primitive tokens
-   Compressed duration scale; curves biased toward snappy settle
+   Compressed duration scale. Only 3 curves — snap, ease, linear.
    ---------------------------------------------------------- */
 
 [data-motion-theme="dense"] {
@@ -92,48 +93,42 @@
   --motion-duration-slower:     200ms;
   --motion-duration-ultra-slow: 250ms;
 
-  /* Easing curves — snappy, accelerate-heavy */
-  --motion-curve-accelerate-max: cubic-bezier(0.95, 0.05, 1, 0.1);
-  --motion-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
-  --motion-curve-accelerate-min: cubic-bezier(0.85, 0, 0.82, 1);
-  --motion-curve-decelerate-max: cubic-bezier(0.05, 0.95, 0.1, 1);
-  --motion-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
-  --motion-curve-decelerate-min: cubic-bezier(0.35, 0, 0.08, 1);
-  --motion-curve-easy-ease-max:  cubic-bezier(0.85, 0, 0.15, 1);
-  --motion-curve-easy-ease:      cubic-bezier(0.3, 0, 0.7, 1);
-  --motion-curve-linear:         cubic-bezier(0, 0, 1, 1);
+  /* Easing curves — 3 curves, nothing more */
+  --motion-curve-snap:        cubic-bezier(0, 0, 0.2, 1);    /* sharp settle — the workhorse   */
+  --motion-curve-ease-in-out: cubic-bezier(0.4, 0, 0.6, 1);  /* rare state transitions         */
+  --motion-curve-linear:      cubic-bezier(0, 0, 1, 1);      /* progress bars, uniform motion  */
 }
 
 
 /* ----------------------------------------------------------
    Layer 2 — Alias tokens → Tailwind v4 animate-* utilities
-   Enter: decelerate curve  |  Exit: accelerate curve
+   Everything uses snap — fast in, fast out, no ceremony.
    ---------------------------------------------------------- */
 
 @theme {
   /* Fade */
-  --animate-dense-fade-in:          dense-fade-in           var(--motion-duration-ultra-fast)  var(--motion-curve-decelerate-mid) both;
-  --animate-dense-fade-out:         dense-fade-out          var(--motion-duration-ultra-fast)  var(--motion-curve-accelerate-mid) both;
+  --animate-dense-fade-in:          dense-fade-in           var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-fade-out:         dense-fade-out          var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 
   /* Slide up */
-  --animate-dense-slide-up-in:      dense-slide-up-in       var(--motion-duration-fast)        var(--motion-curve-decelerate-max) both;
-  --animate-dense-slide-up-out:     dense-slide-up-out      var(--motion-duration-ultra-fast)  var(--motion-curve-accelerate-max) both;
+  --animate-dense-slide-up-in:      dense-slide-up-in       var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-up-out:     dense-slide-up-out      var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 
   /* Slide down */
-  --animate-dense-slide-down-in:    dense-slide-down-in     var(--motion-duration-fast)        var(--motion-curve-decelerate-max) both;
-  --animate-dense-slide-down-out:   dense-slide-down-out    var(--motion-duration-ultra-fast)  var(--motion-curve-accelerate-max) both;
+  --animate-dense-slide-down-in:    dense-slide-down-in     var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-down-out:   dense-slide-down-out    var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 
   /* Expand */
-  --animate-dense-expand-in:        dense-expand-in         var(--motion-duration-fast)        var(--motion-curve-decelerate-mid) both;
-  --animate-dense-expand-out:       dense-expand-out        var(--motion-duration-ultra-fast)  var(--motion-curve-accelerate-mid) both;
+  --animate-dense-expand-in:        dense-expand-in         var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-expand-out:       dense-expand-out        var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 
   /* Collapse */
-  --animate-dense-collapse-in:      dense-collapse-in       var(--motion-duration-fast)        var(--motion-curve-decelerate-mid) both;
-  --animate-dense-collapse-out:     dense-collapse-out      var(--motion-duration-ultra-fast)  var(--motion-curve-accelerate-mid) both;
+  --animate-dense-collapse-in:      dense-collapse-in       var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-collapse-out:     dense-collapse-out      var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 
   /* Page */
-  --animate-dense-page-enter:       dense-page-enter        var(--motion-duration-normal)      var(--motion-curve-decelerate-max) both;
-  --animate-dense-page-exit:        dense-page-exit         var(--motion-duration-fast)        var(--motion-curve-accelerate-mid) both;
+  --animate-dense-page-enter:       dense-page-enter        var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-page-exit:        dense-page-exit         var(--motion-duration-fast)        var(--motion-curve-snap) both;
 }
 
 

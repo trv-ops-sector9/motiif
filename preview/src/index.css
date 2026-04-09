@@ -32,11 +32,11 @@
 }
 
 [data-motion-theme="balanced"] {
-  --motion-curve-press-release:  var(--motion-curve-easy-ease);
-  --motion-curve-navigation:     var(--motion-curve-decelerate-mid);
-  --motion-curve-expand-in:      var(--motion-curve-decelerate-min);
-  --motion-curve-expand-out:     var(--motion-curve-accelerate-min);
-  --motion-curve-accordion:      var(--motion-curve-easy-ease);
+  --motion-curve-press-release:  var(--motion-curve-ease-in-out);
+  --motion-curve-navigation:     var(--motion-curve-ease-out);
+  --motion-curve-expand-in:      var(--motion-curve-ease-out);
+  --motion-curve-expand-out:     var(--motion-curve-ease-in);
+  --motion-curve-accordion:      var(--motion-curve-ease-in-out);
   --anim-fade-in:        var(--animate-balanced-fade-in);
   --anim-fade-out:       var(--animate-balanced-fade-out);
   --anim-slide-up-in:    var(--animate-balanced-slide-up-in);
@@ -52,11 +52,11 @@
 }
 
 [data-motion-theme="dense"] {
-  --motion-curve-press-release:  var(--motion-curve-linear);
-  --motion-curve-navigation:     var(--motion-curve-linear);
-  --motion-curve-expand-in:      var(--motion-curve-linear);
-  --motion-curve-expand-out:     var(--motion-curve-linear);
-  --motion-curve-accordion:      var(--motion-curve-linear);
+  --motion-curve-press-release:  var(--motion-curve-snap);
+  --motion-curve-navigation:     var(--motion-curve-snap);
+  --motion-curve-expand-in:      var(--motion-curve-snap);
+  --motion-curve-expand-out:     var(--motion-curve-snap);
+  --motion-curve-accordion:      var(--motion-curve-snap);
   --anim-fade-in:        var(--animate-dense-fade-in);
   --anim-fade-out:       var(--animate-dense-fade-out);
   --anim-slide-up-in:    var(--animate-dense-slide-up-in);
@@ -75,8 +75,8 @@
   --motion-curve-press-release:  var(--motion-curve-bounce);
   --motion-curve-navigation:     var(--motion-curve-spring);
   --motion-curve-expand-in:      var(--motion-curve-spring);
-  --motion-curve-expand-out:     var(--motion-curve-accelerate-max);
-  --motion-curve-accordion:      var(--motion-curve-easy-ease-max);
+  --motion-curve-expand-out:     var(--motion-curve-ease-in);
+  --motion-curve-accordion:      var(--motion-curve-ease-in-out);
   --anim-fade-in:        var(--animate-expressive-fade-in);
   --anim-fade-out:       var(--animate-expressive-fade-out);
   --anim-slide-up-in:    var(--animate-expressive-slide-up-in);
@@ -117,16 +117,16 @@
 [data-sonner-toast] {
   transition:
     transform  var(--motion-duration-normal) var(--motion-curve-navigation),
-    opacity    var(--motion-duration-normal) var(--motion-curve-decelerate-mid),
-    height     var(--motion-duration-normal) var(--motion-curve-easy-ease),
-    box-shadow var(--motion-duration-fast)   var(--motion-curve-easy-ease) !important;
+    opacity    var(--motion-duration-normal) var(--motion-curve-expand-in),
+    height     var(--motion-duration-normal) var(--motion-curve-accordion),
+    box-shadow var(--motion-duration-fast)   var(--motion-curve-accordion) !important;
 }
 
 [data-sonner-toast][data-removed="true"] {
   transition:
-    transform  var(--motion-duration-fast) var(--motion-curve-accelerate-mid),
-    opacity    var(--motion-duration-fast) var(--motion-curve-accelerate-mid),
-    height     var(--motion-duration-fast) var(--motion-curve-accelerate-mid) !important;
+    transform  var(--motion-duration-fast) var(--motion-curve-expand-out),
+    opacity    var(--motion-duration-fast) var(--motion-curve-expand-out),
+    height     var(--motion-duration-fast) var(--motion-curve-expand-out) !important;
 }
 
 @import "./themes/default.css";

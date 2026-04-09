@@ -94,22 +94,38 @@ function DurationSection() {
 
 // ── Easing curves ────────────────────────────────────────────────────────────
 
-const CURVE_TOKENS = [
-  { name: "--motion-curve-accelerate-max", label: "accelerate-max", category: "Accelerate" },
-  { name: "--motion-curve-accelerate-mid", label: "accelerate-mid", category: "Accelerate" },
-  { name: "--motion-curve-accelerate-min", label: "accelerate-min", category: "Accelerate" },
-  { name: "--motion-curve-decelerate-max", label: "decelerate-max", category: "Decelerate" },
-  { name: "--motion-curve-decelerate-mid", label: "decelerate-mid", category: "Decelerate" },
-  { name: "--motion-curve-decelerate-min", label: "decelerate-min", category: "Decelerate" },
-  { name: "--motion-curve-easy-ease-max",  label: "easy-ease-max",  category: "Ease"       },
-  { name: "--motion-curve-easy-ease",      label: "easy-ease",      category: "Ease"       },
-  { name: "--motion-curve-linear",         label: "linear",         category: "Ease"       },
-];
-
-const EXPRESSIVE_CURVES = [
-  { name: "--motion-curve-spring", label: "spring", category: "Overshoot" },
-  { name: "--motion-curve-bounce", label: "bounce", category: "Overshoot" },
-];
+/** Each theme defines its own curve vocabulary — not all themes need 9 curves. */
+const THEME_CURVES: Record<string, { name: string; label: string; category: string }[]> = {
+  fluent2: [
+    { name: "--motion-curve-accelerate-max", label: "accelerate-max", category: "Accelerate" },
+    { name: "--motion-curve-accelerate-mid", label: "accelerate-mid", category: "Accelerate" },
+    { name: "--motion-curve-accelerate-min", label: "accelerate-min", category: "Accelerate" },
+    { name: "--motion-curve-decelerate-max", label: "decelerate-max", category: "Decelerate" },
+    { name: "--motion-curve-decelerate-mid", label: "decelerate-mid", category: "Decelerate" },
+    { name: "--motion-curve-decelerate-min", label: "decelerate-min", category: "Decelerate" },
+    { name: "--motion-curve-easy-ease-max",  label: "easy-ease-max",  category: "Ease"       },
+    { name: "--motion-curve-easy-ease",      label: "easy-ease",      category: "Ease"       },
+    { name: "--motion-curve-linear",         label: "linear",         category: "Ease"       },
+  ],
+  balanced: [
+    { name: "--motion-curve-ease-out",    label: "ease-out",    category: "Enter"      },
+    { name: "--motion-curve-ease-in",     label: "ease-in",     category: "Exit"       },
+    { name: "--motion-curve-ease-in-out", label: "ease-in-out", category: "Transition" },
+    { name: "--motion-curve-linear",      label: "linear",      category: "Utility"    },
+  ],
+  dense: [
+    { name: "--motion-curve-snap",        label: "snap",        category: "Core"    },
+    { name: "--motion-curve-ease-in-out", label: "ease-in-out", category: "Utility" },
+    { name: "--motion-curve-linear",      label: "linear",      category: "Utility" },
+  ],
+  expressive: [
+    { name: "--motion-curve-spring",      label: "spring",      category: "Overshoot"  },
+    { name: "--motion-curve-bounce",      label: "bounce",      category: "Overshoot"  },
+    { name: "--motion-curve-ease-out",    label: "ease-out",    category: "Supporting" },
+    { name: "--motion-curve-ease-in",     label: "ease-in",     category: "Supporting" },
+    { name: "--motion-curve-ease-in-out", label: "ease-in-out", category: "Supporting" },
+  ],
+};
 
 /** Mini SVG bezier curve visualization — 48x48 */
 function CurvePreview({ points }: { points: [number, number, number, number] }) {
@@ -177,33 +193,39 @@ function CurveRow({ name, label, raw }: { name: string; label: string; raw: stri
 function CurvesSection() {
   const { getCSSVar } = useTokenValues();
   const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "fluent2";
-  const isExpressive = motionTheme === "expressive";
+  const curves = THEME_CURVES[motionTheme] ?? THEME_CURVES.fluent2;
 
   // Group curves by category
-  const allCurves = [...CURVE_TOKENS, ...(isExpressive ? EXPRESSIVE_CURVES : [])];
-  const categories = new Map<string, typeof allCurves>();
-  for (const c of allCurves) {
+  const categories = new Map<string, typeof curves>();
+  for (const c of curves) {
     const group = categories.get(c.category) ?? [];
     group.push(c);
     categories.set(c.category, group);
   }
+
+  const THEME_LABELS: Record<string, string> = {
+    fluent2:    "9 cubic-bezier curves — Fluent 2 spec",
+    balanced:   "4 curves — organic, CSS-standard naming",
+    dense:      "3 curves — snap-first, minimal ceremony",
+    expressive: "5 curves — spring + bounce overshoot",
+  };
 
   return (
     <Card>
       <CardHeader>
         <CardTitle className="text-sm font-semibold">Easing curves</CardTitle>
         <CardDescription className="text-xs">
-          {isExpressive ? "11 curves including spring + bounce overshoot" : "9 cubic-bezier curves — Fluent 2 spec"}
+          {THEME_LABELS[motionTheme] ?? `${curves.length} curves`}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
-        {Array.from(categories.entries()).map(([category, curves]) => (
+        {Array.from(categories.entries()).map(([category, catCurves]) => (
           <div key={category}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
               {category}
             </p>
             <div className="space-y-0.5">
-              {curves.map((c) => (
+              {catCurves.map((c) => (
                 <CurveRow key={c.name} name={c.name} label={c.label} raw={getCSSVar(c.name)} />
               ))}
             </div>

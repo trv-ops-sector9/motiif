@@ -81,7 +81,8 @@
 
 /* ----------------------------------------------------------
    Layer 1 — Primitive tokens
-   Long durations; spring curve for all enters; snappy accelerate exits
+   Long durations. 5 curves: spring + bounce for personality,
+   plus ease-out / ease-in / ease-in-out for supporting roles.
    ---------------------------------------------------------- */
 
 [data-motion-theme="expressive"] {
@@ -94,55 +95,47 @@
   --motion-duration-slower:     500ms;
   --motion-duration-ultra-slow: 600ms;
 
-  /* Standard Fluent 2 easing curves */
-  --motion-curve-accelerate-max: cubic-bezier(0.9, 0.1, 1, 0.2);
-  --motion-curve-accelerate-mid: cubic-bezier(1, 0, 1, 1);
-  --motion-curve-accelerate-min: cubic-bezier(0.8, 0, 0.78, 1);
-  --motion-curve-decelerate-max: cubic-bezier(0.1, 0.9, 0.2, 1);
-  --motion-curve-decelerate-mid: cubic-bezier(0, 0, 0, 1);
-  --motion-curve-decelerate-min: cubic-bezier(0.33, 0, 0.1, 1);
-  --motion-curve-easy-ease-max:  cubic-bezier(0.8, 0, 0.2, 1);
-  --motion-curve-easy-ease:      cubic-bezier(0.33, 0, 0.67, 1);
-  --motion-curve-linear:         cubic-bezier(0, 0, 1, 1);
+  /* Signature curves — overshoot */
+  --motion-curve-spring:      cubic-bezier(0.175, 0.885, 0.32, 1.28);  /* enters — overshoots ~10%, settles cleanly */
+  --motion-curve-bounce:      cubic-bezier(0.34, 1.72, 0.64, 1);       /* press/release — snappy overshoot          */
 
-  /* Expressive-only: overshoot curves */
-  /* spring — easeOutBack style: overshoots ~10%, settles cleanly. For enters. */
-  --motion-curve-spring:  cubic-bezier(0.175, 0.885, 0.32, 1.28);
-  /* bounce — snappier overshoot for press/release interactions */
-  --motion-curve-bounce:  cubic-bezier(0.34, 1.72, 0.64, 1);
+  /* Supporting curves */
+  --motion-curve-ease-out:    cubic-bezier(0.16, 1, 0.3, 1);           /* non-spring decelerate                     */
+  --motion-curve-ease-in:     cubic-bezier(0.55, 0.055, 0.675, 0.19);  /* exits — fast out of the way               */
+  --motion-curve-ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);          /* state transitions — punchy                */
 }
 
 
 /* ----------------------------------------------------------
    Layer 2 — Alias tokens → Tailwind v4 animate-* utilities
-   All enters: spring curve — overshoot baked into keyframe + timing
-   All exits:  accelerate curve — fast and out of the way
+   All enters: spring — overshoot baked into keyframe + timing
+   All exits:  ease-in — fast and out of the way
    ---------------------------------------------------------- */
 
 @theme {
   /* Fade */
-  --animate-expressive-fade-in:         expressive-fade-in         var(--motion-duration-normal)    var(--motion-curve-spring)         both;
-  --animate-expressive-fade-out:        expressive-fade-out        var(--motion-duration-fast)      var(--motion-curve-accelerate-mid) both;
+  --animate-expressive-fade-in:         expressive-fade-in         var(--motion-duration-normal)    var(--motion-curve-spring)   both;
+  --animate-expressive-fade-out:        expressive-fade-out        var(--motion-duration-fast)      var(--motion-curve-ease-in)  both;
 
   /* Slide up */
-  --animate-expressive-slide-up-in:     expressive-slide-up-in     var(--motion-duration-moderate)  var(--motion-curve-spring)         both;
-  --animate-expressive-slide-up-out:    expressive-slide-up-out    var(--motion-duration-fast)      var(--motion-curve-accelerate-max) both;
+  --animate-expressive-slide-up-in:     expressive-slide-up-in     var(--motion-duration-moderate)  var(--motion-curve-spring)   both;
+  --animate-expressive-slide-up-out:    expressive-slide-up-out    var(--motion-duration-fast)      var(--motion-curve-ease-in)  both;
 
   /* Slide down */
-  --animate-expressive-slide-down-in:   expressive-slide-down-in   var(--motion-duration-moderate)  var(--motion-curve-spring)         both;
-  --animate-expressive-slide-down-out:  expressive-slide-down-out  var(--motion-duration-fast)      var(--motion-curve-accelerate-max) both;
+  --animate-expressive-slide-down-in:   expressive-slide-down-in   var(--motion-duration-moderate)  var(--motion-curve-spring)   both;
+  --animate-expressive-slide-down-out:  expressive-slide-down-out  var(--motion-duration-fast)      var(--motion-curve-ease-in)  both;
 
   /* Expand — spring enter for maximum personality */
-  --animate-expressive-expand-in:       expressive-expand-in       var(--motion-duration-slow)      var(--motion-curve-spring)         both;
-  --animate-expressive-expand-out:      expressive-expand-out      var(--motion-duration-fast)      var(--motion-curve-accelerate-mid) both;
+  --animate-expressive-expand-in:       expressive-expand-in       var(--motion-duration-slow)      var(--motion-curve-spring)   both;
+  --animate-expressive-expand-out:      expressive-expand-out      var(--motion-duration-fast)      var(--motion-curve-ease-in)  both;
 
   /* Collapse — spring enter for maximum personality */
-  --animate-expressive-collapse-in:     expressive-collapse-in     var(--motion-duration-slow)      var(--motion-curve-spring)         both;
-  --animate-expressive-collapse-out:    expressive-collapse-out    var(--motion-duration-fast)      var(--motion-curve-accelerate-mid) both;
+  --animate-expressive-collapse-in:     expressive-collapse-in     var(--motion-duration-slow)      var(--motion-curve-spring)   both;
+  --animate-expressive-collapse-out:    expressive-collapse-out    var(--motion-duration-fast)      var(--motion-curve-ease-in)  both;
 
   /* Page */
-  --animate-expressive-page-enter:      expressive-page-enter      var(--motion-duration-slower)    var(--motion-curve-spring)         both;
-  --animate-expressive-page-exit:       expressive-page-exit       var(--motion-duration-normal)    var(--motion-curve-accelerate-mid) both;
+  --animate-expressive-page-enter:      expressive-page-enter      var(--motion-duration-slower)    var(--motion-curve-spring)   both;
+  --animate-expressive-page-exit:       expressive-page-exit       var(--motion-duration-normal)    var(--motion-curve-ease-in)  both;
 }
 
 
