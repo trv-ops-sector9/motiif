@@ -229,7 +229,7 @@ function MarketingPage({ onNavigate }: { onNavigate: () => void }) {
       {/* Footer */}
       <footer className="border-t px-6 py-8">
         <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© 2026 JustThemeSwitcher. MIT license.</p>
+          <p>© 2026 Motif. MIT license.</p>
           <div className="flex gap-5">
             {["Docs", "GitHub", "Changelog", "Privacy"].map((link) => (
               <button key={link} onClick={onNavigate} className="hover:text-foreground transition-colors cursor-pointer">
