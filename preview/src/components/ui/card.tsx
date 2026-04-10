@@ -29,7 +29,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
         onClick={onClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "rounded-xl border bg-card text-card-foreground shadow-[var(--shadow-sm)]",
+          "flex flex-col rounded-xl border bg-card text-card-foreground shadow-[var(--shadow-sm)]",
           interactive && [
             "cursor-pointer select-none will-change-transform",
             "[transition-property:translate,scale,box-shadow]",

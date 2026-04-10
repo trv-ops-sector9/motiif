@@ -66,21 +66,21 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       {/* Header */}
       <div className="flex min-h-14 shrink-0 items-center border-b border-sidebar-border px-3 py-3">
         {!collapsed && (
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <div className="flex-1 min-w-0 cursor-default select-none">
+          <div className="flex flex-1 items-center min-w-0">
+            <Tooltip>
+              <TooltipTrigger asChild>
                 <span
-                  className="block truncate text-base font-bold leading-tight text-sidebar-foreground tracking-wide"
+                  className="cursor-default select-none truncate text-base font-bold text-sidebar-foreground tracking-wide"
                   style={{ fontFamily: "var(--font-brand)" }}
                 >
                   Motif
                 </span>
-              </div>
-            </TooltipTrigger>
-            <TooltipContent side="right" sideOffset={8}>
-              Runtime design &amp; motion token system
-            </TooltipContent>
-          </Tooltip>
+              </TooltipTrigger>
+              <TooltipContent side="right" sideOffset={8}>
+                Runtime design &amp; motion token system
+              </TooltipContent>
+            </Tooltip>
+          </div>
         )}
         <button
           onClick={() => setCollapsed((c) => !c)}
@@ -104,6 +104,8 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
         {/* Theme controls — collapsible section */}
         <SidebarThemeControls collapsed={collapsed} />
+
+        <Separator className="my-1 bg-sidebar-border" />
 
         {/* Gallery section */}
         {!collapsed ? (

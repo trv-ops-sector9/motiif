@@ -5,6 +5,10 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 
+// Consistent tighter padding for token reference cards
+const hdrCn = "px-4 pt-4 pb-3";
+const bodyCn = "px-4 pb-4 pt-1";
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 /** Read a resolved CSS custom property from :root */
@@ -104,31 +108,28 @@ function DurationSection() {
 
   return (
     <Card>
-      <CardHeader>
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <CardTitle className="text-sm font-semibold">Duration scale</CardTitle>
-            <CardDescription className="text-xs">
-              Drag to override — changes propagate live across the entire app
-            </CardDescription>
-          </div>
-          {hasOverrides && (
-            <button
-              onClick={resetAll}
-              className={cn(
-                "flex items-center gap-1 shrink-0 rounded px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer",
-                "text-muted-foreground hover:text-foreground hover:bg-muted",
-                "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-              )}
-              title="Reset all durations to theme defaults"
-            >
-              <RotateCcw className="h-3 w-3" />
-              Reset all
-            </button>
-          )}
+      <CardHeader className={hdrCn}>
+        <div className="flex items-center justify-between gap-3">
+          <CardTitle className="text-sm font-semibold">Duration scale</CardTitle>
+          <button
+            onClick={resetAll}
+            className={cn(
+              "flex items-center gap-1 shrink-0 rounded px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer",
+              "text-muted-foreground hover:text-foreground hover:bg-muted",
+              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+              !hasOverrides && "invisible",
+            )}
+            title="Reset all durations to theme defaults"
+          >
+            <RotateCcw className="h-3 w-3" />
+            Reset all
+          </button>
         </div>
+        <CardDescription className="text-xs">
+          Drag to override — changes propagate live across all components
+        </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-3">
+      <CardContent className={cn(bodyCn, "pb-6 space-y-2.5")}>
         {DURATION_TOKENS.map((token) => {
           const raw = getCSSVar(token.name);
           const ms = parseInt(raw) || 0;
@@ -296,13 +297,13 @@ function CurvesSection() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Easing curves</CardTitle>
         <CardDescription className="text-xs">
           {THEME_LABELS[motionTheme] ?? `${curves.length} curves`}
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className={cn(bodyCn, "space-y-3")}>
         {Array.from(categories.entries()).map(([category, catCurves]) => (
           <div key={category}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
@@ -335,13 +336,13 @@ function BridgeSection() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Semantic bridge</CardTitle>
         <CardDescription className="text-xs">
           Intent-based variables — components use these, never raw curve names
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={bodyCn}>
         <div className="space-y-2">
           {BRIDGE_CURVES.map((b) => {
             const raw = getCSSVar(b.name);
@@ -367,55 +368,51 @@ function BridgeSection() {
 
 // ── Animation archetypes ─────────────────────────────────────────────────────
 
-const ARCHETYPES = [
-  { name: "fade-in",        direction: "enter", usage: "Default enter" },
-  { name: "fade-out",       direction: "exit",  usage: "Default exit" },
-  { name: "slide-up-in",    direction: "enter", usage: "Toast, popover" },
-  { name: "slide-up-out",   direction: "exit",  usage: "Toast dismiss" },
-  { name: "slide-down-in",  direction: "enter", usage: "Dropdown open" },
-  { name: "slide-down-out", direction: "exit",  usage: "Dropdown close" },
-  { name: "slide-left-in",  direction: "enter", usage: "Drawer from right" },
-  { name: "slide-left-out", direction: "exit",  usage: "Drawer close right" },
-  { name: "slide-right-in", direction: "enter", usage: "Drawer from left" },
-  { name: "slide-right-out",direction: "exit",  usage: "Drawer close left" },
-  { name: "slide-top-in",   direction: "enter", usage: "Drawer from bottom" },
-  { name: "slide-top-out",  direction: "exit",  usage: "Drawer close bottom" },
-  { name: "slide-bottom-in",direction: "enter", usage: "Drawer from top" },
-  { name: "slide-bottom-out",direction: "exit", usage: "Drawer close top" },
-  { name: "expand-in",      direction: "enter", usage: "Dialog, sheet open" },
-  { name: "expand-out",     direction: "exit",  usage: "Dialog, sheet close" },
-  { name: "collapse-in",    direction: "enter", usage: "Accordion expand" },
-  { name: "collapse-out",   direction: "exit",  usage: "Accordion collapse" },
-  { name: "page-enter",     direction: "enter", usage: "Route transition in" },
-  { name: "page-exit",      direction: "exit",  usage: "Route transition out" },
-  { name: "overlay-in",     direction: "enter", usage: "Backdrop fade in" },
-  { name: "overlay-out",    direction: "exit",  usage: "Backdrop fade out" },
-] as const;
+/** Pair enter/exit archetypes for compact display */
+const ARCHETYPE_PAIRS = [
+  { enter: "fade-in",         exit: "fade-out",         usage: "Default" },
+  { enter: "slide-up-in",     exit: "slide-up-out",     usage: "Toast, popover" },
+  { enter: "slide-down-in",   exit: "slide-down-out",   usage: "Dropdown" },
+  { enter: "slide-left-in",   exit: "slide-left-out",   usage: "Drawer →" },
+  { enter: "slide-right-in",  exit: "slide-right-out",  usage: "Drawer ←" },
+  { enter: "slide-top-in",    exit: "slide-top-out",    usage: "Drawer ↑" },
+  { enter: "slide-bottom-in", exit: "slide-bottom-out", usage: "Drawer ↓" },
+  { enter: "expand-in",       exit: "expand-out",       usage: "Dialog, sheet" },
+  { enter: "collapse-in",     exit: "collapse-out",     usage: "Accordion" },
+  { enter: "page-enter",      exit: "page-exit",        usage: "Route transition" },
+  { enter: "overlay-in",      exit: "overlay-out",      usage: "Backdrop" },
+];
 
 function ArchetypesSection() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Animation archetypes</CardTitle>
         <CardDescription className="text-xs">
-          22 named animations — each resolves to theme-specific keyframes, duration, and easing via <code className="font-mono">--anim-*</code> variables
+          22 animations via <code className="font-mono">--anim-*</code> — paired enter/exit
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
-          {ARCHETYPES.map((a) => (
-            <div key={a.name} className="flex items-center gap-2 py-1">
-              <Badge
-                variant={a.direction === "enter" ? "default" : "secondary"}
-                className="text-[9px] px-1.5 py-0 shrink-0 w-10 justify-center"
-              >
-                {a.direction}
-              </Badge>
-              <code className="text-xs font-mono font-medium">{a.name}</code>
-              <span className="text-[10px] text-muted-foreground ml-auto shrink-0">{a.usage}</span>
-            </div>
-          ))}
-        </div>
+      <CardContent className={bodyCn}>
+        <table className="w-full text-xs border-collapse">
+          <thead>
+            <tr className="border-b border-border">
+              {["Enter", "Exit", "Usage"].map((h) => (
+                <th key={h} className="pb-1.5 text-left text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70 pr-3">
+                  {h}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {ARCHETYPE_PAIRS.map((p) => (
+              <tr key={p.enter} className="border-b border-border/50 last:border-0">
+                <td className="py-1.5 pr-3"><code className="font-mono text-[11px]">{p.enter}</code></td>
+                <td className="py-1.5 pr-3"><code className="font-mono text-[11px] text-muted-foreground">{p.exit}</code></td>
+                <td className="py-1.5 text-[11px] text-muted-foreground">{p.usage}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </CardContent>
     </Card>
   );
@@ -461,13 +458,13 @@ const MOTION_PRINCIPLES = [
 function PrinciplesSection() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Motion principles</CardTitle>
         <CardDescription className="text-xs">
           Four named personalities — curve vocabulary, duration range, transform style
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={bodyCn}>
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr className="border-b border-border">
@@ -572,13 +569,13 @@ function ColorSwatch({ name, label }: { name: string; label: string }) {
 function ColorsSection() {
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Color tokens</CardTitle>
         <CardDescription className="text-xs">
           Semantic colors — all OkLCh values, switch themes in sidebar to compare
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className={cn(bodyCn, "space-y-4")}>
         {COLOR_GROUPS.map((group) => (
           <div key={group.label}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
@@ -610,11 +607,11 @@ function ShadowsSection() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Shadows</CardTitle>
         <CardDescription className="text-xs">Elevation scale — 4 stops</CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={bodyCn}>
         <div className="grid grid-cols-4 gap-4">
           {SHADOW_TOKENS.map((s) => {
             const raw = getCSSVar(s.name);
@@ -643,13 +640,13 @@ function SpacingSection() {
 
   return (
     <Card>
-      <CardHeader>
+      <CardHeader className={hdrCn}>
         <CardTitle className="text-sm font-semibold">Spacing</CardTitle>
         <CardDescription className="text-xs">
           Base: {spacing || "0.25rem"} — all utilities use calc(--spacing * N)
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className={bodyCn}>
         <div className="space-y-1.5">
           {steps.map((n) => (
             <div key={n} className="flex items-center gap-3">
@@ -759,18 +756,18 @@ export function TokensView() {
     <div className="p-6 space-y-6 max-w-5xl">
       {/* Page header */}
       <div>
-        <div className="flex items-start justify-between gap-4 mb-1">
-          <h1 className="text-2xl font-bold tracking-tight">Design tokens</h1>
+        <h1 className="text-2xl font-bold tracking-tight mb-1">Design tokens</h1>
+        <div className="flex items-center justify-between gap-4">
+          <p className="text-sm text-muted-foreground">
+            Live reference — values update when you switch themes in the sidebar.
+            Currently:{" "}
+            <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
+            {" "}motion /{" "}
+            <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
+            {" "}color
+          </p>
           <ExportButton />
         </div>
-        <p className="text-sm text-muted-foreground">
-          Live reference — values update when you switch themes in the sidebar.
-          Currently:{" "}
-          <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
-          {" "}motion /{" "}
-          <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
-          {" "}color
-        </p>
       </div>
 
       <Separator />
@@ -785,7 +782,7 @@ export function TokensView() {
         <div className="mt-4">
           <PrinciplesSection />
         </div>
-        <div className="grid sm:grid-cols-2 gap-4 mt-4">
+        <div className="grid sm:grid-cols-2 gap-4 items-start mt-4">
           <BridgeSection />
           <ArchetypesSection />
         </div>
