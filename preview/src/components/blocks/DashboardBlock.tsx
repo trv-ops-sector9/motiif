@@ -496,13 +496,13 @@ function TableCellViewer({ item }: { item: TableRow }) {
   const isMobile = useIsMobile();
 
   return (
-    <Drawer direction="right">
+    <Drawer>
       <DrawerTrigger asChild>
         <Button variant="link" className="text-foreground w-fit px-0 text-left">
           {item.header}
         </Button>
       </DrawerTrigger>
-      <DrawerContent>
+      <DrawerContent side="right">
         <DrawerHeader className="gap-1">
           <DrawerTitle>{item.header}</DrawerTitle>
           <DrawerDescription>Edit feature details, priority, and assignment.</DrawerDescription>

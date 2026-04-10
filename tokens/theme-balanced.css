@@ -71,6 +71,40 @@
   to   { opacity: 0; transform: translateX(8px); }
 }
 
+/* Drawer slides — full-panel translate for overlay surfaces */
+@keyframes balanced-slide-left-in {
+  from { opacity: 0; transform: translateX(-100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes balanced-slide-left-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-100%); }
+}
+@keyframes balanced-slide-right-in {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes balanced-slide-right-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(100%); }
+}
+@keyframes balanced-slide-top-in {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes balanced-slide-top-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-100%); }
+}
+@keyframes balanced-slide-bottom-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes balanced-slide-bottom-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(100%); }
+}
+
 @keyframes balanced-reduced-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -130,6 +164,16 @@
   /* Page */
   --animate-balanced-page-enter:      balanced-page-enter      var(--motion-duration-slow)     var(--motion-curve-ease-out)    both;
   --animate-balanced-page-exit:       balanced-page-exit       var(--motion-duration-normal)   var(--motion-curve-ease-in)     both;
+
+  /* Drawer slides */
+  --animate-balanced-slide-left-in:    balanced-slide-left-in    var(--motion-duration-slow)    var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-left-out:   balanced-slide-left-out   var(--motion-duration-normal)  var(--motion-curve-ease-in)     both;
+  --animate-balanced-slide-right-in:   balanced-slide-right-in   var(--motion-duration-slow)    var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-right-out:  balanced-slide-right-out  var(--motion-duration-normal)  var(--motion-curve-ease-in)     both;
+  --animate-balanced-slide-top-in:     balanced-slide-top-in     var(--motion-duration-slow)    var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-top-out:    balanced-slide-top-out    var(--motion-duration-normal)  var(--motion-curve-ease-in)     both;
+  --animate-balanced-slide-bottom-in:  balanced-slide-bottom-in  var(--motion-duration-slow)    var(--motion-curve-ease-out)    both;
+  --animate-balanced-slide-bottom-out: balanced-slide-bottom-out var(--motion-duration-normal)  var(--motion-curve-ease-in)     both;
 }
 
 
@@ -158,8 +202,16 @@
     --animate-balanced-expand-out:     balanced-reduced-fade 1ms linear both;
     --animate-balanced-collapse-in:    balanced-reduced-fade 1ms linear both;
     --animate-balanced-collapse-out:   balanced-reduced-fade 1ms linear both;
-    --animate-balanced-page-enter:     balanced-reduced-fade 1ms linear both;
-    --animate-balanced-page-exit:      balanced-reduced-fade 1ms linear both;
+    --animate-balanced-page-enter:       balanced-reduced-fade 1ms linear both;
+    --animate-balanced-page-exit:        balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-left-in:    balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-left-out:   balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-right-in:   balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-right-out:  balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-top-in:     balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-top-out:    balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-bottom-in:  balanced-reduced-fade 1ms linear both;
+    --animate-balanced-slide-bottom-out: balanced-reduced-fade 1ms linear both;
   }
 }
 
@@ -182,6 +234,14 @@
   --animate-balanced-expand-out:     balanced-reduced-fade 1ms linear both;
   --animate-balanced-collapse-in:    balanced-reduced-fade 1ms linear both;
   --animate-balanced-collapse-out:   balanced-reduced-fade 1ms linear both;
-  --animate-balanced-page-enter:     balanced-reduced-fade 1ms linear both;
-  --animate-balanced-page-exit:      balanced-reduced-fade 1ms linear both;
+  --animate-balanced-page-enter:       balanced-reduced-fade 1ms linear both;
+  --animate-balanced-page-exit:        balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-left-in:    balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-left-out:   balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-right-in:   balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-right-out:  balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-top-in:     balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-top-out:    balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-bottom-in:  balanced-reduced-fade 1ms linear both;
+  --animate-balanced-slide-bottom-out: balanced-reduced-fade 1ms linear both;
 }

@@ -70,6 +70,40 @@
   to   { opacity: 0; transform: translateX(8px); }
 }
 
+/* Drawer slides — full-panel translate for overlay surfaces */
+@keyframes fluent2-slide-left-in {
+  from { opacity: 0; transform: translateX(-100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fluent2-slide-left-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-100%); }
+}
+@keyframes fluent2-slide-right-in {
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fluent2-slide-right-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(100%); }
+}
+@keyframes fluent2-slide-top-in {
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fluent2-slide-top-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-100%); }
+}
+@keyframes fluent2-slide-bottom-in {
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fluent2-slide-bottom-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(100%); }
+}
+
 @keyframes fluent2-reduced-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -133,6 +167,16 @@
   /* Page */
   --animate-fluent2-page-enter:       fluent2-page-enter      var(--motion-duration-slow)     var(--motion-curve-decelerate-max) both;
   --animate-fluent2-page-exit:        fluent2-page-exit       var(--motion-duration-normal)   var(--motion-curve-accelerate-mid) both;
+
+  /* Drawer slides */
+  --animate-fluent2-slide-left-in:    fluent2-slide-left-in   var(--motion-duration-moderate) var(--motion-curve-decelerate-mid) both;
+  --animate-fluent2-slide-left-out:   fluent2-slide-left-out  var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-fluent2-slide-right-in:   fluent2-slide-right-in  var(--motion-duration-moderate) var(--motion-curve-decelerate-mid) both;
+  --animate-fluent2-slide-right-out:  fluent2-slide-right-out var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-fluent2-slide-top-in:     fluent2-slide-top-in    var(--motion-duration-moderate) var(--motion-curve-decelerate-mid) both;
+  --animate-fluent2-slide-top-out:    fluent2-slide-top-out   var(--motion-duration-fast)     var(--motion-curve-accelerate-mid) both;
+  --animate-fluent2-slide-bottom-in:  fluent2-slide-bottom-in var(--motion-duration-moderate) var(--motion-curve-decelerate-mid) both;
+  --animate-fluent2-slide-bottom-out: fluent2-slide-bottom-out var(--motion-duration-fast)    var(--motion-curve-accelerate-mid) both;
 }
 
 
@@ -161,8 +205,16 @@
     --animate-fluent2-expand-out:     fluent2-reduced-fade 1ms linear both;
     --animate-fluent2-collapse-in:    fluent2-reduced-fade 1ms linear both;
     --animate-fluent2-collapse-out:   fluent2-reduced-fade 1ms linear both;
-    --animate-fluent2-page-enter:     fluent2-reduced-fade 1ms linear both;
-    --animate-fluent2-page-exit:      fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-page-enter:       fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-page-exit:        fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-left-in:    fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-left-out:   fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-right-in:   fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-right-out:  fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-top-in:     fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-top-out:    fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-bottom-in:  fluent2-reduced-fade 1ms linear both;
+    --animate-fluent2-slide-bottom-out: fluent2-reduced-fade 1ms linear both;
   }
 }
 
@@ -185,6 +237,14 @@
   --animate-fluent2-expand-out:     fluent2-reduced-fade 1ms linear both;
   --animate-fluent2-collapse-in:    fluent2-reduced-fade 1ms linear both;
   --animate-fluent2-collapse-out:   fluent2-reduced-fade 1ms linear both;
-  --animate-fluent2-page-enter:     fluent2-reduced-fade 1ms linear both;
-  --animate-fluent2-page-exit:      fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-page-enter:       fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-page-exit:        fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-left-in:    fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-left-out:   fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-right-in:   fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-right-out:  fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-top-in:     fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-top-out:    fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-bottom-in:  fluent2-reduced-fade 1ms linear both;
+  --animate-fluent2-slide-bottom-out: fluent2-reduced-fade 1ms linear both;
 }

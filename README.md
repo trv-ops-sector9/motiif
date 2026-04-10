@@ -62,6 +62,12 @@ Spring easing curves only produce visible overshoot if the animation starts at a
 
 The active tab indicator is an absolutely-positioned element that slides laterally. Measuring the target tab's position and animating the indicator requires knowing the DOM layout — but React state updates and DOM measurement can race. The solution: `useLayoutEffect` for initial measurement (synchronous, prevents flash on mount), plus `MutationObserver` + `requestAnimationFrame` for subsequent changes (deferred measurement after the DOM settles, prevents stutter).
 
+### Drawer built on Radix Dialog, not Vaul
+
+Most shadcn/ui drawer implementations use Vaul, which drives its slide animation via JavaScript spring physics with hardcoded duration and easing. That means the drawer ignores the motion token system entirely — switching themes changes nothing.
+
+The solution: replace Vaul with Radix Dialog and pure CSS keyframe animations. Eight directional slide keyframes (`slide-left/right/top/bottom-in/out`) are defined per theme with personality-appropriate transforms — Expressive gets spring overshoot via scale, Dense gets raw translate with no opacity fade. The drawer's `side` prop selects the correct animation pair via CSS custom property indirection, and theme switching rewires everything automatically. One fewer JS dependency, 28 KB less gzip, and the drawer now participates in the motion system like every other component.
+
 ### Sonner toast overrides
 
 Sonner hardcodes `transition: all 400ms ease` in its own stylesheet. Motion tokens can't override this without `!important`. The bridge layer overrides the specific Sonner CSS variables with `!important` so toasts respect `--motion-duration-normal` and `--motion-curve-navigation` like every other component. It's ugly but contained.

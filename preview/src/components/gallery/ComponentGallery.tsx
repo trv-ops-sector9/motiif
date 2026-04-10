@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
@@ -81,7 +81,7 @@ function ButtonDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Button variant={variant} size={size} disabled={isDisabled}>
           {isLoading
             ? <><Loader2 className="h-4 w-4 animate-spin" />{!isIconOnly && "Loading…"}</>
@@ -161,7 +161,7 @@ function CardDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Card
           className="w-72 overflow-hidden select-none"
           style={{
@@ -244,7 +244,7 @@ function DialogDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Dialog open={open} onOpenChange={handleOpen}>
           <DialogTrigger asChild>
             <Button variant="outline">Open dialog</Button>
@@ -306,25 +306,17 @@ function DialogDemo() {
 /* ── Dropdown Menu ── */
 
 function DropdownMenuDemo() {
-  const [notifications, setNotifications] = useState(true);
-  const [status, setStatus] = useState("online");
-
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shrink-0">
-                JL
-              </span>
-              Jordan Lee
+              Actions
               <ChevronDown className="h-3.5 w-3.5 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-52">
-            <DropdownMenuLabel>My account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+          <DropdownMenuContent className="w-48">
             <DropdownMenuItem className="gap-2">
               <User className="h-4 w-4" /> Profile
               <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
@@ -337,42 +329,19 @@ function DropdownMenuDemo() {
               <CreditCard className="h-4 w-4" /> Billing
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem checked={notifications} onCheckedChange={setNotifications}>
-              <Bell className="h-4 w-4 mr-2" /> Notifications
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Status</DropdownMenuLabel>
-            <DropdownMenuRadioGroup value={status} onValueChange={setStatus}>
-              <DropdownMenuRadioItem value="online">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-green-500 shrink-0" /> Online
-                </span>
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="away">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" /> Away
-                </span>
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="dnd">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-destructive shrink-0" /> Do not disturb
-                </span>
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-            <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive focus:bg-destructive/10">
               <LogOut className="h-4 w-4" /> Sign out
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+      <p className="text-xs text-muted-foreground text-center">Click to open — the slide animation responds to the active motion theme.</p>
     </div>
   );
 }
 
 /* ── Tabs ── */
-type TabCount = "3" | "4" | "5";
+type TabCount = "3" | "4" | "5" | "6" | "7";
 
 function TabsDemo() {
   const [count, setCount] = useState<TabCount>("4");
@@ -384,6 +353,8 @@ function TabsDemo() {
     { value: "members",   label: "Members",   content: "Alex Kim — Owner · Sam Rivera — Editor · Jordan Lee — Viewer" },
     { value: "activity",  label: "Activity",  content: "Config updated 2h ago · Deploy triggered 5h ago · Branch merged 1d ago" },
     { value: "settings",  label: "Settings",  content: "Production — us-east-1 · Node 20 · 2 vCPU" },
+    { value: "billing",   label: "Billing",   content: "Plan: Pro · $49/mo · Next invoice: Apr 15, 2026" },
+    { value: "security",  label: "Security",  content: "2FA enabled · 3 active sessions · Last password change 30d ago" },
   ];
   const tabs = allTabs.slice(0, n);
 
@@ -413,6 +384,8 @@ function TabsDemo() {
             { value: "3", label: "3 tabs" },
             { value: "4", label: "4 tabs" },
             { value: "5", label: "5 tabs" },
+            { value: "6", label: "6 tabs" },
+            { value: "7", label: "7 tabs" },
           ]}
         />
       </div>
@@ -507,7 +480,7 @@ function ToastDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Button variant="outline" onClick={fireToast}>Fire toast</Button>
       </div>
       <div className="space-y-4">
@@ -535,7 +508,7 @@ function TooltipDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -564,27 +537,55 @@ function TooltipDemo() {
 }
 
 /* ── Switch ── */
+type SwitchLayout = "inline" | "stacked";
 
 function SwitchDemo() {
   const [checked, setChecked] = useState(false);
   const [disabled, setDisabled] = useState<"enabled" | "disabled">("enabled");
+  const [layout, setLayout] = useState<SwitchLayout>("inline");
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
-        <div className="flex items-center gap-3">
-          <Switch
-            id="switch-demo"
-            checked={checked}
-            onCheckedChange={setChecked}
-            disabled={disabled === "disabled"}
-          />
-          <Label htmlFor="switch-demo" className="cursor-pointer">
-            {checked ? "On" : "Off"}
-          </Label>
-        </div>
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
+        {layout === "inline" ? (
+          <div className="flex items-center gap-3">
+            <Switch
+              id="switch-demo"
+              checked={checked}
+              onCheckedChange={setChecked}
+              disabled={disabled === "disabled"}
+            />
+            <Label htmlFor="switch-demo" className="cursor-pointer">
+              Enable notifications
+            </Label>
+          </div>
+        ) : (
+          <div className="w-full max-w-xs space-y-4">
+            {[
+              { id: "notif", label: "Notifications", desc: "Receive push notifications" },
+              { id: "email", label: "Email digest", desc: "Weekly summary emails" },
+              { id: "market", label: "Marketing", desc: "Product updates and tips" },
+            ].map((item) => (
+              <div key={item.id} className="flex items-center justify-between">
+                <div>
+                  <Label htmlFor={`switch-${item.id}`} className="cursor-pointer text-sm font-medium">{item.label}</Label>
+                  <p className="text-xs text-muted-foreground">{item.desc}</p>
+                </div>
+                <Switch id={`switch-${item.id}`} disabled={disabled === "disabled"} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="space-y-4">
+        <ControlGroup
+          label="Layout" name="switch-layout" value={layout}
+          onChange={v => setLayout(v as SwitchLayout)}
+          options={[
+            { value: "inline",  label: "Inline"  },
+            { value: "stacked", label: "Stacked" },
+          ]}
+        />
         <ControlGroup
           label="State" name="switch-state" value={disabled}
           onChange={v => setDisabled(v as "enabled" | "disabled")}
@@ -711,27 +712,48 @@ function SelectDemo() {
 }
 
 /* ── Checkbox ── */
+type CheckboxLayout = "single" | "group";
 
 function CheckboxDemo() {
-  const [checked, setChecked] = useState<boolean | "indeterminate">(false);
   const [disabled, setDisabled] = useState<"enabled" | "disabled">("enabled");
+  const [layout, setLayout] = useState<CheckboxLayout>("single");
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
-        <div className="flex items-center gap-2.5">
-          <Checkbox
-            id="checkbox-demo"
-            checked={checked}
-            onCheckedChange={setChecked}
-            disabled={disabled === "disabled"}
-          />
-          <Label htmlFor="checkbox-demo" className="cursor-pointer">
-            Accept terms and conditions
-          </Label>
-        </div>
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
+        {layout === "single" ? (
+          <div className="flex items-center gap-2.5">
+            <Checkbox id="checkbox-single" disabled={disabled === "disabled"} />
+            <Label htmlFor="checkbox-single" className="cursor-pointer">
+              Accept terms and conditions
+            </Label>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {[
+              { id: "analytics", label: "Usage analytics" },
+              { id: "crash",     label: "Crash reports" },
+              { id: "marketing", label: "Marketing emails" },
+            ].map((item) => (
+              <div key={item.id} className="flex items-center gap-2.5">
+                <Checkbox id={`cb-${item.id}`} disabled={disabled === "disabled"} />
+                <Label htmlFor={`cb-${item.id}`} className="cursor-pointer text-sm font-normal">
+                  {item.label}
+                </Label>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <div className="space-y-4">
+        <ControlGroup
+          label="Layout" name="checkbox-layout" value={layout}
+          onChange={v => setLayout(v as CheckboxLayout)}
+          options={[
+            { value: "single", label: "Single"  },
+            { value: "group",  label: "Group"   },
+          ]}
+        />
         <ControlGroup
           label="State" name="checkbox-state" value={disabled}
           onChange={v => setDisabled(v as "enabled" | "disabled")}
@@ -753,7 +775,7 @@ function BadgeDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <div className="flex items-center gap-3">
           <Badge variant={variant}>Badge</Badge>
           <Badge variant={variant}>
@@ -790,7 +812,7 @@ function AvatarDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <div className="flex items-center gap-4">
           <Avatar className={sizeClass}>
             {content === "image" ? (
@@ -870,16 +892,19 @@ function AlertDemo() {
 }
 
 /* ── Drawer ── */
+type DrawerSide = "top" | "bottom" | "left" | "right";
 
 function DrawerDemo() {
+  const [side, setSide] = useState<DrawerSide>("right");
+
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Drawer>
           <DrawerTrigger asChild>
             <Button variant="outline">Open drawer</Button>
           </DrawerTrigger>
-          <DrawerContent>
+          <DrawerContent side={side}>
             <DrawerHeader>
               <DrawerTitle>Edit profile</DrawerTitle>
               <DrawerDescription>Make changes to your profile. Click save when you're done.</DrawerDescription>
@@ -905,30 +930,60 @@ function DrawerDemo() {
           </DrawerContent>
         </Drawer>
       </div>
+      <div className="space-y-4">
+        <ControlGroup
+          label="Side" name="drawer-side" value={side}
+          onChange={v => setSide(v as DrawerSide)}
+          options={[
+            { value: "right",  label: "Right"  },
+            { value: "left",   label: "Left"   },
+            { value: "bottom", label: "Bottom" },
+            { value: "top",    label: "Top"    },
+          ]}
+        />
+      </div>
     </div>
   );
 }
 
 /* ── Toggle Group ── */
 type ToggleVariant = "default" | "outline";
+type ToggleSize = "sm" | "default" | "lg";
+type ToggleType = "single" | "multiple";
 
 function ToggleGroupDemo() {
   const [variant, setVariant] = useState<ToggleVariant>("default");
+  const [size, setSize] = useState<ToggleSize>("default");
+  const [type, setType] = useState<ToggleType>("multiple");
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
-        <ToggleGroup type="multiple" variant={variant}>
-          <ToggleGroupItem value="bold" aria-label="Toggle bold">
-            <Bold className="h-4 w-4" />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="italic" aria-label="Toggle italic">
-            <Italic className="h-4 w-4" />
-          </ToggleGroupItem>
-          <ToggleGroupItem value="underline" aria-label="Toggle underline">
-            <Underline className="h-4 w-4" />
-          </ToggleGroupItem>
-        </ToggleGroup>
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
+        {type === "multiple" ? (
+          <ToggleGroup type="multiple" variant={variant} size={size}>
+            <ToggleGroupItem value="bold" aria-label="Toggle bold">
+              <Bold className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Toggle italic">
+              <Italic className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Toggle underline">
+              <Underline className="h-4 w-4" />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        ) : (
+          <ToggleGroup type="single" variant={variant} size={size}>
+            <ToggleGroupItem value="bold" aria-label="Toggle bold">
+              <Bold className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="italic" aria-label="Toggle italic">
+              <Italic className="h-4 w-4" />
+            </ToggleGroupItem>
+            <ToggleGroupItem value="underline" aria-label="Toggle underline">
+              <Underline className="h-4 w-4" />
+            </ToggleGroupItem>
+          </ToggleGroup>
+        )}
       </div>
       <div className="space-y-4">
         <ControlGroup
@@ -937,6 +992,23 @@ function ToggleGroupDemo() {
           options={[
             { value: "default", label: "Default" },
             { value: "outline", label: "Outline" },
+          ]}
+        />
+        <ControlGroup
+          label="Size" name="toggle-size" value={size}
+          onChange={v => setSize(v as ToggleSize)}
+          options={[
+            { value: "sm",      label: "Small"   },
+            { value: "default", label: "Default" },
+            { value: "lg",      label: "Large"   },
+          ]}
+        />
+        <ControlGroup
+          label="Select" name="toggle-type" value={type}
+          onChange={v => setType(v as ToggleType)}
+          options={[
+            { value: "single",   label: "Single"   },
+            { value: "multiple", label: "Multiple"  },
           ]}
         />
       </div>
@@ -1008,106 +1080,10 @@ export function ComponentGallery() {
 
       <Section>
         <SectionHeading
-          title="Button"
-          description="All variants, sizes, and states — color transitions use motion token timing."
-        />
-        <ButtonDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Card"
-          description="Interactive card with configurable shadow elevation and interaction behavior."
-        />
-        <CardDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Dialog"
-          description="Modal overlay with form, loading state, and success feedback."
-        />
-        <DialogDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Dropdown Menu"
-          description="Contextual menu with items, checkboxes, radio groups, and keyboard shortcuts."
-        />
-        <DropdownMenuDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Tabs"
-          description="Tab switcher with sliding pill indicator — more tabs means more travel for the animation."
-        />
-        <TabsDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
           title="Accordion"
           description="Collapsible content sections with height animation — no spring curves here, only smooth easing."
         />
         <AccordionDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Tooltip"
-          description="Hover tooltip with configurable placement — uses slide animation tokens."
-        />
-        <TooltipDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Switch"
-          description="Toggle switch — thumb slides with motion token timing."
-        />
-        <SwitchDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Input"
-          description="Text input with label, error state, and adornment options."
-        />
-        <InputDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Select"
-          description="Dropdown select with grouped options — uses slide animation tokens."
-        />
-        <SelectDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Checkbox"
-          description="Checkbox with label — check indicator animates via motion tokens."
-        />
-        <CheckboxDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Badge"
-          description="Inline status labels — all semantic color variants."
-        />
-        <BadgeDemo />
-      </Section>
-
-      <Section>
-        <SectionHeading
-          title="Avatar"
-          description="User avatar with image or fallback initials at different sizes."
-        />
-        <AvatarDemo />
       </Section>
 
       <Section>
@@ -1120,18 +1096,74 @@ export function ComponentGallery() {
 
       <Section>
         <SectionHeading
+          title="Avatar"
+          description="User avatar with image or fallback initials at different sizes."
+        />
+        <AvatarDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Badge"
+          description="Inline status labels — all semantic color variants."
+        />
+        <BadgeDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Button"
+          description="All variants, sizes, and states — color transitions use motion token timing."
+        />
+        <ButtonDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Card"
+          description="Interactive card with shadow elevation — hover lift and press use motion token curves."
+        />
+        <CardDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Checkbox"
+          description="Checkbox with label — background and check transition via motion tokens."
+        />
+        <CheckboxDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Dialog"
+          description="Modal overlay with fade-in and expand animation — form, loading, and success states."
+        />
+        <DialogDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
           title="Drawer"
-          description="Bottom sheet overlay — slides up with motion tokens, swipe to dismiss."
+          description="Overlay panel — slides from any edge with motion tokens, swipe to dismiss."
         />
         <DrawerDemo />
       </Section>
 
       <Section>
         <SectionHeading
-          title="Toggle Group"
-          description="Segmented toggle buttons — formatting toolbar pattern."
+          title="Dropdown Menu"
+          description="Contextual menu — slide animation on open and close responds to motion theme."
         />
-        <ToggleGroupDemo />
+        <DropdownMenuDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Input"
+          description="Text input with label, error state, and adornment options."
+        />
+        <InputDemo />
       </Section>
 
       <Section>
@@ -1144,10 +1176,50 @@ export function ComponentGallery() {
 
       <Section>
         <SectionHeading
+          title="Select"
+          description="Dropdown select with grouped options — uses slide animation tokens."
+        />
+        <SelectDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Switch"
+          description="Toggle switch — thumb slides with motion token timing."
+        />
+        <SwitchDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Tabs"
+          description="Tab switcher with sliding pill indicator — more tabs means more travel for the animation."
+        />
+        <TabsDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
           title="Toast"
           description="Sonner notifications — fire different types to see them animate in and out."
         />
         <ToastDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Toggle Group"
+          description="Segmented toggle buttons — color transitions use motion token timing."
+        />
+        <ToggleGroupDemo />
+      </Section>
+
+      <Section>
+        <SectionHeading
+          title="Tooltip"
+          description="Hover tooltip with configurable placement — uses slide animation tokens."
+        />
+        <TooltipDemo />
       </Section>
     </div>
   );
