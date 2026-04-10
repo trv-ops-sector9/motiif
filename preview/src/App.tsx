@@ -8,6 +8,7 @@ const DashboardBlock   = lazy(() => import("@/components/blocks/DashboardBlock")
 const SettingsBlock    = lazy(() => import("@/components/blocks/SettingsBlock").then(m => ({ default: m.SettingsBlock })));
 const AuthBlock        = lazy(() => import("@/components/blocks/AuthBlock").then(m => ({ default: m.AuthBlock })));
 const MarketingBlock   = lazy(() => import("@/components/blocks/MarketingBlock").then(m => ({ default: m.MarketingBlock })));
+const FleetOpsBlock    = lazy(() => import("@/components/blocks/FleetOpsBlock").then(m => ({ default: m.FleetOpsBlock })));
 
 function ActiveView({ view }: { view: View }) {
   switch (view) {
@@ -23,6 +24,8 @@ function ActiveView({ view }: { view: View }) {
       return <AuthBlock />;
     case "marketing":
       return <MarketingBlock />;
+    case "fleet-ops":
+      return <FleetOpsBlock />;
   }
 }
 

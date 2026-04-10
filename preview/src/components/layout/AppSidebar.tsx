@@ -4,6 +4,7 @@ import {
   Settings,
   LogIn,
   Megaphone,
+  Navigation,
   PanelLeftClose,
   PanelLeftOpen,
   Layers,
@@ -22,7 +23,8 @@ export type View =
   | "dashboard"
   | "settings"
   | "auth"
-  | "marketing";
+  | "marketing"
+  | "fleet-ops";
 
 interface NavItem {
   id: View;
@@ -36,6 +38,7 @@ const GALLERY_ITEMS: NavItem[] = [
 ];
 
 const BLOCK_ITEMS: NavItem[] = [
+  { id: "fleet-ops", label: "Fleet Ops", icon: Navigation     },
   { id: "marketing", label: "Marketing", icon: Megaphone       },
   { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
   { id: "settings",  label: "Settings",  icon: Settings        },

@@ -179,6 +179,17 @@
     height     var(--motion-duration-fast) var(--motion-curve-expand-out) !important;
 }
 
+/* ── Fleet map pulse — uses motion duration token ──────────────────────── */
+
+@keyframes fleet-pulse {
+  0%   { r: 1.5; opacity: 0.6; }
+  100% { r: 4.5; opacity: 0;   }
+}
+
+.animate-fleet-pulse {
+  animation: fleet-pulse var(--motion-duration-ultra-slow) var(--motion-curve-ease-out) infinite;
+}
+
 @import "./themes/default.css";
 @import "./themes/dark-minimal.css";
 @import "./themes/drive.css";
