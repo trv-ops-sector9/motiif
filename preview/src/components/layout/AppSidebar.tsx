@@ -15,7 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SidebarThemeControls } from "@/components/layout/ThemeSwitcher";
 
 export type View =
@@ -66,23 +66,21 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       {/* Header */}
       <div className="flex min-h-14 shrink-0 items-center border-b border-sidebar-border px-3 py-3">
         {!collapsed && (
-          <TooltipProvider delayDuration={400}>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <div className="flex-1 min-w-0 cursor-default select-none">
-                  <span
-                    className="block truncate text-base font-semibold leading-tight text-sidebar-foreground tracking-wide"
-                    style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700 }}
-                  >
-                    Motif
-                  </span>
-                </div>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={8}>
-                Runtime design &amp; motion token system
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex-1 min-w-0 cursor-default select-none">
+                <span
+                  className="block truncate text-base font-bold leading-tight text-sidebar-foreground tracking-wide"
+                  style={{ fontFamily: "var(--font-brand)" }}
+                >
+                  Motif
+                </span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={8}>
+              Runtime design &amp; motion token system
+            </TooltipContent>
+          </Tooltip>
         )}
         <button
           onClick={() => setCollapsed((c) => !c)}

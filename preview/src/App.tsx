@@ -1,5 +1,6 @@
 import { lazy, Suspense, useState } from "react";
 import { AppSidebar, type View } from "@/components/layout/AppSidebar";
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
 
 const ComponentGallery = lazy(() => import("@/components/gallery/ComponentGallery").then(m => ({ default: m.ComponentGallery })));
@@ -33,15 +34,17 @@ export default function App() {
   const [activeView, setActiveView] = useState<View>("components");
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <AppSidebar activeView={activeView} onViewChange={setActiveView} />
+    <TooltipProvider delayDuration={400}>
+      <div className="flex h-screen overflow-hidden bg-background">
+        <AppSidebar activeView={activeView} onViewChange={setActiveView} />
 
-      <main className="flex-1 overflow-y-auto">
-        <Suspense>
-          <ActiveView view={activeView} />
-        </Suspense>
-      </main>
-      <Toaster />
-    </div>
+        <main className="flex-1 overflow-y-auto">
+          <Suspense>
+            <ActiveView view={activeView} />
+          </Suspense>
+        </main>
+        <Toaster />
+      </div>
+    </TooltipProvider>
   );
 }
