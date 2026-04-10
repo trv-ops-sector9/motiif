@@ -204,7 +204,6 @@
 @import "./themes/fluent-dark.css";
 @import "./themes/bebop-light.css";
 @import "./themes/bebop-dark.css";
-@import "./themes/nova-dark.css";
 
 @theme inline {
   --color-background: var(--background);

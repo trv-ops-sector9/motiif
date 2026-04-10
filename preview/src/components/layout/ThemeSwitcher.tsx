@@ -13,7 +13,6 @@ const THEMES = [
   { value: "default", label: "Default", light: "default", dark: "dark-minimal" },
   { value: "fluent", label: "Fluent 2", light: "fluent-light", dark: "fluent-dark" },
   { value: "bebop", label: "Bebop", light: "bebop-light", dark: "bebop-dark" },
-  // { value: "nova", label: "Nova", light: "nova-light", dark: "nova-dark" },
 ] as const;
 
 type ThemeValue = (typeof THEMES)[number]["value"];
