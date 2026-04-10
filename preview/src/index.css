@@ -181,6 +181,14 @@
 
 @import "./themes/default.css";
 @import "./themes/dark-minimal.css";
+@import "./themes/drive.css";
+@import "./themes/drive-dark.css";
+@import "./themes/brutalist.css";
+@import "./themes/brutalist-dark.css";
+@import "./themes/lux.css";
+@import "./themes/lux-dark.css";
+@import "./themes/vapor.css";
+@import "./themes/vapor-dark.css";
 
 @theme inline {
   --color-background: var(--background);
@@ -268,6 +276,10 @@
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
   --radius: 0.625rem;
+  --border-width: 1px;
+  --letter-spacing: 0em;
+  --font-weight-heading: 600;
+  --font-weight-body: 400;
   --font-sans: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -294,7 +306,22 @@ body {
   background-color: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
+  font-weight: var(--font-weight-body);
+  letter-spacing: var(--letter-spacing);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2, h3, h4, h5, h6 {
+  font-weight: var(--font-weight-heading);
+}
 } /* end @layer base */
+
+/* ── Theme-driven border width ─────────────────────────────────────────── */
+/* Outside @layer so it overrides Tailwind's hardcoded 1px utilities.      */
+
+.border   { border-width: var(--border-width, 1px); }
+.border-t { border-top-width: var(--border-width, 1px); }
+.border-b { border-bottom-width: var(--border-width, 1px); }
+.border-l { border-left-width: var(--border-width, 1px); }
+.border-r { border-right-width: var(--border-width, 1px); }

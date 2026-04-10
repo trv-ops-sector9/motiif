@@ -26,7 +26,7 @@ preview/
 │   │   ├── gallery/                    # ComponentGallery — interactive token demo
 │   │   ├── blocks/                     # Dashboard, Settings, Auth, Marketing pages
 │   │   └── ui/                         # shadcn/ui components with motion wiring
-│   └── themes/                         # 2 color theme CSS files (OkLCh) — default + dark-minimal
+│   └── themes/                         # 12 color theme CSS files (OkLCh) — 6 pairs (light + dark)
 ```
 
 ---
@@ -46,6 +46,31 @@ preview/
 **22 archetypes:** `fade-in`, `fade-out`, `slide-up-in`, `slide-up-out`, `slide-down-in`, `slide-down-out`, `expand-in`, `expand-out`, `collapse-in`, `collapse-out`, `page-enter`, `page-exit`, `slide-left-in`, `slide-left-out`, `slide-right-in`, `slide-right-out`, `slide-top-in`, `slide-top-out`, `slide-bottom-in`, `slide-bottom-out`, `overlay-in`, `overlay-out`
 
 **Theme switching:** `theme-standard.css` sets `:root` baseline. Others activate via `data-motion-theme` attribute. All keyframes are prefixed per theme to avoid collision. `reduced` mode collapses durations to `1ms` and blur to `0`.
+
+---
+
+## Color theme architecture
+
+**6 theme pairs** (light + dark each) in `preview/src/themes/`. All colors in OkLCh. Activated via `data-theme` attribute.
+
+| Theme | Mood | Radius | Shadows | Font | Border | Tracking |
+|-------|------|--------|---------|------|--------|----------|
+| **Default** | Neutral baseline | `0.625rem` | Standard | System sans | `1px` | `0em` |
+| **Dark Minimal** | Vercel/Linear dev-tool calm | `0.375rem` | Dark sharp | Inter | `1px` | `-0.011em` |
+| **Drive** | Premium automotive | `0.5rem` | Sharp, precise | Outfit | `1px` | `-0.01em` |
+| **Brutalist** | Editorial print, anti-design | `0rem` | None | Space Mono | `2px` | `-0.01em` |
+| **Lux** | Luxury fashion house | `1.25rem` | Warm diffused | DM Sans | `0.5px` | `0.02em` |
+| **Vapor** | Neon cyberpunk / dev tool | `0.25rem` | Colored glow | JetBrains Mono | `1px` | `-0.005em` |
+
+**Design tokens per theme** (beyond color):
+- `--radius` — border-radius scale anchor
+- `--border-width` — base border width (overrides Tailwind `border` utility)
+- `--letter-spacing` — applied on `body`
+- `--font-weight-heading` / `--font-weight-body` — applied on `h1-h6` and `body`
+- `--shadow-sm/md/lg/xl` — elevation scale, varies from none (Brutalist) to warm-tinted (Lux) to colored glow (Vapor)
+- `--font-sans` / `--font-mono` — font stack per theme
+
+**Border-width override:** `.border`, `.border-t/b/l/r` rules live outside `@layer` in `index.css` to beat Tailwind's hardcoded `1px` utilities. Explicit width classes (`border-2`, `border-0`) are unaffected.
 
 ---
 
@@ -84,6 +109,7 @@ Components use semantic intent variables, never theme-specific ones. The bridge 
 | Tables | TanStack Table |
 | Drag & Drop | dnd-kit |
 | Icons | Lucide React + Tabler Icons |
+| Fonts | Google Fonts: Outfit, Space Mono, DM Sans, JetBrains Mono, Plus Jakarta Sans |
 | Build | Vite |
 | Framework | React 19 |
 | Lint | ESLint (flat config) + TypeScript strict |
