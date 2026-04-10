@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Download, Check } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -278,64 +278,29 @@ function BridgeSection() {
 // ── Animation archetypes ─────────────────────────────────────────────────────
 
 const ARCHETYPES = [
-  { name: "fade-in",       label: "fade-in",       direction: "enter" },
-  { name: "fade-out",      label: "fade-out",      direction: "exit"  },
-  { name: "slide-up-in",   label: "slide-up-in",   direction: "enter" },
-  { name: "slide-up-out",  label: "slide-up-out",  direction: "exit"  },
-  { name: "slide-down-in", label: "slide-down-in", direction: "enter" },
-  { name: "slide-down-out",label: "slide-down-out", direction: "exit" },
-  { name: "expand-in",     label: "expand-in",     direction: "enter" },
-  { name: "expand-out",    label: "expand-out",    direction: "exit"  },
-  { name: "collapse-in",   label: "collapse-in",   direction: "enter" },
-  { name: "collapse-out",  label: "collapse-out",  direction: "exit"  },
-  { name: "page-enter",    label: "page-enter",    direction: "enter" },
-  { name: "page-exit",     label: "page-exit",     direction: "exit"  },
+  { name: "fade-in",        direction: "enter", usage: "Default enter" },
+  { name: "fade-out",       direction: "exit",  usage: "Default exit" },
+  { name: "slide-up-in",    direction: "enter", usage: "Toast, popover" },
+  { name: "slide-up-out",   direction: "exit",  usage: "Toast dismiss" },
+  { name: "slide-down-in",  direction: "enter", usage: "Dropdown open" },
+  { name: "slide-down-out", direction: "exit",  usage: "Dropdown close" },
+  { name: "slide-left-in",  direction: "enter", usage: "Drawer from right" },
+  { name: "slide-left-out", direction: "exit",  usage: "Drawer close right" },
+  { name: "slide-right-in", direction: "enter", usage: "Drawer from left" },
+  { name: "slide-right-out",direction: "exit",  usage: "Drawer close left" },
+  { name: "slide-top-in",   direction: "enter", usage: "Drawer from bottom" },
+  { name: "slide-top-out",  direction: "exit",  usage: "Drawer close bottom" },
+  { name: "slide-bottom-in",direction: "enter", usage: "Drawer from top" },
+  { name: "slide-bottom-out",direction: "exit", usage: "Drawer close top" },
+  { name: "expand-in",      direction: "enter", usage: "Dialog, sheet open" },
+  { name: "expand-out",     direction: "exit",  usage: "Dialog, sheet close" },
+  { name: "collapse-in",    direction: "enter", usage: "Accordion expand" },
+  { name: "collapse-out",   direction: "exit",  usage: "Accordion collapse" },
+  { name: "page-enter",     direction: "enter", usage: "Route transition in" },
+  { name: "page-exit",      direction: "exit",  usage: "Route transition out" },
+  { name: "overlay-in",     direction: "enter", usage: "Backdrop fade in" },
+  { name: "overlay-out",    direction: "exit",  usage: "Backdrop fade out" },
 ] as const;
-
-function ArchetypeDemo({ archetype }: { archetype: typeof ARCHETYPES[number] }) {
-  const [playing, setPlaying] = useState(false);
-  const boxRef = useRef<HTMLDivElement>(null);
-
-  const play = () => {
-    if (!boxRef.current) return;
-    const el = boxRef.current;
-    // Reset
-    el.style.animation = "none";
-    // Force reflow
-    void el.offsetHeight;
-    // Play
-    el.style.animation = `var(--anim-${archetype.name})`;
-    setPlaying(true);
-  };
-
-  return (
-    <button
-      onClick={play}
-      className="flex items-center gap-3 w-full text-left px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors cursor-pointer group"
-    >
-      <div className="h-8 w-8 shrink-0 flex items-center justify-center">
-        <div
-          ref={boxRef}
-          onAnimationEnd={() => setPlaying(false)}
-          className="h-5 w-5 rounded bg-primary"
-        />
-      </div>
-      <div className="flex-1 min-w-0">
-        <code className="text-xs font-mono font-medium">{archetype.label}</code>
-        <p className="text-[10px] text-muted-foreground">
-          Click to play
-          {playing && <span className="ml-1.5 text-primary">playing...</span>}
-        </p>
-      </div>
-      <Badge
-        variant={archetype.direction === "enter" ? "default" : "secondary"}
-        className="text-[9px] px-1.5 py-0 shrink-0"
-      >
-        {archetype.direction}
-      </Badge>
-    </button>
-  );
-}
 
 function ArchetypesSection() {
   return (
@@ -343,15 +308,98 @@ function ArchetypesSection() {
       <CardHeader>
         <CardTitle className="text-sm font-semibold">Animation archetypes</CardTitle>
         <CardDescription className="text-xs">
-          12 archetypes — click any to preview with the active motion theme
+          22 named animations — each resolves to theme-specific keyframes, duration, and easing via <code className="font-mono">--anim-*</code> variables
         </CardDescription>
       </CardHeader>
-      <CardContent className="pt-0 px-2 pb-2">
-        <div className="grid grid-cols-2 gap-x-2">
+      <CardContent>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-0.5">
           {ARCHETYPES.map((a) => (
-            <ArchetypeDemo key={a.name} archetype={a} />
+            <div key={a.name} className="flex items-center gap-2 py-1">
+              <Badge
+                variant={a.direction === "enter" ? "default" : "secondary"}
+                className="text-[9px] px-1.5 py-0 shrink-0 w-10 justify-center"
+              >
+                {a.direction}
+              </Badge>
+              <code className="text-xs font-mono font-medium">{a.name}</code>
+              <span className="text-[10px] text-muted-foreground ml-auto shrink-0">{a.usage}</span>
+            </div>
           ))}
         </div>
+      </CardContent>
+    </Card>
+  );
+}
+
+// ── Motion principles ───────────────────────────────────────────────────────
+
+const MOTION_PRINCIPLES = [
+  {
+    theme: "Standard",
+    curves: 3,
+    personality: "Neutral default — clean ease-out, no personality, predictable.",
+    durations: "80ms – 400ms",
+    transforms: "6px slides, scale 0.96 — subtle, clean",
+    philosophy: "The safe default. Motion communicates state changes without drawing attention to itself. Suitable for any product that hasn't decided its motion personality yet.",
+  },
+  {
+    theme: "Dense",
+    curves: 3,
+    personality: "Fast and tight — compressed durations, minimal movement.",
+    durations: "40ms – 200ms",
+    transforms: "2px max slide, scale 0.99 — barely perceptible",
+    philosophy: "For data-heavy dashboards where motion should be felt, not watched. Every animation finishes before conscious attention engages. Snap-first curves eliminate any sense of drift.",
+  },
+  {
+    theme: "Expressive",
+    curves: 6,
+    personality: "Emotive and personality-forward — spring overshoot, bounce on press.",
+    durations: "100ms – 500ms",
+    transforms: "12px slides, scale 0.80 — room for spring overshoot",
+    philosophy: "Feels alive. Spring curves overshoot on enter, giving components physical weight. Exits are fast and clean — personality on the way in, efficiency on the way out.",
+  },
+  {
+    theme: "Precision",
+    curves: 2,
+    personality: "Fade only, no transforms, sub-100ms — pure state changes.",
+    durations: "50ms – 80ms",
+    transforms: "None — every archetype is a pure opacity crossfade",
+    philosophy: "For interfaces where motion must never distract. Focus control via blur radius and overlay opacity. No spatial movement, no scale, no overshoot. State changes happen; they don't perform.",
+  },
+];
+
+function PrinciplesSection() {
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="text-sm font-semibold">Motion principles</CardTitle>
+        <CardDescription className="text-xs">
+          Four named personalities — each defines its own curve vocabulary, duration range, and transform philosophy
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {MOTION_PRINCIPLES.map((p) => (
+          <div key={p.theme} className="space-y-1">
+            <div className="flex items-center gap-2">
+              <span className="text-sm font-semibold">{p.theme}</span>
+              <Badge variant="outline" className="text-[9px] px-1.5 py-0">
+                {p.curves} {p.curves === 1 ? "curve" : "curves"}
+              </Badge>
+            </div>
+            <p className="text-xs text-muted-foreground">{p.personality}</p>
+            <div className="grid grid-cols-2 gap-x-4 gap-y-0.5 mt-1">
+              <div>
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Durations</span>
+                <code className="block text-[11px] font-mono">{p.durations}</code>
+              </div>
+              <div>
+                <span className="text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Transforms</span>
+                <code className="block text-[11px] font-mono">{p.transforms}</code>
+              </div>
+            </div>
+            <p className="text-[11px] text-muted-foreground/80 mt-1 leading-relaxed">{p.philosophy}</p>
+          </div>
+        ))}
       </CardContent>
     </Card>
   );
@@ -604,7 +652,7 @@ function ExportButton() {
       )}
     >
       {done ? <Check className="h-3.5 w-3.5" /> : <Download className="h-3.5 w-3.5" />}
-      {done ? "Downloaded" : "Export JSON"}
+      {done ? "Downloaded" : "Download tokens"}
     </button>
   );
 }
@@ -621,27 +669,28 @@ export function TokensView() {
   return (
     <div className="p-6 space-y-6 max-w-5xl">
       {/* Page header */}
-      <div className="flex items-start justify-between gap-4">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight">Design tokens</h1>
-          <p className="text-sm text-muted-foreground mt-1">
-            Live reference — values update when you switch themes in the sidebar.
-            Currently:{" "}
-            <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
-            {" "}motion /{" "}
-            <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
-            {" "}color
-          </p>
+      <div>
+        <div className="flex items-start justify-between gap-4 mb-1">
+          <h1 className="text-2xl font-bold tracking-tight">Design tokens</h1>
+          <ExportButton />
         </div>
-        <ExportButton />
+        <p className="text-sm text-muted-foreground">
+          Live reference — values update when you switch themes in the sidebar.
+          Currently:{" "}
+          <Badge variant="outline" className="text-[10px] mx-0.5">{motionTheme}</Badge>
+          {" "}motion /{" "}
+          <Badge variant="outline" className="text-[10px] mx-0.5">{colorTheme}</Badge>
+          {" "}color
+        </p>
       </div>
 
       <Separator />
 
       {/* Motion tokens */}
       <section>
-        <h2 className="text-base font-semibold mb-4">Motion</h2>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <h2 className="text-lg font-semibold mb-4">Motion</h2>
+        <PrinciplesSection />
+        <div className="grid sm:grid-cols-2 gap-4 mt-4">
           <DurationSection />
           <CurvesSection />
         </div>
@@ -655,7 +704,7 @@ export function TokensView() {
 
       {/* Color tokens */}
       <section>
-        <h2 className="text-base font-semibold mb-4">Color</h2>
+        <h2 className="text-lg font-semibold mb-4">Color</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <ColorsSection />
           <div className="space-y-4">

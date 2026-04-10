@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { CheckCircle, Loader2, Send, Star, Bell, ChevronDown, Layers, User, Settings, CreditCard, LogOut, AlertCircle, Info, Mail, Bold, Italic, Underline } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -1068,15 +1068,47 @@ function ProgressDemo() {
 }
 
 /* ── Root ── */
+function GalleryHeader() {
+  const [, setTick] = useState(0);
+  useEffect(() => {
+    const observer = new MutationObserver(() => setTick(t => t + 1));
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-motion-theme", "data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "standard";
+  const colorTheme  = document.documentElement.getAttribute("data-theme") || "default";
+
+  return (
+    <div className="border-b bg-muted/30 px-6 py-8">
+      <h1
+        className="text-3xl font-bold tracking-wide text-foreground leading-none mb-3"
+        style={{ fontFamily: "'Rajdhani', sans-serif", fontWeight: 700 }}
+      >
+        Motif
+      </h1>
+      <p className="text-sm text-muted-foreground max-w-md mb-4">
+        Runtime motion + color token system for Tailwind&nbsp;v4. Switch themes in the sidebar — every component responds without a rebuild.
+      </p>
+      <div className="flex items-center gap-2 flex-wrap">
+        <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {motionTheme} motion
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          {colorTheme} color
+        </span>
+      </div>
+    </div>
+  );
+}
+
 export function ComponentGallery() {
   return (
-    <div className="max-w-3xl mx-auto px-6 py-10">
-      <div className="mb-10">
-        <h1 className="text-2xl font-bold tracking-tight">Component Gallery</h1>
-        <p className="text-muted-foreground mt-1.5">
-          Interactive components with variant controls — switch themes to see each respond.
-        </p>
-      </div>
+    <div>
+      <GalleryHeader />
+      <div className="max-w-3xl mx-auto px-6 py-10">
 
       <Section>
         <SectionHeading
@@ -1221,6 +1253,7 @@ export function ComponentGallery() {
         />
         <TooltipDemo />
       </Section>
+    </div>
     </div>
   );
 }

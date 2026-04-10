@@ -430,7 +430,7 @@ export function FleetOpsBlock() {
     <div className="flex flex-col gap-4 p-4 lg:p-6">
       {/* Header */}
       <div>
-        <h1 className="text-xl font-bold tracking-tight">Fleet Operations</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Fleet Operations</h1>
         <p className="text-sm text-muted-foreground mt-0.5">
           Real-time autonomous vehicle fleet monitoring
         </p>
