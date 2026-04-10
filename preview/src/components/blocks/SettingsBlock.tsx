@@ -99,7 +99,8 @@ export function SettingsBlock() {
     setPhase("exiting");
   };
 
-  const handleAnimationEnd = () => {
+  const handleAnimationEnd = (e: React.AnimationEvent) => {
+    if (e.target !== e.currentTarget) return;
     if (phase === "exiting") {
       // Exit done — swap content and start enter
       setDisplaySection(pending.current);

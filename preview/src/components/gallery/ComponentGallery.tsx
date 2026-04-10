@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { CheckCircle, Loader2, Send, Star, Bell, ChevronDown, Layers, User, Settings, CreditCard, LogOut, AlertCircle, Info, Mail, Bold, Italic, Underline } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -1134,51 +1134,6 @@ function ProgressDemo() {
 }
 
 /* ── Root ── */
-function useActiveThemes() {
-  const [themes, setThemes] = useState(() => ({
-    motion: document.documentElement.getAttribute("data-motion-theme") || "standard",
-    color:  document.documentElement.getAttribute("data-theme") || "default",
-  }));
-
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setThemes({
-        motion: document.documentElement.getAttribute("data-motion-theme") || "standard",
-        color:  document.documentElement.getAttribute("data-theme") || "default",
-      });
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-motion-theme", "data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-
-  return themes;
-}
-
-function GalleryHeader() {
-  const { motion: motionTheme, color: colorTheme } = useActiveThemes();
-
-  return (
-    <div className="border-b bg-muted/30 px-6 py-8">
-      <h1
-        className="text-3xl font-bold tracking-wide text-foreground leading-none mb-3"
-        style={{ fontFamily: "var(--font-brand)" }}
-      >
-        Motif
-      </h1>
-      <p className="text-sm text-muted-foreground max-w-md mb-4">
-        Runtime motion + color token system for Tailwind&nbsp;v4. Switch themes in the sidebar — every component responds without a rebuild.
-      </p>
-      <div className="flex items-center gap-2 flex-wrap">
-        {[`${motionTheme} motion`, `${colorTheme} color`].map((label) => (
-          <span key={label} className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {label}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 function DemoCard({ title, description, children, className }: {
   title: string;
@@ -1202,7 +1157,6 @@ function DemoCard({ title, description, children, className }: {
 export function ComponentGallery() {
   return (
     <div>
-      <GalleryHeader />
       <div className="p-6 space-y-6 max-w-5xl">
         {/* Page header */}
         <div className="space-y-2">

@@ -786,14 +786,7 @@ export function TokensView() {
         <p className="text-sm text-muted-foreground">
           Live reference — values update when you switch themes in the sidebar.
         </p>
-        <div className="flex items-center gap-2.5 pt-1">
-          <span className="text-sm text-muted-foreground">Currently:</span>
-          {[`${motionTheme} motion`, `${colorTheme} color`].map((label) => (
-            <span key={label} className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              {label}
-            </span>
-          ))}
+        <div className="flex items-center pt-1">
           <div className="ml-auto">
             <ExportButton />
           </div>

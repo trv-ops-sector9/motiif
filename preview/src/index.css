@@ -343,17 +343,24 @@ h1, h2, h3, h4, h5, h6 {
 } /* end @layer base */
 
 /* ── Scrollbars ───────────────────────────────────────────────────────── */
-/* Thin, theme-aware scrollbars. Firefox uses scrollbar-color/width.      */
-/* Webkit/Blink uses ::-webkit-scrollbar pseudo-elements.                 */
+/* Overlay scrollbars — float on content, never cause layout reflow.      */
 
 * {
   scrollbar-width: thin;
   scrollbar-color: var(--border) transparent;
 }
 
+/* Make scrollable containers use overlay so the bar floats on content */
+.overflow-y-auto,
+.overflow-x-auto,
+.overflow-auto {
+  overflow: overlay;
+}
+
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
+  background: transparent;
 }
 
 ::-webkit-scrollbar-track {

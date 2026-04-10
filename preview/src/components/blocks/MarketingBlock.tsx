@@ -532,7 +532,8 @@ export function MarketingBlock() {
     setPhase("exiting");
   };
 
-  const handleAnimationEnd = () => {
+  const handleAnimationEnd = (e: React.AnimationEvent) => {
+    if (e.target !== e.currentTarget) return;
     if (phase === "exiting") {
       setDisplayPage(pending.current);
       setPhase("entering");

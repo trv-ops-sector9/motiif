@@ -5,8 +5,6 @@ import {
   IconLogin2,
   IconSpeakerphone,
   IconRoute,
-  IconLayoutSidebarLeftCollapse,
-  IconLayoutSidebarLeftExpand,
   IconComponents,
   IconColorSwatch,
   IconChevronRight,
@@ -15,7 +13,6 @@ import {
 } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SidebarThemeControls } from "@/components/layout/ThemeSwitcher";
 
 export type View =
@@ -49,57 +46,20 @@ const BLOCK_ITEMS: NavItem[] = [
 interface AppSidebarProps {
   activeView: View;
   onViewChange: (view: View) => void;
+  collapsed: boolean;
 }
 
-export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
-  const [collapsed, setCollapsed] = useState(false);
+export function AppSidebar({ activeView, onViewChange, collapsed }: AppSidebarProps) {
   const [galleryOpen, setGalleryOpen] = useState(true);
   const [blocksOpen, setBlocksOpen] = useState(true);
 
   return (
     <aside
       className={cn(
-        "flex h-screen shrink-0 flex-col border-r bg-sidebar transition-[width] duration-200 ease-in-out",
+        "flex shrink-0 flex-col border-r bg-sidebar transition-[width] duration-200 ease-in-out",
         collapsed ? "w-14" : "w-56"
       )}
     >
-      {/* Header */}
-      <div className="flex min-h-14 shrink-0 items-center border-b border-sidebar-border px-3 py-3">
-        {!collapsed && (
-          <div className="flex flex-1 items-center min-w-0">
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <span
-                  className="cursor-default select-none truncate text-base font-bold text-sidebar-foreground tracking-wide"
-                  style={{ fontFamily: "var(--font-brand)" }}
-                >
-                  Motif
-                </span>
-              </TooltipTrigger>
-              <TooltipContent side="right" sideOffset={8}>
-                Runtime design &amp; motion token system
-              </TooltipContent>
-            </Tooltip>
-          </div>
-        )}
-        <button
-          onClick={() => setCollapsed((c) => !c)}
-          aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
-          className={cn(
-            "flex h-8 w-8 shrink-0 cursor-pointer items-center justify-center rounded-md text-sidebar-foreground transition-colors",
-            "hover:bg-sidebar-accent hover:text-sidebar-accent-foreground",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-            collapsed && "mx-auto"
-          )}
-        >
-          {collapsed ? (
-            <IconLayoutSidebarLeftExpand className="h-4 w-4" />
-          ) : (
-            <IconLayoutSidebarLeftCollapse className="h-4 w-4" />
-          )}
-        </button>
-      </div>
-
       {/* Nav */}
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
         {/* Theme controls — collapsible section */}
