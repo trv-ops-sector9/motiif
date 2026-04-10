@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { CheckCircle, Loader2, Send, Star, Bell, ChevronDown, Layers, User, Settings, CreditCard, LogOut, AlertCircle, Info, Mail, Search, Bold, Italic, Underline } from "lucide-react";
+import { CheckCircle, Loader2, Send, Star, Bell, ChevronDown, Layers, User, Settings, CreditCard, LogOut, AlertCircle, Info, Mail, Bold, Italic, Underline } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
