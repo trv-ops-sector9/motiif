@@ -9,7 +9,7 @@ import { Card, CardHeader, CardTitle, CardDescription } from "@/components/ui/ca
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { toast } from "sonner";
-import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { Switch } from "@/components/ui/switch";
@@ -81,7 +81,7 @@ function ButtonDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Button variant={variant} size={size} disabled={isDisabled}>
           {isLoading
             ? <><Loader2 className="h-4 w-4 animate-spin" />{!isIconOnly && "Loading…"}</>
@@ -161,7 +161,7 @@ function CardDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Card
           className="w-72 overflow-hidden select-none"
           style={{
@@ -244,7 +244,7 @@ function DialogDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Dialog open={open} onOpenChange={handleOpen}>
           <DialogTrigger asChild>
             <Button variant="outline">Open dialog</Button>
@@ -304,29 +304,19 @@ function DialogDemo() {
 }
 
 /* ── Dropdown Menu ── */
-type DropdownAlign = "start" | "center" | "end";
 
 function DropdownMenuDemo() {
-  const [notifications, setNotifications] = useState(true);
-  const [status, setStatus] = useState("online");
-  const [align, setAlign] = useState<DropdownAlign>("start");
-
   return (
     <div className="space-y-8">
-      <div className="flex items-start rounded-xl border bg-muted/30 py-12 px-6">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" className="gap-2">
-              <span className="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground shrink-0">
-                JL
-              </span>
-              Jordan Lee
+              Actions
               <ChevronDown className="h-3.5 w-3.5 opacity-50" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align={align} className="w-52">
-            <DropdownMenuLabel>My account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
+          <DropdownMenuContent className="w-48">
             <DropdownMenuItem className="gap-2">
               <User className="h-4 w-4" /> Profile
               <DropdownMenuShortcut>⌘P</DropdownMenuShortcut>
@@ -339,47 +329,13 @@ function DropdownMenuDemo() {
               <CreditCard className="h-4 w-4" /> Billing
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuCheckboxItem checked={notifications} onCheckedChange={setNotifications}>
-              <Bell className="h-4 w-4 mr-2" /> Notifications
-            </DropdownMenuCheckboxItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuLabel>Status</DropdownMenuLabel>
-            <DropdownMenuRadioGroup value={status} onValueChange={setStatus}>
-              <DropdownMenuRadioItem value="online">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-green-500 shrink-0" /> Online
-                </span>
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="away">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-amber-400 shrink-0" /> Away
-                </span>
-              </DropdownMenuRadioItem>
-              <DropdownMenuRadioItem value="dnd">
-                <span className="flex items-center gap-2">
-                  <span className="h-1.5 w-1.5 rounded-full bg-destructive shrink-0" /> Do not disturb
-                </span>
-              </DropdownMenuRadioItem>
-            </DropdownMenuRadioGroup>
-            <DropdownMenuSeparator />
             <DropdownMenuItem className="gap-2 text-destructive focus:text-destructive focus:bg-destructive/10">
               <LogOut className="h-4 w-4" /> Sign out
-              <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
-      <div className="space-y-4">
-        <ControlGroup
-          label="Align" name="dropdown-align" value={align}
-          onChange={v => setAlign(v as DropdownAlign)}
-          options={[
-            { value: "start",  label: "Start"  },
-            { value: "center", label: "Center" },
-            { value: "end",    label: "End"    },
-          ]}
-        />
-      </div>
+      <p className="text-xs text-muted-foreground text-center">Click to open — the slide animation responds to the active motion theme.</p>
     </div>
   );
 }
@@ -524,7 +480,7 @@ function ToastDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <Button variant="outline" onClick={fireToast}>Fire toast</Button>
       </div>
       <div className="space-y-4">
@@ -552,7 +508,7 @@ function TooltipDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -773,7 +729,7 @@ function CheckboxDemo() {
             </Label>
           </div>
         ) : (
-          <div className="w-full max-w-xs space-y-3">
+          <div className="space-y-3">
             {[
               { id: "analytics", label: "Usage analytics" },
               { id: "crash",     label: "Crash reports" },
@@ -819,7 +775,7 @@ function BadgeDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <div className="flex items-center gap-3">
           <Badge variant={variant}>Badge</Badge>
           <Badge variant={variant}>
@@ -856,7 +812,7 @@ function AvatarDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         <div className="flex items-center gap-4">
           <Avatar className={sizeClass}>
             {content === "image" ? (
@@ -936,19 +892,19 @@ function AlertDemo() {
 }
 
 /* ── Drawer ── */
-type DrawerDirection = "top" | "bottom" | "left" | "right";
+type DrawerSide = "top" | "bottom" | "left" | "right";
 
 function DrawerDemo() {
-  const [direction, setDirection] = useState<DrawerDirection>("bottom");
+  const [side, setSide] = useState<DrawerSide>("right");
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
-        <Drawer direction={direction}>
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
+        <Drawer>
           <DrawerTrigger asChild>
             <Button variant="outline">Open drawer</Button>
           </DrawerTrigger>
-          <DrawerContent direction={direction}>
+          <DrawerContent side={side}>
             <DrawerHeader>
               <DrawerTitle>Edit profile</DrawerTitle>
               <DrawerDescription>Make changes to your profile. Click save when you're done.</DrawerDescription>
@@ -976,13 +932,13 @@ function DrawerDemo() {
       </div>
       <div className="space-y-4">
         <ControlGroup
-          label="Direction" name="drawer-direction" value={direction}
-          onChange={v => setDirection(v as DrawerDirection)}
+          label="Side" name="drawer-side" value={side}
+          onChange={v => setSide(v as DrawerSide)}
           options={[
+            { value: "right",  label: "Right"  },
+            { value: "left",   label: "Left"   },
             { value: "bottom", label: "Bottom" },
             { value: "top",    label: "Top"    },
-            { value: "left",   label: "Left"   },
-            { value: "right",  label: "Right"  },
           ]}
         />
       </div>
@@ -1002,7 +958,7 @@ function ToggleGroupDemo() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12">
+      <div className="flex items-center justify-center rounded-xl border bg-muted/30 py-12 px-6">
         {type === "multiple" ? (
           <ToggleGroup type="multiple" variant={variant} size={size}>
             <ToggleGroupItem value="bold" aria-label="Toggle bold">
@@ -1165,7 +1121,7 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Card"
-          description="Interactive card with configurable shadow elevation and interaction behavior."
+          description="Interactive card with shadow elevation — hover lift and press use motion token curves."
         />
         <CardDemo />
       </Section>
@@ -1173,7 +1129,7 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Checkbox"
-          description="Checkbox with label — check indicator animates via motion tokens."
+          description="Checkbox with label — background and check transition via motion tokens."
         />
         <CheckboxDemo />
       </Section>
@@ -1181,7 +1137,7 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Dialog"
-          description="Modal overlay with form, loading state, and success feedback."
+          description="Modal overlay with fade-in and expand animation — form, loading, and success states."
         />
         <DialogDemo />
       </Section>
@@ -1197,7 +1153,7 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Dropdown Menu"
-          description="Contextual menu with items, checkboxes, radio groups, and keyboard shortcuts."
+          description="Contextual menu — slide animation on open and close responds to motion theme."
         />
         <DropdownMenuDemo />
       </Section>
@@ -1253,7 +1209,7 @@ export function ComponentGallery() {
       <Section>
         <SectionHeading
           title="Toggle Group"
-          description="Segmented toggle buttons — formatting toolbar pattern."
+          description="Segmented toggle buttons — color transitions use motion token timing."
         />
         <ToggleGroupDemo />
       </Section>

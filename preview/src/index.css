@@ -17,18 +17,26 @@
   --motion-curve-expand-in:      var(--motion-curve-decelerate-mid);
   --motion-curve-expand-out:     var(--motion-curve-accelerate-mid);
   --motion-curve-accordion:      var(--motion-curve-easy-ease);
-  --anim-fade-in:        var(--animate-fluent2-fade-in);
-  --anim-fade-out:       var(--animate-fluent2-fade-out);
-  --anim-slide-up-in:    var(--animate-fluent2-slide-up-in);
-  --anim-slide-up-out:   var(--animate-fluent2-slide-up-out);
-  --anim-slide-down-in:  var(--animate-fluent2-slide-down-in);
-  --anim-slide-down-out: var(--animate-fluent2-slide-down-out);
-  --anim-expand-in:      var(--animate-fluent2-expand-in);
-  --anim-expand-out:     var(--animate-fluent2-expand-out);
-  --anim-collapse-in:    var(--animate-fluent2-collapse-in);
-  --anim-collapse-out:   var(--animate-fluent2-collapse-out);
-  --anim-page-enter:     var(--animate-fluent2-page-enter);
-  --anim-page-exit:      var(--animate-fluent2-page-exit);
+  --anim-fade-in:           var(--animate-fluent2-fade-in);
+  --anim-fade-out:          var(--animate-fluent2-fade-out);
+  --anim-slide-up-in:       var(--animate-fluent2-slide-up-in);
+  --anim-slide-up-out:      var(--animate-fluent2-slide-up-out);
+  --anim-slide-down-in:     var(--animate-fluent2-slide-down-in);
+  --anim-slide-down-out:    var(--animate-fluent2-slide-down-out);
+  --anim-slide-left-in:     var(--animate-fluent2-slide-left-in);
+  --anim-slide-left-out:    var(--animate-fluent2-slide-left-out);
+  --anim-slide-right-in:    var(--animate-fluent2-slide-right-in);
+  --anim-slide-right-out:   var(--animate-fluent2-slide-right-out);
+  --anim-slide-top-in:      var(--animate-fluent2-slide-top-in);
+  --anim-slide-top-out:     var(--animate-fluent2-slide-top-out);
+  --anim-slide-bottom-in:   var(--animate-fluent2-slide-bottom-in);
+  --anim-slide-bottom-out:  var(--animate-fluent2-slide-bottom-out);
+  --anim-expand-in:         var(--animate-fluent2-expand-in);
+  --anim-expand-out:        var(--animate-fluent2-expand-out);
+  --anim-collapse-in:       var(--animate-fluent2-collapse-in);
+  --anim-collapse-out:      var(--animate-fluent2-collapse-out);
+  --anim-page-enter:        var(--animate-fluent2-page-enter);
+  --anim-page-exit:         var(--animate-fluent2-page-exit);
 }
 
 [data-motion-theme="balanced"] {
@@ -37,18 +45,26 @@
   --motion-curve-expand-in:      var(--motion-curve-ease-out);
   --motion-curve-expand-out:     var(--motion-curve-ease-in);
   --motion-curve-accordion:      var(--motion-curve-ease-in-out);
-  --anim-fade-in:        var(--animate-balanced-fade-in);
-  --anim-fade-out:       var(--animate-balanced-fade-out);
-  --anim-slide-up-in:    var(--animate-balanced-slide-up-in);
-  --anim-slide-up-out:   var(--animate-balanced-slide-up-out);
-  --anim-slide-down-in:  var(--animate-balanced-slide-down-in);
-  --anim-slide-down-out: var(--animate-balanced-slide-down-out);
-  --anim-expand-in:      var(--animate-balanced-expand-in);
-  --anim-expand-out:     var(--animate-balanced-expand-out);
-  --anim-collapse-in:    var(--animate-balanced-collapse-in);
-  --anim-collapse-out:   var(--animate-balanced-collapse-out);
-  --anim-page-enter:     var(--animate-balanced-page-enter);
-  --anim-page-exit:      var(--animate-balanced-page-exit);
+  --anim-fade-in:           var(--animate-balanced-fade-in);
+  --anim-fade-out:          var(--animate-balanced-fade-out);
+  --anim-slide-up-in:       var(--animate-balanced-slide-up-in);
+  --anim-slide-up-out:      var(--animate-balanced-slide-up-out);
+  --anim-slide-down-in:     var(--animate-balanced-slide-down-in);
+  --anim-slide-down-out:    var(--animate-balanced-slide-down-out);
+  --anim-slide-left-in:     var(--animate-balanced-slide-left-in);
+  --anim-slide-left-out:    var(--animate-balanced-slide-left-out);
+  --anim-slide-right-in:    var(--animate-balanced-slide-right-in);
+  --anim-slide-right-out:   var(--animate-balanced-slide-right-out);
+  --anim-slide-top-in:      var(--animate-balanced-slide-top-in);
+  --anim-slide-top-out:     var(--animate-balanced-slide-top-out);
+  --anim-slide-bottom-in:   var(--animate-balanced-slide-bottom-in);
+  --anim-slide-bottom-out:  var(--animate-balanced-slide-bottom-out);
+  --anim-expand-in:         var(--animate-balanced-expand-in);
+  --anim-expand-out:        var(--animate-balanced-expand-out);
+  --anim-collapse-in:       var(--animate-balanced-collapse-in);
+  --anim-collapse-out:      var(--animate-balanced-collapse-out);
+  --anim-page-enter:        var(--animate-balanced-page-enter);
+  --anim-page-exit:         var(--animate-balanced-page-exit);
 }
 
 [data-motion-theme="dense"] {
@@ -57,18 +73,26 @@
   --motion-curve-expand-in:      var(--motion-curve-snap);
   --motion-curve-expand-out:     var(--motion-curve-snap);
   --motion-curve-accordion:      var(--motion-curve-snap);
-  --anim-fade-in:        var(--animate-dense-fade-in);
-  --anim-fade-out:       var(--animate-dense-fade-out);
-  --anim-slide-up-in:    var(--animate-dense-slide-up-in);
-  --anim-slide-up-out:   var(--animate-dense-slide-up-out);
-  --anim-slide-down-in:  var(--animate-dense-slide-down-in);
-  --anim-slide-down-out: var(--animate-dense-slide-down-out);
-  --anim-expand-in:      var(--animate-dense-expand-in);
-  --anim-expand-out:     var(--animate-dense-expand-out);
-  --anim-collapse-in:    var(--animate-dense-collapse-in);
-  --anim-collapse-out:   var(--animate-dense-collapse-out);
-  --anim-page-enter:     var(--animate-dense-page-enter);
-  --anim-page-exit:      var(--animate-dense-page-exit);
+  --anim-fade-in:           var(--animate-dense-fade-in);
+  --anim-fade-out:          var(--animate-dense-fade-out);
+  --anim-slide-up-in:       var(--animate-dense-slide-up-in);
+  --anim-slide-up-out:      var(--animate-dense-slide-up-out);
+  --anim-slide-down-in:     var(--animate-dense-slide-down-in);
+  --anim-slide-down-out:    var(--animate-dense-slide-down-out);
+  --anim-slide-left-in:     var(--animate-dense-slide-left-in);
+  --anim-slide-left-out:    var(--animate-dense-slide-left-out);
+  --anim-slide-right-in:    var(--animate-dense-slide-right-in);
+  --anim-slide-right-out:   var(--animate-dense-slide-right-out);
+  --anim-slide-top-in:      var(--animate-dense-slide-top-in);
+  --anim-slide-top-out:     var(--animate-dense-slide-top-out);
+  --anim-slide-bottom-in:   var(--animate-dense-slide-bottom-in);
+  --anim-slide-bottom-out:  var(--animate-dense-slide-bottom-out);
+  --anim-expand-in:         var(--animate-dense-expand-in);
+  --anim-expand-out:        var(--animate-dense-expand-out);
+  --anim-collapse-in:       var(--animate-dense-collapse-in);
+  --anim-collapse-out:      var(--animate-dense-collapse-out);
+  --anim-page-enter:        var(--animate-dense-page-enter);
+  --anim-page-exit:         var(--animate-dense-page-exit);
 }
 
 [data-motion-theme="expressive"] {
@@ -77,18 +101,26 @@
   --motion-curve-expand-in:      var(--motion-curve-spring);
   --motion-curve-expand-out:     var(--motion-curve-ease-in);
   --motion-curve-accordion:      var(--motion-curve-ease-in-out);
-  --anim-fade-in:        var(--animate-expressive-fade-in);
-  --anim-fade-out:       var(--animate-expressive-fade-out);
-  --anim-slide-up-in:    var(--animate-expressive-slide-up-in);
-  --anim-slide-up-out:   var(--animate-expressive-slide-up-out);
-  --anim-slide-down-in:  var(--animate-expressive-slide-down-in);
-  --anim-slide-down-out: var(--animate-expressive-slide-down-out);
-  --anim-expand-in:      var(--animate-expressive-expand-in);
-  --anim-expand-out:     var(--animate-expressive-expand-out);
-  --anim-collapse-in:    var(--animate-expressive-collapse-in);
-  --anim-collapse-out:   var(--animate-expressive-collapse-out);
-  --anim-page-enter:     var(--animate-expressive-page-enter);
-  --anim-page-exit:      var(--animate-expressive-page-exit);
+  --anim-fade-in:           var(--animate-expressive-fade-in);
+  --anim-fade-out:          var(--animate-expressive-fade-out);
+  --anim-slide-up-in:       var(--animate-expressive-slide-up-in);
+  --anim-slide-up-out:      var(--animate-expressive-slide-up-out);
+  --anim-slide-down-in:     var(--animate-expressive-slide-down-in);
+  --anim-slide-down-out:    var(--animate-expressive-slide-down-out);
+  --anim-slide-left-in:     var(--animate-expressive-slide-left-in);
+  --anim-slide-left-out:    var(--animate-expressive-slide-left-out);
+  --anim-slide-right-in:    var(--animate-expressive-slide-right-in);
+  --anim-slide-right-out:   var(--animate-expressive-slide-right-out);
+  --anim-slide-top-in:      var(--animate-expressive-slide-top-in);
+  --anim-slide-top-out:     var(--animate-expressive-slide-top-out);
+  --anim-slide-bottom-in:   var(--animate-expressive-slide-bottom-in);
+  --anim-slide-bottom-out:  var(--animate-expressive-slide-bottom-out);
+  --anim-expand-in:         var(--animate-expressive-expand-in);
+  --anim-expand-out:        var(--animate-expressive-expand-out);
+  --anim-collapse-in:       var(--animate-expressive-collapse-in);
+  --anim-collapse-out:      var(--animate-expressive-collapse-out);
+  --anim-page-enter:        var(--animate-expressive-page-enter);
+  --anim-page-exit:         var(--animate-expressive-page-exit);
 }
 
 [data-motion-theme="reduced"] {
@@ -97,18 +129,26 @@
   --motion-curve-expand-in:      var(--motion-curve-linear);
   --motion-curve-expand-out:     var(--motion-curve-linear);
   --motion-curve-accordion:      var(--motion-curve-linear);
-  --anim-fade-in:        var(--animate-fluent2-fade-in);
-  --anim-fade-out:       var(--animate-fluent2-fade-out);
-  --anim-slide-up-in:    var(--animate-fluent2-slide-up-in);
-  --anim-slide-up-out:   var(--animate-fluent2-slide-up-out);
-  --anim-slide-down-in:  var(--animate-fluent2-slide-down-in);
-  --anim-slide-down-out: var(--animate-fluent2-slide-down-out);
-  --anim-expand-in:      var(--animate-fluent2-expand-in);
-  --anim-expand-out:     var(--animate-fluent2-expand-out);
-  --anim-collapse-in:    var(--animate-fluent2-collapse-in);
-  --anim-collapse-out:   var(--animate-fluent2-collapse-out);
-  --anim-page-enter:     var(--animate-fluent2-page-enter);
-  --anim-page-exit:      var(--animate-fluent2-page-exit);
+  --anim-fade-in:           var(--animate-fluent2-fade-in);
+  --anim-fade-out:          var(--animate-fluent2-fade-out);
+  --anim-slide-up-in:       var(--animate-fluent2-slide-up-in);
+  --anim-slide-up-out:      var(--animate-fluent2-slide-up-out);
+  --anim-slide-down-in:     var(--animate-fluent2-slide-down-in);
+  --anim-slide-down-out:    var(--animate-fluent2-slide-down-out);
+  --anim-slide-left-in:     var(--animate-fluent2-slide-left-in);
+  --anim-slide-left-out:    var(--animate-fluent2-slide-left-out);
+  --anim-slide-right-in:    var(--animate-fluent2-slide-right-in);
+  --anim-slide-right-out:   var(--animate-fluent2-slide-right-out);
+  --anim-slide-top-in:      var(--animate-fluent2-slide-top-in);
+  --anim-slide-top-out:     var(--animate-fluent2-slide-top-out);
+  --anim-slide-bottom-in:   var(--animate-fluent2-slide-bottom-in);
+  --anim-slide-bottom-out:  var(--animate-fluent2-slide-bottom-out);
+  --anim-expand-in:         var(--animate-fluent2-expand-in);
+  --anim-expand-out:        var(--animate-fluent2-expand-out);
+  --anim-collapse-in:       var(--animate-fluent2-collapse-in);
+  --anim-collapse-out:      var(--animate-fluent2-collapse-out);
+  --anim-page-enter:        var(--animate-fluent2-page-enter);
+  --anim-page-exit:         var(--animate-fluent2-page-exit);
 }
 
 /* ── Sonner toast — motion token overrides ───────────────────────────────── */

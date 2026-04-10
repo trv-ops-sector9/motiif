@@ -1,52 +1,74 @@
 import * as React from "react";
-import { Drawer as DrawerPrimitive } from "vaul";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-function Drawer({ shouldScaleBackground = true, ...props }: React.ComponentProps<typeof DrawerPrimitive.Root>) {
-  return <DrawerPrimitive.Root shouldScaleBackground={shouldScaleBackground} {...props} />;
-}
-Drawer.displayName = "Drawer";
+type DrawerSide = "top" | "right" | "bottom" | "left";
 
-const DrawerTrigger = DrawerPrimitive.Trigger;
-const DrawerPortal = DrawerPrimitive.Portal;
-const DrawerClose = DrawerPrimitive.Close;
-const DrawerHandle = DrawerPrimitive.Handle;
+const Drawer = DialogPrimitive.Root;
+const DrawerTrigger = DialogPrimitive.Trigger;
+const DrawerPortal = DialogPrimitive.Portal;
+const DrawerClose = DialogPrimitive.Close;
 
 const DrawerOverlay = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Overlay>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Overlay>
+  React.ElementRef<typeof DialogPrimitive.Overlay>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Overlay>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Overlay
+  <DialogPrimitive.Overlay
     ref={ref}
-    className={cn("fixed inset-0 z-50 bg-black/80 [animation:var(--anim-fade-in)]", className)}
+    className={cn(
+      "fixed inset-0 z-50 bg-black/50 data-[state=open]:[animation:var(--anim-fade-in)] data-[state=closed]:[animation:var(--anim-fade-out)]",
+      className
+    )}
     {...props}
   />
 ));
-DrawerOverlay.displayName = DrawerPrimitive.Overlay.displayName;
+DrawerOverlay.displayName = DialogPrimitive.Overlay.displayName;
+
+const animIn: Record<DrawerSide, string> = {
+  left:   "var(--anim-slide-left-in)",
+  right:  "var(--anim-slide-right-in)",
+  top:    "var(--anim-slide-top-in)",
+  bottom: "var(--anim-slide-bottom-in)",
+};
+
+const animOut: Record<DrawerSide, string> = {
+  left:   "var(--anim-slide-left-out)",
+  right:  "var(--anim-slide-right-out)",
+  top:    "var(--anim-slide-top-out)",
+  bottom: "var(--anim-slide-bottom-out)",
+};
 
 const DrawerContent = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Content>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content> & { direction?: "top" | "bottom" | "left" | "right" }
->(({ className, children, direction = "bottom", ...props }, ref) => (
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> & {
+    side?: DrawerSide;
+  }
+>(({ className, children, side = "right", ...props }, ref) => (
   <DrawerPortal>
     <DrawerOverlay />
-    <DrawerPrimitive.Content
+    <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed z-50 flex bg-background border",
-        direction === "bottom" && "inset-x-0 bottom-0 mt-24 h-auto flex-col rounded-t-[10px]",
-        direction === "top" && "inset-x-0 top-0 mb-24 h-auto flex-col rounded-b-[10px]",
-        direction === "left" && "inset-y-0 left-0 mr-24 w-3/4 max-w-sm flex-col rounded-r-[10px]",
-        direction === "right" && "inset-y-0 right-0 ml-24 w-3/4 max-w-sm flex-col rounded-l-[10px]",
+        "fixed z-50 flex flex-col bg-background shadow-lg data-[state=open]:[animation:var(--_drawer-in)] data-[state=closed]:[animation:var(--_drawer-out)]",
+        side === "left"   && "inset-y-0 left-0 w-3/4 max-w-sm border-r",
+        side === "right"  && "inset-y-0 right-0 w-3/4 max-w-sm border-l",
+        side === "top"    && "inset-x-0 top-0 border-b",
+        side === "bottom" && "inset-x-0 bottom-0 border-t",
         className
       )}
+      style={{
+        "--_drawer-in":  animIn[side],
+        "--_drawer-out": animOut[side],
+      } as React.CSSProperties}
       {...props}
     >
-      {(direction === "bottom" || direction === "top") && (
-        <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
-      )}
       {children}
-    </DrawerPrimitive.Content>
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none cursor-pointer">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
   </DrawerPortal>
 ));
 DrawerContent.displayName = "DrawerContent";
@@ -62,28 +84,28 @@ function DrawerFooter({ className, ...props }: React.HTMLAttributes<HTMLDivEleme
 DrawerFooter.displayName = "DrawerFooter";
 
 const DrawerTitle = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Title>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Title>
+  React.ElementRef<typeof DialogPrimitive.Title>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Title
+  <DialogPrimitive.Title
     ref={ref}
     className={cn("text-lg font-semibold leading-none tracking-tight", className)}
     {...props}
   />
 ));
-DrawerTitle.displayName = DrawerPrimitive.Title.displayName;
+DrawerTitle.displayName = DialogPrimitive.Title.displayName;
 
 const DrawerDescription = React.forwardRef<
-  React.ElementRef<typeof DrawerPrimitive.Description>,
-  React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Description>
+  React.ElementRef<typeof DialogPrimitive.Description>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => (
-  <DrawerPrimitive.Description
+  <DialogPrimitive.Description
     ref={ref}
     className={cn("text-sm text-muted-foreground", className)}
     {...props}
   />
 ));
-DrawerDescription.displayName = DrawerPrimitive.Description.displayName;
+DrawerDescription.displayName = DialogPrimitive.Description.displayName;
 
 export {
   Drawer,
@@ -91,9 +113,7 @@ export {
   DrawerContent,
   DrawerDescription,
   DrawerFooter,
-  DrawerHandle,
   DrawerHeader,
-  DrawerOverlay,
   DrawerPortal,
   DrawerTitle,
   DrawerTrigger,

@@ -73,6 +73,40 @@
   to   { opacity: 0; transform: translateY(-20px) scale(0.97); }
 }
 
+/* Drawer slides — full-panel translate, spring overshoot via scale on enter */
+@keyframes expressive-slide-left-in {
+  from { opacity: 0; transform: translateX(-100%) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes expressive-slide-left-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(-100%); }
+}
+@keyframes expressive-slide-right-in {
+  from { opacity: 0; transform: translateX(100%) scale(0.96); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes expressive-slide-right-out {
+  from { opacity: 1; transform: translateX(0); }
+  to   { opacity: 0; transform: translateX(100%); }
+}
+@keyframes expressive-slide-top-in {
+  from { opacity: 0; transform: translateY(-100%) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes expressive-slide-top-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-100%); }
+}
+@keyframes expressive-slide-bottom-in {
+  from { opacity: 0; transform: translateY(100%) scale(0.96); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes expressive-slide-bottom-out {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(100%); }
+}
+
 @keyframes expressive-reduced-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -136,6 +170,16 @@
   /* Page */
   --animate-expressive-page-enter:      expressive-page-enter      var(--motion-duration-slower)    var(--motion-curve-spring)   both;
   --animate-expressive-page-exit:       expressive-page-exit       var(--motion-duration-normal)    var(--motion-curve-ease-in)  both;
+
+  /* Drawer slides — spring on enter, fast exit */
+  --animate-expressive-slide-left-in:    expressive-slide-left-in    var(--motion-duration-slow)     var(--motion-curve-spring)   both;
+  --animate-expressive-slide-left-out:   expressive-slide-left-out   var(--motion-duration-fast)     var(--motion-curve-ease-in)  both;
+  --animate-expressive-slide-right-in:   expressive-slide-right-in   var(--motion-duration-slow)     var(--motion-curve-spring)   both;
+  --animate-expressive-slide-right-out:  expressive-slide-right-out  var(--motion-duration-fast)     var(--motion-curve-ease-in)  both;
+  --animate-expressive-slide-top-in:     expressive-slide-top-in     var(--motion-duration-slow)     var(--motion-curve-spring)   both;
+  --animate-expressive-slide-top-out:    expressive-slide-top-out    var(--motion-duration-fast)     var(--motion-curve-ease-in)  both;
+  --animate-expressive-slide-bottom-in:  expressive-slide-bottom-in  var(--motion-duration-slow)     var(--motion-curve-spring)   both;
+  --animate-expressive-slide-bottom-out: expressive-slide-bottom-out var(--motion-duration-fast)     var(--motion-curve-ease-in)  both;
 }
 
 
@@ -164,8 +208,16 @@
     --animate-expressive-expand-out:     expressive-reduced-fade 1ms linear both;
     --animate-expressive-collapse-in:    expressive-reduced-fade 1ms linear both;
     --animate-expressive-collapse-out:   expressive-reduced-fade 1ms linear both;
-    --animate-expressive-page-enter:     expressive-reduced-fade 1ms linear both;
-    --animate-expressive-page-exit:      expressive-reduced-fade 1ms linear both;
+    --animate-expressive-page-enter:       expressive-reduced-fade 1ms linear both;
+    --animate-expressive-page-exit:        expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-left-in:    expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-left-out:   expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-right-in:   expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-right-out:  expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-top-in:     expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-top-out:    expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-bottom-in:  expressive-reduced-fade 1ms linear both;
+    --animate-expressive-slide-bottom-out: expressive-reduced-fade 1ms linear both;
   }
 }
 
@@ -188,6 +240,14 @@
   --animate-expressive-expand-out:     expressive-reduced-fade 1ms linear both;
   --animate-expressive-collapse-in:    expressive-reduced-fade 1ms linear both;
   --animate-expressive-collapse-out:   expressive-reduced-fade 1ms linear both;
-  --animate-expressive-page-enter:     expressive-reduced-fade 1ms linear both;
-  --animate-expressive-page-exit:      expressive-reduced-fade 1ms linear both;
+  --animate-expressive-page-enter:       expressive-reduced-fade 1ms linear both;
+  --animate-expressive-page-exit:        expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-left-in:    expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-left-out:   expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-right-in:   expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-right-out:  expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-top-in:     expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-top-out:    expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-bottom-in:  expressive-reduced-fade 1ms linear both;
+  --animate-expressive-slide-bottom-out: expressive-reduced-fade 1ms linear both;
 }

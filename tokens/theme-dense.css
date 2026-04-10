@@ -72,6 +72,40 @@
   to   { opacity: 0; transform: translateX(2px); }
 }
 
+/* Drawer slides — full-panel translate, no opacity (felt, not watched) */
+@keyframes dense-slide-left-in {
+  from { transform: translateX(-100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes dense-slide-left-out {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-100%); }
+}
+@keyframes dense-slide-right-in {
+  from { transform: translateX(100%); }
+  to   { transform: translateX(0); }
+}
+@keyframes dense-slide-right-out {
+  from { transform: translateX(0); }
+  to   { transform: translateX(100%); }
+}
+@keyframes dense-slide-top-in {
+  from { transform: translateY(-100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes dense-slide-top-out {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-100%); }
+}
+@keyframes dense-slide-bottom-in {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+@keyframes dense-slide-bottom-out {
+  from { transform: translateY(0); }
+  to   { transform: translateY(100%); }
+}
+
 @keyframes dense-reduced-fade {
   from { opacity: 0; }
   to   { opacity: 1; }
@@ -129,6 +163,16 @@
   /* Page */
   --animate-dense-page-enter:       dense-page-enter        var(--motion-duration-normal)      var(--motion-curve-snap) both;
   --animate-dense-page-exit:        dense-page-exit         var(--motion-duration-fast)        var(--motion-curve-snap) both;
+
+  /* Drawer slides */
+  --animate-dense-slide-left-in:    dense-slide-left-in     var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-left-out:   dense-slide-left-out    var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-right-in:   dense-slide-right-in    var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-right-out:  dense-slide-right-out   var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-top-in:     dense-slide-top-in      var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-top-out:    dense-slide-top-out     var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-bottom-in:  dense-slide-bottom-in   var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-bottom-out: dense-slide-bottom-out  var(--motion-duration-fast)        var(--motion-curve-snap) both;
 }
 
 
@@ -157,8 +201,16 @@
     --animate-dense-expand-out:     dense-reduced-fade 1ms linear both;
     --animate-dense-collapse-in:    dense-reduced-fade 1ms linear both;
     --animate-dense-collapse-out:   dense-reduced-fade 1ms linear both;
-    --animate-dense-page-enter:     dense-reduced-fade 1ms linear both;
-    --animate-dense-page-exit:      dense-reduced-fade 1ms linear both;
+    --animate-dense-page-enter:       dense-reduced-fade 1ms linear both;
+    --animate-dense-page-exit:        dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-left-in:    dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-left-out:   dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-right-in:   dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-right-out:  dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-top-in:     dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-top-out:    dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-bottom-in:  dense-reduced-fade 1ms linear both;
+    --animate-dense-slide-bottom-out: dense-reduced-fade 1ms linear both;
   }
 }
 
@@ -181,6 +233,14 @@
   --animate-dense-expand-out:     dense-reduced-fade 1ms linear both;
   --animate-dense-collapse-in:    dense-reduced-fade 1ms linear both;
   --animate-dense-collapse-out:   dense-reduced-fade 1ms linear both;
-  --animate-dense-page-enter:     dense-reduced-fade 1ms linear both;
-  --animate-dense-page-exit:      dense-reduced-fade 1ms linear both;
+  --animate-dense-page-enter:       dense-reduced-fade 1ms linear both;
+  --animate-dense-page-exit:        dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-left-in:    dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-left-out:   dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-right-in:   dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-right-out:  dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-top-in:     dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-top-out:    dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-bottom-in:  dense-reduced-fade 1ms linear both;
+  --animate-dense-slide-bottom-out: dense-reduced-fade 1ms linear both;
 }
