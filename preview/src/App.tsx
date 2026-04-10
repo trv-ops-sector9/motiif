@@ -55,12 +55,13 @@ function TopBar({ sidebarCollapsed, onToggleSidebar }: { sidebarCollapsed: boole
         Motif
       </span>
       <div className="ml-auto flex items-center gap-2">
-        {[`${motionTheme} motion`, `${colorTheme} color`].map((label) => (
-          <span key={label} className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
-            <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-            {label}
-          </span>
-        ))}
+        <span className="inline-flex items-center rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+          motion-{motionTheme.charAt(0).toUpperCase() + motionTheme.slice(1)}
+        </span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+          <span className="h-1.5 w-1.5 rounded-full bg-primary" />
+          design-{colorTheme.charAt(0).toUpperCase() + colorTheme.slice(1)}
+        </span>
       </div>
     </div>
   );
