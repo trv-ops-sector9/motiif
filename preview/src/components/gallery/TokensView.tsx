@@ -1,13 +1,8 @@
 import { useEffect, useState, useCallback } from "react";
 import { IconDownload, IconCheck, IconRotate } from "@tabler/icons-react";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
-
-// Consistent tighter padding for token reference cards
-const hdrCn = "px-4 pt-4 pb-3";
-const bodyCn = "px-4 pb-4 pt-1";
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -127,29 +122,27 @@ function DurationSection() {
   const hasOverrides = Object.keys(overrides).length > 0;
 
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <div className="flex items-center justify-between gap-3">
-          <CardTitle className="text-sm font-semibold">Duration scale</CardTitle>
-          <button
-            onClick={resetAll}
-            className={cn(
-              "flex items-center gap-1 shrink-0 rounded px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer",
-              "text-muted-foreground hover:text-foreground hover:bg-muted",
-              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
-              !hasOverrides && "invisible",
-            )}
-            title="Reset all durations to theme defaults"
-          >
-            <IconRotate className="h-3 w-3" />
-            Reset all
-          </button>
-        </div>
-        <CardDescription className="text-xs">
-          Drag to override — changes propagate live across all components
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={cn(bodyCn, "pb-6 space-y-2.5")}>
+    <div className="bg-muted/30 rounded-lg px-4 pt-4 pb-6">
+      <div className="flex items-center justify-between gap-3 mb-1">
+        <h3 className="text-sm font-semibold">Duration scale</h3>
+        <button
+          onClick={resetAll}
+          className={cn(
+            "flex items-center gap-1 shrink-0 rounded px-2 py-1 text-[11px] font-medium transition-colors cursor-pointer",
+            "text-muted-foreground hover:text-foreground hover:bg-muted",
+            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+            !hasOverrides && "invisible",
+          )}
+          title="Reset all durations to theme defaults"
+        >
+          <IconRotate className="h-3 w-3" />
+          Reset all
+        </button>
+      </div>
+      <p className="text-xs text-muted-foreground mb-4">
+        Drag to override — changes propagate live across all components
+      </p>
+      <div className="space-y-2.5">
         {DURATION_TOKENS.map((token) => {
           const isOverridden = token.name in overrides;
           // Use React state for overridden values (instant), CSS query for defaults
@@ -193,8 +186,8 @@ function DurationSection() {
             </div>
           );
         })}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -322,14 +315,12 @@ function CurvesSection() {
   };
 
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Easing curves</CardTitle>
-        <CardDescription className="text-xs">
-          {THEME_LABELS[motionTheme] ?? `${curves.length} curves`}
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={cn(bodyCn, "space-y-3")}>
+    <div className="bg-muted/30 rounded-lg px-4 pt-4 pb-4">
+      <h3 className="text-sm font-semibold">Easing curves</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        {THEME_LABELS[motionTheme] ?? `${curves.length} curves`}
+      </p>
+      <div className="mt-3 space-y-3">
         {Array.from(categories.entries()).map(([category, catCurves]) => (
           <div key={category}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
@@ -342,8 +333,8 @@ function CurvesSection() {
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -361,34 +352,30 @@ function BridgeSection() {
   const { getCSSVar } = useTokenValues();
 
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Semantic bridge</CardTitle>
-        <CardDescription className="text-xs">
-          Intent-based variables — components use these, never raw curve names
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={bodyCn}>
-        <div className="space-y-2">
-          {BRIDGE_CURVES.map((b) => {
-            const raw = getCSSVar(b.name);
-            const points = parseBezier(raw);
-            return (
-              <div key={b.name} className="flex items-center gap-3 py-1">
-                {points ? <CurvePreview points={points} /> : <div className="h-12 w-12 shrink-0" />}
-                <div className="flex-1 min-w-0">
-                  <code className="text-xs font-mono font-medium">{b.label}</code>
-                  <p className="text-[10px] text-muted-foreground">{b.usage}</p>
-                  <code className="text-[10px] text-muted-foreground/60 font-mono block truncate mt-0.5">
-                    resolves to: {raw || "—"}
-                  </code>
-                </div>
+    <div>
+      <h3 className="text-sm font-semibold">Semantic bridge</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        Intent-based variables — components use these, never raw curve names
+      </p>
+      <div className="mt-3 space-y-2">
+        {BRIDGE_CURVES.map((b) => {
+          const raw = getCSSVar(b.name);
+          const points = parseBezier(raw);
+          return (
+            <div key={b.name} className="flex items-center gap-3 py-1">
+              {points ? <CurvePreview points={points} /> : <div className="h-12 w-12 shrink-0" />}
+              <div className="flex-1 min-w-0">
+                <code className="text-xs font-mono font-medium">{b.label}</code>
+                <p className="text-[10px] text-muted-foreground">{b.usage}</p>
+                <code className="text-[10px] text-muted-foreground/60 font-mono block truncate mt-0.5">
+                  resolves to: {raw || "—"}
+                </code>
               </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -411,14 +398,12 @@ const ARCHETYPE_PAIRS = [
 
 function ArchetypesSection() {
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Animation archetypes</CardTitle>
-        <CardDescription className="text-xs">
-          22 animations via <code className="font-mono">--anim-*</code> — paired enter/exit
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={bodyCn}>
+    <div>
+      <h3 className="text-sm font-semibold">Animation archetypes</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        22 animations via <code className="font-mono">--anim-*</code> — paired enter/exit
+      </p>
+      <div className="mt-3">
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr className="border-b border-border">
@@ -439,8 +424,8 @@ function ArchetypesSection() {
             ))}
           </tbody>
         </table>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -483,14 +468,12 @@ const MOTION_PRINCIPLES = [
 
 function PrinciplesSection() {
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Motion principles</CardTitle>
-        <CardDescription className="text-xs">
-          Four named personalities — curve vocabulary, duration range, transform style
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={bodyCn}>
+    <div>
+      <h3 className="text-sm font-semibold">Motion principles</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        Four named personalities — curve vocabulary, duration range, transform style
+      </p>
+      <div className="mt-3">
         <table className="w-full text-xs border-collapse">
           <thead>
             <tr className="border-b border-border">
@@ -512,8 +495,8 @@ function PrinciplesSection() {
             ))}
           </tbody>
         </table>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -594,14 +577,12 @@ function ColorSwatch({ name, label }: { name: string; label: string }) {
 
 function ColorsSection() {
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Color tokens</CardTitle>
-        <CardDescription className="text-xs">
-          Semantic colors — all OkLCh values, switch themes in sidebar to compare
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={cn(bodyCn, "space-y-4")}>
+    <div>
+      <h3 className="text-sm font-semibold">Color tokens</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        Semantic colors — all OkLCh values, switch themes in sidebar to compare
+      </p>
+      <div className="mt-3 space-y-4">
         {COLOR_GROUPS.map((group) => (
           <div key={group.label}>
             <p className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1.5">
@@ -614,8 +595,8 @@ function ColorsSection() {
             </div>
           </div>
         ))}
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }
 
@@ -632,28 +613,24 @@ function ShadowsSection() {
   const { getCSSVar } = useTokenValues();
 
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Shadows</CardTitle>
-        <CardDescription className="text-xs">Elevation scale — 4 stops</CardDescription>
-      </CardHeader>
-      <CardContent className={bodyCn}>
-        <div className="grid grid-cols-4 gap-4">
-          {SHADOW_TOKENS.map((s) => {
-            const raw = getCSSVar(s.name);
-            return (
-              <div key={s.name} className="text-center">
-                <div
-                  className="h-14 w-full rounded-lg bg-card border mb-2"
-                  style={{ boxShadow: raw }}
-                />
-                <code className="text-[10px] font-mono text-muted-foreground">{s.label}</code>
-              </div>
-            );
-          })}
-        </div>
-      </CardContent>
-    </Card>
+    <div>
+      <h3 className="text-sm font-semibold">Shadows</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">Elevation scale — 4 stops</p>
+      <div className="mt-3 grid grid-cols-4 gap-4">
+        {SHADOW_TOKENS.map((s) => {
+          const raw = getCSSVar(s.name);
+          return (
+            <div key={s.name} className="text-center">
+              <div
+                className="h-14 w-full rounded-lg bg-card border mb-2"
+                style={{ boxShadow: raw }}
+              />
+              <code className="text-[10px] font-mono text-muted-foreground">{s.label}</code>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -665,30 +642,26 @@ function SpacingSection() {
   const steps = [1, 2, 3, 4, 5, 6, 8, 10, 12, 16];
 
   return (
-    <Card>
-      <CardHeader className={hdrCn}>
-        <CardTitle className="text-sm font-semibold">Spacing</CardTitle>
-        <CardDescription className="text-xs">
-          Base: {spacing || "0.25rem"} — all utilities use calc(--spacing * N)
-        </CardDescription>
-      </CardHeader>
-      <CardContent className={bodyCn}>
-        <div className="space-y-1.5">
-          {steps.map((n) => (
-            <div key={n} className="flex items-center gap-3">
-              <code className="w-6 shrink-0 text-right text-xs font-mono text-muted-foreground">{n}</code>
-              <div
-                className="h-3 rounded bg-primary/20 border border-primary/30"
-                style={{ width: `calc(${spacing || "0.25rem"} * ${n})` }}
-              />
-              <span className="text-[10px] text-muted-foreground font-mono">
-                {spacing ? `${(parseFloat(spacing) * n).toFixed(2)}rem` : `${(0.25 * n).toFixed(2)}rem`}
-              </span>
-            </div>
-          ))}
-        </div>
-      </CardContent>
-    </Card>
+    <div>
+      <h3 className="text-sm font-semibold">Spacing</h3>
+      <p className="text-xs text-muted-foreground mt-0.5">
+        Base: {spacing || "0.25rem"} — all utilities use calc(--spacing * N)
+      </p>
+      <div className="mt-3 space-y-1.5">
+        {steps.map((n) => (
+          <div key={n} className="flex items-center gap-3">
+            <code className="w-6 shrink-0 text-right text-xs font-mono text-muted-foreground">{n}</code>
+            <div
+              className="h-3 rounded bg-primary/20 border border-primary/30"
+              style={{ width: `calc(${spacing || "0.25rem"} * ${n})` }}
+            />
+            <span className="text-[10px] text-muted-foreground font-mono">
+              {spacing ? `${(parseFloat(spacing) * n).toFixed(2)}rem` : `${(0.25 * n).toFixed(2)}rem`}
+            </span>
+          </div>
+        ))}
+      </div>
+    </div>
   );
 }
 
@@ -772,11 +745,11 @@ function ExportButton() {
 // ── Main layout ──────────────────────────────────────────────────────────────
 
 export function TokensView() {
-  const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "standard";
-  const colorTheme = document.documentElement.getAttribute("data-theme") || "default";
-
   // Re-render on theme change
   useTokenValues();
+
+  const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "standard";
+  const colorTheme = document.documentElement.getAttribute("data-theme") || "default";
 
   return (
     <div className="p-6 space-y-6 max-w-5xl">
@@ -786,14 +759,14 @@ export function TokensView() {
         <p className="text-sm text-muted-foreground">
           Live reference — values update when you switch themes in the sidebar.
         </p>
-        <div className="flex items-center gap-2.5 pt-1">
-          <span className="text-sm text-muted-foreground">Currently:</span>
-          {[`${motionTheme} motion`, `${colorTheme} color`].map((label) => (
-            <span key={label} className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
-              <span className="h-1.5 w-1.5 rounded-full bg-primary" />
-              {label}
-            </span>
-          ))}
+        <div className="flex items-center gap-2 pt-1">
+          <span className="inline-flex items-center rounded-full border bg-background px-3 py-1 text-xs font-medium text-foreground">
+            motion-{motionTheme.charAt(0).toUpperCase() + motionTheme.slice(1)}
+          </span>
+          <span className="inline-flex items-center gap-2 rounded-full border bg-background px-3 py-1 text-xs font-medium text-foreground">
+            <span className="h-2 w-2 rounded-full bg-primary" />
+            design-{colorTheme.charAt(0).toUpperCase() + colorTheme.slice(1)}
+          </span>
           <div className="ml-auto">
             <ExportButton />
           </div>
@@ -805,14 +778,14 @@ export function TokensView() {
       {/* Motion tokens */}
       <section>
         <h2 className="text-lg font-semibold mb-4">Motion</h2>
-        <div className="grid sm:grid-cols-2 gap-4">
+        <div className="grid sm:grid-cols-2 gap-8">
           <DurationSection />
           <CurvesSection />
         </div>
-        <div className="mt-4">
-          <PrinciplesSection />
-        </div>
-        <div className="grid sm:grid-cols-2 gap-4 mt-4">
+        <Separator className="my-5" />
+        <PrinciplesSection />
+        <Separator className="my-5" />
+        <div className="grid sm:grid-cols-2 gap-4">
           <BridgeSection />
           <ArchetypesSection />
         </div>
@@ -825,8 +798,9 @@ export function TokensView() {
         <h2 className="text-lg font-semibold mb-4">Color</h2>
         <div className="grid sm:grid-cols-2 gap-4">
           <ColorsSection />
-          <div className="space-y-4">
+          <div className="space-y-5">
             <ShadowsSection />
+            <Separator />
             <SpacingSection />
           </div>
         </div>

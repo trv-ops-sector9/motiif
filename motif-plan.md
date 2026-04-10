@@ -130,24 +130,28 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 
 ---
 
-## 11. P0 — First Impression
+## ~~11. P0 — First Impression~~ ✓
 
-> These make the app look broken or generic on first load. Do first.
+> Completed in feature/polish-r1. Drive Dark default, contrast fixes, view transitions, themed scrollbars.
 
-- [ ] 11a: Default to Dark Minimal + Standard on first load (not stock shadcn Default)
-- [ ] 11b: Default dark theme contrast — borders and secondary bg barely visible
-- [ ] 11c: Default card shadows — too puffy/Fluent, tighten them
+- [x] 11a: Default to Drive Dark + Standard on first load
+- [x] 11b: Default dark theme contrast — borders and secondary bg fixed
+- [x] 11c: Default card shadows — tightened
 
 ---
 
-## 12. P1 — Component Gallery Polish
+## ~~12. P1 — Component Gallery Polish~~ ✓
 
-> The gallery was just restructured to card grid. These finish the job.
+> Completed in feature/polish-r2. Card grid polish, persistent top bar, transition fixes.
 
-- [ ] 12a: Variant controls sticky to card bottom — controls jump when changing options
-- [ ] 12b: Card component demo — needs better design, more variants
-- [ ] 12c: Badge with icon — remove inline icon, make it a variant toggle
-- [ ] 12d: Gallery header — add "Component Gallery" sub-header, match Tokens page style
+- [x] 12a: Variant controls sticky to card bottom
+- [x] 12b: Card component demo — 3-layout redesign (media/stat/profile)
+- [x] 12c: Badge — single variant + icon toggle controls
+- [x] 12d: Gallery header — "Component Gallery" sub-header matching Tokens page
+- [x] 12e: Persistent top bar — brand + theme badges, full-width, sidebar toggle
+- [x] 12f: Sidebar cleanup — removed brand header, collapse driven from top bar
+- [x] 12g: Fix animationend bubbling in all page transition handlers
+- [x] 12h: Overlay scrollbars + stable gutter — no reflow on transitions
 
 ---
 
