@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, RotateCcw, Circle, Palette, Sun, Moon } from "lucide-react";
+import { ChevronDown, ChevronRight, RotateCcw, Palette, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -162,7 +162,7 @@ export function SidebarMotionPicker() {
 
   return (
     <div className="px-2">
-      <p className="pt-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
+      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Motion Theme
       </p>
       <DropdownMenu>
@@ -286,68 +286,6 @@ export function SidebarSpacingSlider() {
   );
 }
 
-/* ─── Accent color picker ───────────────────────────────────────────────── */
-
-const ACCENT_COLORS = [
-  { name: "Default", primary: null,                     fg: null               },
-  { name: "Blue",    primary: "oklch(0.55 0.19 245)",   fg: "oklch(0.985 0 0)" },
-  { name: "Violet",  primary: "oklch(0.55 0.22 290)",   fg: "oklch(0.985 0 0)" },
-  { name: "Rose",    primary: "oklch(0.55 0.2 350)",    fg: "oklch(0.985 0 0)" },
-  { name: "Orange",  primary: "oklch(0.65 0.19 55)",    fg: "oklch(0.15 0 0)"  },
-  { name: "Green",   primary: "oklch(0.55 0.16 155)",   fg: "oklch(0.985 0 0)" },
-  { name: "Teal",    primary: "oklch(0.55 0.12 200)",   fg: "oklch(0.985 0 0)" },
-] as const;
-
-export function SidebarAccentPicker() {
-  const [active, setActive] = useState<string>("Default");
-
-  const handleSelect = (color: (typeof ACCENT_COLORS)[number]) => {
-    setActive(color.name);
-    const el = document.documentElement;
-    if (!color.primary) {
-      el.style.removeProperty("--primary");
-      el.style.removeProperty("--primary-foreground");
-      el.style.removeProperty("--sidebar-primary");
-      el.style.removeProperty("--sidebar-primary-foreground");
-      el.style.removeProperty("--ring");
-      return;
-    }
-    el.style.setProperty("--primary", color.primary);
-    el.style.setProperty("--primary-foreground", color.fg);
-    el.style.setProperty("--sidebar-primary", color.primary);
-    el.style.setProperty("--sidebar-primary-foreground", color.fg);
-    el.style.setProperty("--ring", color.primary);
-  };
-
-  return (
-    <div className="px-2">
-      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
-        Accent
-      </p>
-      <div className="flex items-center gap-1.5 flex-wrap">
-        {ACCENT_COLORS.map((color) => (
-          <button
-            key={color.name}
-            onClick={() => handleSelect(color)}
-            title={color.name}
-            aria-label={`Accent: ${color.name}`}
-            className={cn(
-              "h-5 w-5 rounded-full cursor-pointer transition-transform",
-              "hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:ring-offset-1",
-              active === color.name && "ring-2 ring-sidebar-foreground ring-offset-1 ring-offset-sidebar"
-            )}
-            style={color.primary ? { backgroundColor: color.primary } : undefined}
-          >
-            {!color.primary && (
-              <Circle className="h-5 w-5 text-muted-foreground" />
-            )}
-          </button>
-        ))}
-      </div>
-    </div>
-  );
-}
-
 /* ─── Collapsible theme controls wrapper ────────────────────────────────── */
 
 export function SidebarThemeControls({ collapsed }: { collapsed: boolean }) {
@@ -391,7 +329,6 @@ export function SidebarThemeControls({ collapsed }: { collapsed: boolean }) {
           <SidebarMotionPicker />
           <SidebarThemePicker />
           <SidebarModePicker />
-          <SidebarAccentPicker />
           <SidebarSpacingSlider />
         </div>
       )}
