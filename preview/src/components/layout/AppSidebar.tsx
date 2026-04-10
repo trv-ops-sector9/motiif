@@ -1,6 +1,6 @@
 import { useState } from "react";
 import {
-  LayoutDashboard,
+  BarChart2,
   Settings,
   LogIn,
   Megaphone,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Separator } from "@/components/ui/separator";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { SidebarThemeControls } from "@/components/layout/ThemeSwitcher";
 
 export type View =
@@ -40,7 +41,7 @@ const GALLERY_ITEMS: NavItem[] = [
 const BLOCK_ITEMS: NavItem[] = [
   { id: "fleet-ops", label: "Fleet Ops", icon: Navigation     },
   { id: "marketing", label: "Marketing", icon: Megaphone       },
-  { id: "dashboard", label: "Dashboard", icon: LayoutDashboard },
+  { id: "dashboard", label: "Analytics", icon: BarChart2 },
   { id: "settings",  label: "Settings",  icon: Settings        },
   { id: "auth",      label: "Auth",      icon: LogIn           },
 ];
@@ -65,14 +66,21 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       {/* Header */}
       <div className="flex min-h-14 shrink-0 items-center border-b border-sidebar-border px-3 py-3">
         {!collapsed && (
-          <div className="flex-1 min-w-0">
-            <span className="block truncate text-sm font-semibold text-sidebar-foreground leading-tight">
-              Motif
-            </span>
-            <span className="block text-[10px] text-muted-foreground leading-snug mt-0.5">
-              Runtime design & motion token system
-            </span>
-          </div>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <div className="flex-1 min-w-0 cursor-default select-none">
+                <span
+                  className="block truncate text-base font-bold leading-tight text-sidebar-foreground tracking-wide"
+                  style={{ fontFamily: "var(--font-brand)" }}
+                >
+                  Motif
+                </span>
+              </div>
+            </TooltipTrigger>
+            <TooltipContent side="right" sideOffset={8}>
+              Runtime design &amp; motion token system
+            </TooltipContent>
+          </Tooltip>
         )}
         <button
           onClick={() => setCollapsed((c) => !c)}
@@ -96,8 +104,6 @@ export function AppSidebar({ activeView, onViewChange }: AppSidebarProps) {
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto p-2">
         {/* Theme controls — collapsible section */}
         <SidebarThemeControls collapsed={collapsed} />
-
-        <Separator className="my-1 bg-sidebar-border" />
 
         {/* Gallery section */}
         {!collapsed ? (

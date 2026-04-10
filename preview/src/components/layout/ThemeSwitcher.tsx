@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ChevronDown, ChevronRight, RotateCcw, CircleOff, Palette, Sun, Moon } from "lucide-react";
+import { ChevronDown, ChevronRight, RotateCcw, Circle, Palette, Sun, Moon } from "lucide-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -55,7 +55,7 @@ export function SidebarThemePicker() {
 
   return (
     <div className="px-2">
-      <p className="pt-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Visual Theme
       </p>
       <DropdownMenu>
@@ -99,7 +99,7 @@ export function SidebarModePicker() {
 
   return (
     <div className="px-2">
-      <p className="pt-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Mode
       </p>
       <div className="inline-flex w-full rounded-md border border-sidebar-border">
@@ -162,7 +162,7 @@ export function SidebarMotionPicker() {
 
   return (
     <div className="px-2">
-      <p className="pt-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+      <p className="pt-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Motion Theme
       </p>
       <DropdownMenu>
@@ -226,8 +226,8 @@ export function SidebarSpacingSlider() {
   return (
     <div className="px-2">
       {/* Header row */}
-      <div className="flex items-center gap-2 pt-2.5 mb-1">
-        <span className="flex-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Global Spacing</span>
+      <div className="flex items-center gap-2 pt-1.5 mb-0.5">
+        <span className="flex-1 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70">Global Spacing</span>
         {!isDefault && (
           <button
             onClick={handleReset}
@@ -321,7 +321,7 @@ export function SidebarAccentPicker() {
 
   return (
     <div className="px-2">
-      <p className="pt-2.5 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Accent
       </p>
       <div className="flex items-center gap-1.5 flex-wrap">
@@ -339,7 +339,7 @@ export function SidebarAccentPicker() {
             style={color.primary ? { backgroundColor: color.primary } : undefined}
           >
             {!color.primary && (
-              <CircleOff className="h-5 w-5 text-muted-foreground" />
+              <Circle className="h-5 w-5 text-muted-foreground" />
             )}
           </button>
         ))}
