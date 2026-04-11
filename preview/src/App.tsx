@@ -6,9 +6,6 @@ import { Toaster } from "@/components/ui/sonner";
 
 const ComponentGallery = lazy(() => import("@/components/gallery/ComponentGallery").then(m => ({ default: m.ComponentGallery })));
 const TokensView       = lazy(() => import("@/components/gallery/TokensView").then(m => ({ default: m.TokensView })));
-const DashboardBlock   = lazy(() => import("@/components/blocks/DashboardBlock").then(m => ({ default: m.DashboardBlock })));
-const SettingsBlock    = lazy(() => import("@/components/blocks/SettingsBlock").then(m => ({ default: m.SettingsBlock })));
-const AuthBlock        = lazy(() => import("@/components/blocks/AuthBlock").then(m => ({ default: m.AuthBlock })));
 const MarketingBlock   = lazy(() => import("@/components/blocks/MarketingBlock").then(m => ({ default: m.MarketingBlock })));
 const FleetOpsBlock    = lazy(() => import("@/components/blocks/FleetOpsBlock").then(m => ({ default: m.FleetOpsBlock })));
 
@@ -73,12 +70,6 @@ function ActiveView({ view }: { view: View }) {
       return <ComponentGallery />;
     case "tokens":
       return <TokensView />;
-    case "dashboard":
-      return <DashboardBlock />;
-    case "settings":
-      return <SettingsBlock />;
-    case "auth":
-      return <AuthBlock />;
     case "marketing":
       return <MarketingBlock />;
     case "fleet-ops":

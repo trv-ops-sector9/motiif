@@ -1,6 +1,7 @@
 /* Brutalist Dark — Inverted anti-design. White borders on black,
    monospace, bright vermillion accent. Raw and stark. */
 [data-theme="brutalist-dark"] {
+  --volant-grid-mix: 28%;
   --background: oklch(0.06 0 0);
   --foreground: oklch(0.95 0 0);
   --card: oklch(0.08 0 0);

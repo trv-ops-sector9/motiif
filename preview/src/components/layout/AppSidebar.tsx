@@ -1,8 +1,5 @@
 import { useState } from "react";
 import {
-  IconChartBar,
-  IconSettings,
-  IconLogin2,
   IconSpeakerphone,
   IconRoute,
   IconComponents,
@@ -18,9 +15,6 @@ import { SidebarThemeControls } from "@/components/layout/ThemeSwitcher";
 export type View =
   | "components"
   | "tokens"
-  | "dashboard"
-  | "settings"
-  | "auth"
   | "marketing"
   | "fleet-ops";
 
@@ -36,11 +30,8 @@ const GALLERY_ITEMS: NavItem[] = [
 ];
 
 const BLOCK_ITEMS: NavItem[] = [
-  { id: "fleet-ops", label: "Fleet Ops", icon: IconRoute          },
-  { id: "marketing", label: "Marketing", icon: IconSpeakerphone   },
-  { id: "dashboard", label: "Analytics", icon: IconChartBar       },
-  { id: "settings",  label: "Settings",  icon: IconSettings       },
-  { id: "auth",      label: "Auth",      icon: IconLogin2         },
+  { id: "fleet-ops", label: "Fleet Ops", icon: IconRoute        },
+  { id: "marketing", label: "Brand",     icon: IconSpeakerphone },
 ];
 
 interface AppSidebarProps {
@@ -106,7 +97,7 @@ export function AppSidebar({ activeView, onViewChange, collapsed }: AppSidebarPr
             aria-expanded={blocksOpen}
           >
             <span className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Blocks
+              Demos
             </span>
             <IconChevronRight
               className={cn(

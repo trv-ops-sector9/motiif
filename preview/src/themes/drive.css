@@ -1,6 +1,7 @@
 /* Drive Light — Premium automotive. Cool slate base, precision shadows,
    performance red accent. Engineered confidence. */
 [data-theme="drive"] {
+  --volant-grid-mix: 40%;
   --background: oklch(0.97 0.005 250);
   --foreground: oklch(0.15 0.02 250);
   --card: oklch(0.99 0.003 250);

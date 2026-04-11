@@ -1,6 +1,7 @@
 /* Brutalist Light — Editorial print, anti-design. Zero radius, no shadows,
    black borders, monospace everything, single vermillion accent. */
 [data-theme="brutalist"] {
+  --volant-grid-mix: 18%;
   --background: oklch(0.99 0 0);
   --foreground: oklch(0.08 0 0);
   --card: oklch(0.99 0 0);

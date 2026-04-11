@@ -1,529 +1,567 @@
 import { useRef, useState } from "react";
-import { IconArrowLeft, IconArrowRight, IconBolt, IconShieldCheck, IconStack2, IconPlus, IconChecks, IconAlertTriangle, IconActivity, IconUsers, IconFlame, IconClock, IconTrendingUp, IconGitMerge, IconMessage } from "@tabler/icons-react";
-import { RadialBar, RadialBarChart } from "recharts";
-import { Badge } from "@/components/ui/badge";
+import { IconArrowLeft, IconArrowRight, IconCheck, IconLoader2 } from "@tabler/icons-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { ChartContainer, ChartTooltip, ChartTooltipContent, type ChartConfig } from "@/components/ui/chart";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 
-// ── Page transition state ─────────────────────────────────────────────────────
-type Page  = "marketing" | "workspace";
+// ── Types ─────────────────────────────────────────────────────────────────────
+type Page  = "landing" | "configure";
 type Phase = "idle" | "exiting" | "entering";
 
-// ── Marketing page data ───────────────────────────────────────────────────────
+// ── Data ──────────────────────────────────────────────────────────────────────
 const FEATURES = [
   {
-    icon: IconBolt,
-    title: "Lightning fast",
-    desc: "Built on Vite and optimized for production. Zero unnecessary re-renders and tree-shaking by default.",
+    num: "01",
+    headline: "0–60 in 1.4 seconds.",
+    body: "A carbon-fibre monocoque chassis and 1,000 bhp electric drivetrain built for one purpose: the fastest road-legal lap time ever recorded.",
   },
   {
-    icon: IconShieldCheck,
-    title: "Accessible by default",
-    desc: "Every component ships with ARIA attributes, keyboard navigation, and screen-reader support out of the box.",
+    num: "02",
+    headline: "147 produced. That's all.",
+    body: "Every chassis numbered, every owner known. No second production run. No exceptions. If you're reading this, you're still in time.",
   },
   {
-    icon: IconStack2,
-    title: "Fully composable",
-    desc: "Mix, match, and extend. Each primitive is headless at heart — bring your own styles or use ours.",
+    num: "03",
+    headline: "Ground-effect. Not aerodynamics.",
+    body: "Over 2,000 kg of downforce at 150 mph. The Volant One doesn't fight the air — it uses it.",
   },
 ];
 
-const TESTIMONIALS = [
-  {
-    quote: "The theme system is exactly what I needed. Switching from Fluent to a dark minimal aesthetic took less than 30 seconds.",
-    author: "Alex Kim",
-    role: "Senior Frontend Engineer",
-    initials: "AK",
-  },
-  {
-    quote: "Finally a component library that doesn't fight you when you want to change the radius or tweak the color palette.",
-    author: "Sam Rivera",
-    role: "Design Systems Lead",
-    initials: "SR",
-  },
-];
+const SPECS = {
+  powertrain: [
+    { id: "standard",    label: "Standard",    desc: "1,000 bhp · 450 mi range" },
+    { id: "performance", label: "Performance", desc: "1,200 bhp · 380 mi range" },
+    { id: "track",       label: "Track",       desc: "1,400 bhp · circuit-only"  },
+  ],
+  exterior: [
+    { id: "obsidian",  label: "Obsidian",  desc: "Satin black"          },
+    { id: "arctic",    label: "Arctic",    desc: "Gloss white"          },
+    { id: "bespoke",   label: "Bespoke",   desc: "Custom paint program" },
+  ],
+  interior: [
+    { id: "carbon",   label: "Carbon",   desc: "Exposed weave + alcantara"  },
+    { id: "heritage", label: "Heritage", desc: "Full grain leather"          },
+    { id: "minimal",  label: "Minimal",  desc: "Stripped, weight-optimised" },
+  ],
+} as const;
 
-// ── Workspace page data ───────────────────────────────────────────────────────
-const STATS = [
-  { label: "Total tasks",   value: "64", icon: IconChecks,         delta: "+8 this week" },
-  { label: "Completed",     value: "41", icon: IconActivity,       delta: "+12 vs last"  },
-  { label: "Overdue",       value: "8",  icon: IconAlertTriangle,  delta: "↓ 2 resolved" },
-  { label: "Contributors",  value: "5",  icon: IconUsers,          delta: "2 active now" },
-] as const;
+type PowertrainId = typeof SPECS.powertrain[number]["id"];
+type ExteriorId   = typeof SPECS.exterior[number]["id"];
+type InteriorId   = typeof SPECS.interior[number]["id"];
 
-type ProjectStatus = "In progress" | "In review" | "Blocked" | "Shipped";
+const REMAINING = 53;
+const TOTAL     = 200;
 
-const STATUS_BADGE: Record<ProjectStatus, "secondary" | "outline" | "destructive" | "default"> = {
-  "In progress": "secondary",
-  "In review":   "outline",
-  "Blocked":     "destructive",
-  "Shipped":     "default",
-};
+// ── Hero keyframes (React 19 <style> dedup) ───────────────────────────────────
+const HERO_KEYFRAMES = `
+@keyframes volant-drift {
+  0%   { transform: translate(0, 0) scale(1); }
+  33%  { transform: translate(10%, 6%) scale(1.15); }
+  66%  { transform: translate(-7%, 8%) scale(0.9); }
+  100% { transform: translate(0, 0) scale(1); }
+}
+`;
 
-const PROJECTS: { name: string; owner: string; status: ProjectStatus; progress: number; tag: string; ago: string }[] = [
-  { name: "Motion token system",      owner: "AK", status: "In progress", progress: 72,  tag: "Design systems", ago: "2h ago" },
-  { name: "Component library v3",     owner: "SR", status: "In review",   progress: 91,  tag: "Engineering",    ago: "5h ago" },
-  { name: "Mobile onboarding flow",   owner: "JL", status: "In progress", progress: 34,  tag: "Product",        ago: "1d ago" },
-  { name: "API v2 migration",         owner: "CN", status: "Blocked",     progress: 55,  tag: "Backend",        ago: "2d ago" },
-  { name: "Accessibility audit",      owner: "MC", status: "Shipped",     progress: 100, tag: "QA",             ago: "3d ago" },
-];
-
-const TEAM = [
-  { name: "Alex Kim",      role: "Design Lead", initials: "AK", active: true  },
-  { name: "Sam Rivera",    role: "Frontend",    initials: "SR", active: true  },
-  { name: "Jordan Lee",    role: "Product",     initials: "JL", active: false },
-  { name: "Casey Nguyen",  role: "Backend",     initials: "CN", active: false },
-  { name: "Morgan Chen",   role: "Design",      initials: "MC", active: false },
-];
-
-const ACTIVITY = [
-  { icon: IconChecks,         text: "Accessibility audit shipped to production",  user: "MC", time: "just now", accent: "text-green-500"       },
-  { icon: IconAlertTriangle, text: "API migration blocked on auth handshake",     user: "CN", time: "1h ago",   accent: "text-destructive"     },
-  { icon: IconGitMerge,      text: "PR #42 merged — component library v3 RC",    user: "SR", time: "2h ago",   accent: "text-primary"         },
-  { icon: IconPlus,          text: "New task: dark mode token audit",             user: "AK", time: "3h ago",   accent: "text-primary"         },
-  { icon: IconMessage,       text: "Comment thread on mobile onboarding flow",    user: "JL", time: "5h ago",   accent: "text-muted-foreground" },
-  { icon: IconActivity,      text: "Component library review session started",    user: "SR", time: "1d ago",   accent: "text-muted-foreground" },
-];
-
-// Radial chart data — one bar per weekday
-const velocityChartData = [
-  { day: "Mon", completed: 8,  fill: "var(--color-mon)" },
-  { day: "Tue", completed: 11, fill: "var(--color-tue)" },
-  { day: "Wed", completed: 6,  fill: "var(--color-wed)" },
-  { day: "Thu", completed: 13, fill: "var(--color-thu)" },
-  { day: "Fri", completed: 9,  fill: "var(--color-fri)" },
-];
-
-const velocityChartConfig = {
-  completed: { label: "Tasks completed" },
-  mon: { label: "Monday",    color: "var(--chart-1)" },
-  tue: { label: "Tuesday",   color: "var(--chart-2)" },
-  wed: { label: "Wednesday", color: "var(--chart-3)" },
-  thu: { label: "Thursday",  color: "var(--chart-4)" },
-  fri: { label: "Friday",    color: "var(--chart-5)" },
-} satisfies ChartConfig;
-
-type Priority = "P0" | "P1" | "P2" | "P3";
-const PRIORITY_COLOR: Record<Priority, string> = {
-  P0: "bg-destructive text-destructive-foreground",
-  P1: "bg-orange-500 text-white",
-  P2: "bg-primary text-primary-foreground",
-  P3: "bg-muted text-muted-foreground",
-};
-
-const PRIORITIES: { label: string; priority: Priority; due: string; assignee: string }[] = [
-  { label: "Ship token documentation",         priority: "P0", due: "Today",     assignee: "AK" },
-  { label: "Fix accordion in dense theme",     priority: "P1", due: "Tomorrow",  assignee: "SR" },
-  { label: "Write v1 migration guide",         priority: "P1", due: "This week", assignee: "MC" },
-  { label: "Add integration tests for tokens", priority: "P2", due: "Next week", assignee: "CN" },
-  { label: "Performance benchmark suite",      priority: "P3", due: "Backlog",   assignee: "JL" },
-];
-
-type DeadlineStatus = "on-track" | "at-risk" | "overdue";
-const DEADLINE_COLOR: Record<DeadlineStatus, string> = {
-  "on-track": "bg-green-500/15 text-green-600",
-  "at-risk":  "bg-orange-500/15 text-orange-600",
-  "overdue":  "bg-destructive/15 text-destructive",
-};
-
-const DEADLINES: { name: string; date: string; daysLeft: number; status: DeadlineStatus }[] = [
-  { name: "Beta launch",    date: "Q2 W1",  daysLeft: 4,  status: "at-risk"  },
-  { name: "Docs freeze",    date: "Q2 W2",  daysLeft: 8,  status: "on-track" },
-  { name: "v1.0 RC",        date: "Q2 W4",  daysLeft: 18, status: "on-track" },
-  { name: "Public release", date: "Q2 W6",  daysLeft: 32, status: "on-track" },
-];
-
-const CATEGORY_BREAKDOWN = [
-  { label: "Design systems", count: 18, pct: 72 },
-  { label: "Engineering",    count: 14, pct: 56 },
-  { label: "Product",        count: 9,  pct: 36 },
-  { label: "Backend",        count: 7,  pct: 28 },
-  { label: "QA",             count: 5,  pct: 20 },
-];
-
-// ── Sub-pages ─────────────────────────────────────────────────────────────────
-
-function MarketingPage({ onNavigate }: { onNavigate: () => void }) {
+// ── SVG silhouette ────────────────────────────────────────────────────────────
+function CarSilhouette({ className }: { className?: string }) {
   return (
-    <div className="min-h-full overflow-y-auto">
-      {/* Hero */}
-      <section className="px-6 pt-20 pb-16 text-center max-w-3xl mx-auto">
-        <span className="inline-block rounded-full border px-3 py-1 text-xs font-medium text-muted-foreground mb-6">
-          Now in public beta
-        </span>
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
-          Components that adapt<br />to your brand
-        </h1>
-        <p className="mt-5 text-lg text-muted-foreground max-w-xl mx-auto leading-relaxed">
-          A theme-first component library built on shadcn/ui, Tailwind v4, and Radix primitives.
-          Switch between design systems without touching a single component.
-        </p>
-        <div className="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
-          <Button size="lg" onClick={onNavigate}>
-            Get started free
-            <IconArrowRight className="h-4 w-4" />
-          </Button>
-          <Button size="lg" variant="outline" onClick={onNavigate}>
-            View on GitHub
-          </Button>
-        </div>
-      </section>
+    <svg
+      viewBox="0 0 800 280"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+      className={className}
+      aria-hidden="true"
+    >
+      {/* Body fill */}
+      <path
+        d="M90 210 C90 210 120 210 155 207 L175 207 C190 207 205 198 220 183 L255 150 C272 128 305 112 360 107 L465 105 C510 105 548 112 578 128 L628 155 C648 168 665 190 670 198 L688 205 L700 208 L712 210 L90 210 Z"
+        fill="var(--foreground)"
+        opacity="0.04"
+      />
+      {/* Cabin fill */}
+      <path
+        d="M255 150 C265 135 285 118 322 110 L405 106 L488 106 C525 106 550 116 574 134 L614 155 L255 150 Z"
+        fill="var(--primary)"
+        opacity="0.08"
+      />
+      {/* Cabin outline */}
+      <path
+        d="M255 150 C265 135 285 118 322 110 L405 106 L488 106 C525 106 550 116 574 134 L614 155"
+        stroke="var(--primary)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+      />
+      {/* Body outline */}
+      <path
+        d="M108 208 L160 207 C178 207 198 202 215 188 L255 150 L614 155 L648 176 C662 186 672 198 680 204 L706 208"
+        stroke="var(--foreground)"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        fill="none"
+        opacity="0.45"
+      />
+      {/* Rear overhang */}
+      <path d="M90 210 L78 210 L76 214 L92 214 Z" fill="var(--foreground)" opacity="0.18" />
+      {/* Front splitter */}
+      <path d="M710 208 L748 210 L748 214 L708 214 Z" fill="var(--foreground)" opacity="0.18" />
+      {/* Headlight */}
+      <path d="M718 186 L738 190 L736 198 L717 194 Z" fill="var(--primary)" opacity="0.5" />
+      {/* Taillight */}
+      <path d="M96 185 L80 188 L81 196 L98 193 Z" fill="var(--primary)" opacity="0.5" />
+      {/* Door seam A */}
+      <path d="M300 152 L287 208" stroke="var(--foreground)" strokeWidth="0.75" strokeDasharray="4 3" opacity="0.18" />
+      {/* Door seam B */}
+      <path d="M450 153 L462 208" stroke="var(--foreground)" strokeWidth="0.75" strokeDasharray="4 3" opacity="0.18" />
+      {/* Rear wheel */}
+      <circle cx="210" cy="214" r="32" stroke="var(--foreground)" strokeWidth="1.5" fill="none" opacity="0.55" />
+      <circle cx="210" cy="214" r="20" stroke="var(--foreground)" strokeWidth="1"   fill="none" opacity="0.25" />
+      <circle cx="210" cy="214" r="5"  fill="var(--foreground)" opacity="0.35" />
+      {/* Front wheel */}
+      <circle cx="618" cy="214" r="32" stroke="var(--foreground)" strokeWidth="1.5" fill="none" opacity="0.55" />
+      <circle cx="618" cy="214" r="20" stroke="var(--foreground)" strokeWidth="1"   fill="none" opacity="0.25" />
+      <circle cx="618" cy="214" r="5"  fill="var(--foreground)" opacity="0.35" />
+      {/* Ground shadow */}
+      <ellipse cx="210" cy="248" rx="42" ry="5" fill="var(--foreground)" opacity="0.05" />
+      <ellipse cx="618" cy="248" rx="42" ry="5" fill="var(--foreground)" opacity="0.05" />
+      {/* Ground line */}
+      <line x1="40" y1="248" x2="780" y2="248" stroke="var(--foreground)" strokeWidth="0.5" opacity="0.12" />
+    </svg>
+  );
+}
 
-      {/* Features */}
-      <section className="px-6 py-16 bg-muted/30">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold tracking-tight text-center mb-3">
-            Everything you need
-          </h2>
-          <p className="text-center text-muted-foreground mb-10 max-w-xl mx-auto">
-            Opinionated defaults with escape hatches everywhere. Ship fast, customize later.
-          </p>
-          <div className="grid sm:grid-cols-3 gap-6">
-            {FEATURES.map((f) => {
-              const Icon = f.icon;
-              return (
-                <Card key={f.title} interactive className="border bg-card" onClick={onNavigate}>
-                  <CardHeader className="pb-6">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10 mb-1">
-                      <Icon className="h-5 w-5 text-primary" />
-                    </div>
-                    <CardTitle className="text-base">{f.title}</CardTitle>
-                    <CardDescription className="text-sm leading-relaxed">{f.desc}</CardDescription>
-                  </CardHeader>
-                </Card>
-              );
-            })}
+// ── Spec selector card ────────────────────────────────────────────────────────
+function SpecCard({
+  id, label, desc, selected, onSelect,
+}: {
+  id: string; label: string; desc: string; selected: boolean; onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      className={cn(
+        "w-full text-left px-3.5 py-3 rounded-lg border transition-all cursor-pointer",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+        selected
+          ? "border-primary bg-primary/10"
+          : "border-border bg-card hover:border-primary/40 hover:bg-muted/30",
+      )}
+    >
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-sm font-semibold">{label}</span>
+        <span
+          className={cn(
+            "h-3 w-3 rounded-full border-2 shrink-0 transition-all",
+            selected
+              ? "border-primary bg-primary"
+              : "border-muted-foreground/30 bg-transparent",
+          )}
+        />
+      </div>
+      <p className="text-[11px] text-muted-foreground mt-0.5 leading-snug">{desc}</p>
+    </button>
+  );
+}
+
+// ── Landing page ──────────────────────────────────────────────────────────────
+function LandingPage({ onNavigate }: { onNavigate: () => void }) {
+  return (
+    <div className="min-h-full">
+      <style>{HERO_KEYFRAMES}</style>
+
+      {/* ── Hero ── */}
+      {/* ── Hero ── */}
+      {/* Grid baked into section bg — static, no z-index needed */}
+      <section
+        className="relative min-h-[88vh] overflow-hidden"
+        style={{
+          backgroundColor: "var(--background)",
+          backgroundImage: [
+            "linear-gradient(color-mix(in oklch, var(--border) var(--volant-grid-mix, 80%), transparent) 1px, transparent 1px)",
+            "linear-gradient(90deg, color-mix(in oklch, var(--border) var(--volant-grid-mix, 80%), transparent) 1px, transparent 1px)",
+          ].join(", "),
+          backgroundSize: "64px 64px",
+        }}
+      >
+        {/* Gradient mesh — extended past edges so drift never clips */}
+        <div
+          className="absolute pointer-events-none"
+          aria-hidden="true"
+          style={{
+            inset: "-30%",
+            animation: "volant-drift 14s ease-in-out infinite",
+            background: [
+              "radial-gradient(ellipse 65% 55% at 12% 55%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 60%)",
+              "radial-gradient(ellipse 60% 75% at 88% 25%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 55%)",
+              "radial-gradient(ellipse 35% 35% at 55% 85%, color-mix(in oklch, var(--muted-foreground) 6%, transparent), transparent 50%)",
+            ].join(", "),
+          }}
+        />
+
+        {/* Content — position relative paints above gradient */}
+        <div className="relative flex flex-col justify-end min-h-[88vh] px-8 pb-20 pt-8">
+          {/* Brand mark */}
+          <div className="absolute top-8 left-8">
+            <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-muted-foreground">
+              Volant
+            </span>
+          </div>
+
+          {/* Scarcity indicator */}
+          <div className="absolute top-8 right-8 text-right">
+            <p className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-1.5">
+              {REMAINING} of {TOTAL} remaining
+            </p>
+            <div className="h-px w-28 bg-border overflow-hidden ml-auto">
+              <div
+                className="h-full bg-primary transition-all"
+                style={{ width: `${(REMAINING / TOTAL) * 100}%` }}
+              />
+            </div>
+          </div>
+
+          {/* Headline block — flush left, asymmetric */}
+          <div className="max-w-4xl">
+            <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-primary mb-5">
+              Series I · 2026
+            </p>
+            <h1
+              className="font-bold leading-[0.9] tracking-[-0.04em] text-foreground mb-7"
+              style={{ fontSize: "clamp(3.2rem, 8.5vw, 7.5rem)" }}
+            >
+              Amplified.<br />
+              Electric.<br />
+              Uncompromised.
+            </h1>
+            <p className="text-[13px] text-muted-foreground max-w-xs leading-relaxed mb-10">
+              0–60 in 1.4 seconds. 147 produced.<br />
+              Ground-effect aerodynamics.<br />
+              The Volant One exists for those who require more.
+            </p>
+            <button
+              onClick={onNavigate}
+              className={cn(
+                "group inline-flex items-center gap-3 cursor-pointer",
+                "text-[13px] font-semibold tracking-wide text-foreground",
+                "border-b border-foreground/60 pb-0.5",
+                "hover:border-primary hover:text-primary transition-colors duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm",
+              )}
+            >
+              Configure yours
+              <IconArrowRight className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1" />
+            </button>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
-      <section className="px-6 py-16 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-bold tracking-tight text-center mb-10">
-          Loved by developers
-        </h2>
-        <div className="grid sm:grid-cols-2 gap-6">
-          {TESTIMONIALS.map((t) => (
-            <Card key={t.author} className="bg-card">
-              <CardContent className="pt-6">
-                <blockquote className="text-sm leading-relaxed text-muted-foreground mb-4">
-                  "{t.quote}"
-                </blockquote>
-                <div className="flex items-center gap-3">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-semibold">
-                    {t.initials}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{t.author}</p>
-                    <p className="text-xs text-muted-foreground">{t.role}</p>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+      {/* ── Features — staggered numeral list ── */}
+      <section className="px-8 py-24 max-w-3xl">
+        <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-muted-foreground mb-16">
+          The specification
+        </p>
+        <div className="space-y-16">
+          {FEATURES.map((f) => (
+            <div
+              key={f.num}
+              className="grid items-start gap-8"
+              style={{ gridTemplateColumns: "72px 1fr" }}
+            >
+              <span
+                className="font-bold text-foreground/10 leading-none select-none tabular-nums"
+                style={{ fontSize: "clamp(2.2rem, 4.5vw, 3.5rem)" }}
+                aria-hidden="true"
+              >
+                {f.num}
+              </span>
+              <div>
+                <h3 className="text-[15px] font-semibold tracking-tight text-foreground mb-2">
+                  {f.headline}
+                </h3>
+                <p className="text-[13px] text-muted-foreground leading-relaxed">
+                  {f.body}
+                </p>
+              </div>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t px-6 py-8">
-        <div className="max-w-4xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-          <p>© 2026 Motif. MIT license.</p>
-          <div className="flex gap-5">
-            {["Docs", "GitHub", "Changelog", "Privacy"].map((link) => (
-              <button key={link} onClick={onNavigate} className="hover:text-foreground transition-colors cursor-pointer">
-                {link}
-              </button>
-            ))}
-          </div>
-        </div>
-      </footer>
-    </div>
-  );
-}
-
-function WorkspacePage({ onNavigate }: { onNavigate: () => void }) {
-  return (
-    <div className="min-h-full overflow-y-auto">
-      {/* Header */}
-      <div className="flex items-center justify-between px-6 py-5 border-b">
-        <div className="flex items-center gap-3">
-          <Button variant="ghost" size="icon" onClick={onNavigate} aria-label="Back to landing page">
-            <IconArrowLeft className="h-4 w-4" />
-          </Button>
-          <div>
-            <h1 className="text-xl font-bold tracking-tight">Projects</h1>
-            <p className="text-sm text-muted-foreground mt-0.5">5 active · last updated 2h ago</p>
-          </div>
-        </div>
-        <Button>
-          <IconPlus className="h-4 w-4" />
-          New project
+      {/* ── Bottom CTA bar ── */}
+      <div className="border-t px-8 py-7 flex items-center justify-between gap-4">
+        <p className="text-[11px] text-muted-foreground">
+          Deliveries begin Q4 2026 · UK &amp; EU
+        </p>
+        <Button onClick={onNavigate}>
+          Reserve your position
+          <IconArrowRight className="h-3.5 w-3.5" />
         </Button>
       </div>
+    </div>
+  );
+}
 
-      {/* Stat cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 px-6 pt-5 pb-4">
-        {STATS.map((s) => {
-          const Icon = s.icon;
-          return (
-            <Card key={s.label} interactive>
-              <CardHeader className="pb-4">
-                <Icon className="h-4 w-4 text-muted-foreground mb-2" />
-                <CardTitle className="text-2xl font-bold tabular-nums">{s.value}</CardTitle>
-                <CardDescription className="text-xs">{s.label}</CardDescription>
-                <p className="text-[11px] text-muted-foreground/70 mt-0.5">{s.delta}</p>
-              </CardHeader>
-            </Card>
-          );
-        })}
+// ── Configure page ────────────────────────────────────────────────────────────
+type Selections = {
+  powertrain: PowertrainId;
+  exterior:   ExteriorId;
+  interior:   InteriorId;
+};
+type FormState = "idle" | "loading" | "success";
+
+function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
+  const [specs, setSpecs] = useState<Selections>({
+    powertrain: "performance",
+    exterior:   "obsidian",
+    interior:   "carbon",
+  });
+  const [name,       setName]       = useState("");
+  const [email,      setEmail]      = useState("");
+  const [nameErr,    setNameErr]    = useState("");
+  const [emailErr,   setEmailErr]   = useState("");
+  const [formState,  setFormState]  = useState<FormState>("idle");
+  const [refNum,     setRefNum]     = useState("");
+
+  const selectedPowertrain = SPECS.powertrain.find(s => s.id === specs.powertrain)!;
+  const selectedExterior   = SPECS.exterior.find(s => s.id === specs.exterior)!;
+  const selectedInterior   = SPECS.interior.find(s => s.id === specs.interior)!;
+
+  const validate = () => {
+    let ok = true;
+    if (!name.trim())  { setNameErr("Name is required.");          ok = false; } else setNameErr("");
+    if (!email.trim()) { setEmailErr("Email is required.");         ok = false; }
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { setEmailErr("Enter a valid email."); ok = false; }
+    else setEmailErr("");
+    return ok;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validate()) return;
+    setFormState("loading");
+    await new Promise(r => setTimeout(r, 1800));
+    setRefNum(`VOL-${String(Math.floor(Math.random() * 9000) + 1000)}`);
+    setFormState("success");
+  };
+
+  return (
+    <div className="min-h-full">
+      {/* Header */}
+      <div className="flex items-center gap-3 px-8 py-5 border-b">
+        <button
+          onClick={onNavigate}
+          aria-label="Back to brand page"
+          className={cn(
+            "flex h-8 w-8 items-center justify-center rounded-md cursor-pointer shrink-0",
+            "text-muted-foreground hover:text-foreground hover:bg-accent transition-colors",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
+          )}
+        >
+          <IconArrowLeft className="h-4 w-4" />
+        </button>
+        <div>
+          <p className="text-sm font-semibold tracking-tight">Volant One — Configuration</p>
+          <p className="text-[11px] text-muted-foreground">Series I · {REMAINING} positions remaining</p>
+        </div>
       </div>
 
-      {/* Projects + Team */}
-      <div className="grid sm:grid-cols-[1fr_220px] gap-4 px-6 pb-4">
-        {/* Project list */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Active projects</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 px-2 pb-2">
-            {PROJECTS.map((p) => (
-              <div
-                key={p.name}
-                className="flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-muted/60 transition-colors group"
-              >
-                {/* Owner avatar */}
-                <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-primary/10 text-[10px] font-semibold text-primary">
-                  {p.owner}
-                </div>
+      {/* Body */}
+      <div className="grid lg:grid-cols-[1fr_320px]">
+        {/* Left: silhouette + spec pickers */}
+        <div className="px-8 py-10 border-r">
+          <CarSilhouette className="w-full max-w-2xl mb-12" />
 
-                {/* Name + tag */}
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium truncate leading-tight">{p.name}</p>
-                  <p className="text-[11px] text-muted-foreground mt-0.5">{p.tag}</p>
-                </div>
-
-                {/* Progress */}
-                <div className="hidden sm:flex flex-col items-end gap-1 w-24 shrink-0">
-                  <span className="text-[11px] text-muted-foreground tabular-nums">{p.progress}%</span>
-                  <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
-                    <div
-                      className="h-full rounded-full bg-primary"
-                      style={{ width: `${p.progress}%` }}
-                    />
-                  </div>
-                </div>
-
-                {/* Status + time */}
-                <div className="flex flex-col items-end gap-1 shrink-0">
-                  <Badge variant={STATUS_BADGE[p.status]} className="text-[10px] h-4 px-1.5">
-                    {p.status}
-                  </Badge>
-                  <span className="text-[10px] text-muted-foreground">{p.ago}</span>
-                </div>
+          <div className="max-w-2xl space-y-10">
+            {/* Powertrain */}
+            <fieldset>
+              <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                Powertrain
+              </legend>
+              <div className="grid sm:grid-cols-3 gap-2">
+                {SPECS.powertrain.map(opt => (
+                  <SpecCard
+                    key={opt.id}
+                    {...opt}
+                    selected={specs.powertrain === opt.id}
+                    onSelect={() => setSpecs(s => ({ ...s, powertrain: opt.id }))}
+                  />
+                ))}
               </div>
-            ))}
-          </CardContent>
-        </Card>
+            </fieldset>
 
-        {/* Team roster */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Team</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 px-2 pb-2">
-            {TEAM.map((m) => (
-              <div
-                key={m.name}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
-              >
-                <div className="relative shrink-0">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-[10px] font-semibold">
-                    {m.initials}
-                  </div>
-                  {m.active && (
-                    <span className="absolute -bottom-0.5 -right-0.5 h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-card" />
-                  )}
-                </div>
-                <div className="min-w-0">
-                  <p className="text-sm font-medium truncate leading-tight">{m.name}</p>
-                  <p className="text-[11px] text-muted-foreground">{m.role}</p>
-                </div>
+            {/* Exterior */}
+            <fieldset>
+              <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                Exterior
+              </legend>
+              <div className="grid sm:grid-cols-3 gap-2">
+                {SPECS.exterior.map(opt => (
+                  <SpecCard
+                    key={opt.id}
+                    {...opt}
+                    selected={specs.exterior === opt.id}
+                    onSelect={() => setSpecs(s => ({ ...s, exterior: opt.id }))}
+                  />
+                ))}
               </div>
-            ))}
+            </fieldset>
 
-            <div className="px-3 pt-3 mt-1 border-t">
-              <Button variant="outline" size="sm" className="w-full text-xs">
-                <IconPlus className="h-3 w-3" />
-                Invite member
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+            {/* Interior */}
+            <fieldset>
+              <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
+                Interior
+              </legend>
+              <div className="grid sm:grid-cols-3 gap-2">
+                {SPECS.interior.map(opt => (
+                  <SpecCard
+                    key={opt.id}
+                    {...opt}
+                    selected={specs.interior === opt.id}
+                    onSelect={() => setSpecs(s => ({ ...s, interior: opt.id }))}
+                  />
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        </div>
 
-      {/* Weekly velocity (radial) + Activity feed */}
-      <div className="grid sm:grid-cols-2 gap-4 px-6 pb-4">
-        {/* Radial bar chart — tasks completed per weekday */}
-        <Card className="flex flex-col">
-          <CardHeader className="items-center pb-0">
-            <CardTitle className="text-sm font-semibold">Weekly velocity</CardTitle>
-            <CardDescription className="text-[11px]">Tasks completed · Mon – Fri</CardDescription>
-          </CardHeader>
-          <CardContent className="flex-1 pb-0">
-            <ChartContainer
-              config={velocityChartConfig}
-              className="mx-auto aspect-square max-h-[200px]"
-            >
-              <RadialBarChart data={velocityChartData} innerRadius={30} outerRadius={90}>
-                <ChartTooltip
-                  cursor={false}
-                  content={<ChartTooltipContent hideLabel nameKey="day" />}
-                />
-                <RadialBar dataKey="completed" background />
-              </RadialBarChart>
-            </ChartContainer>
-          </CardContent>
-          <CardFooter className="flex-col gap-1 pb-4 pt-2 text-xs">
-            <div className="flex items-center gap-1.5 font-medium">
-              Trending up this week <IconTrendingUp className="h-3.5 w-3.5" />
-            </div>
-            <div className="flex gap-3">
-              {velocityChartData.map((d) => (
-                <span key={d.day} className="flex items-center gap-1 text-muted-foreground">
-                  <span className="h-2 w-2 rounded-full inline-block" style={{ background: d.fill }} />
-                  {d.day}
-                </span>
+        {/* Right: summary + form */}
+        <div className="px-8 py-10 flex flex-col">
+          {/* Live spec summary */}
+          <div className="mb-8">
+            <p className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-4">
+              Your configuration
+            </p>
+            <div className="space-y-0">
+              {[
+                { label: "Powertrain", value: `${selectedPowertrain.label} — ${selectedPowertrain.desc}` },
+                { label: "Exterior",   value: `${selectedExterior.label} — ${selectedExterior.desc}`     },
+                { label: "Interior",   value: `${selectedInterior.label} — ${selectedInterior.desc}`     },
+              ].map(row => (
+                <div
+                  key={row.label}
+                  className="flex items-start justify-between gap-4 py-2.5 border-b border-border/40 last:border-0"
+                >
+                  <span className="text-[12px] text-muted-foreground shrink-0">{row.label}</span>
+                  <span className="text-[12px] font-medium text-right leading-snug">{row.value}</span>
+                </div>
               ))}
             </div>
-          </CardFooter>
-        </Card>
+          </div>
 
-        {/* Activity feed */}
-        <Card>
-          <CardHeader className="pb-3">
-            <CardTitle className="text-sm font-semibold">Recent activity</CardTitle>
-          </CardHeader>
-          <CardContent className="pt-0 px-2 pb-2">
-            {ACTIVITY.map((a, i) => {
-              const Icon = a.icon;
-              return (
-                <div
-                  key={i}
-                  className="flex items-start gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
-                >
-                  <Icon className={cn("h-3.5 w-3.5 mt-0.5 shrink-0", a.accent)} />
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs leading-snug truncate">{a.text}</p>
-                    <p className="text-[10px] text-muted-foreground mt-0.5">{a.user} · {a.time}</p>
-                  </div>
-                </div>
-              );
-            })}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Priority queue + Deadlines + Category breakdown */}
-      <div className="grid sm:grid-cols-[1fr_200px_200px] gap-4 px-6 pb-6">
-        {/* Priority queue */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-semibold">Priority queue</CardTitle>
-              <IconFlame className="h-3.5 w-3.5 text-orange-500" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0 px-2 pb-2">
-            {PRIORITIES.map((p, i) => (
+          {/* Divider */}
+          <div className="border-t pt-6 flex-1 flex flex-col">
+            {formState === "success" ? (
+              /* ── Success state ─────────────────────────────────── */
               <div
-                key={i}
-                className="flex items-center gap-2.5 px-3 py-2 rounded-lg hover:bg-muted/60 transition-colors"
+                className="flex flex-col gap-5"
+                style={{ animation: "var(--anim-slide-up-in)" }}
               >
-                <span className={cn("text-[9px] font-bold px-1.5 py-0.5 rounded shrink-0", PRIORITY_COLOR[p.priority])}>
-                  {p.priority}
-                </span>
-                <p className="flex-1 text-xs truncate">{p.label}</p>
-                <div className="flex items-center gap-2 shrink-0">
-                  <span className="text-[10px] text-muted-foreground">{p.due}</span>
-                  <div className="flex h-5 w-5 items-center justify-center rounded-full bg-primary/10 text-[9px] font-semibold text-primary">
-                    {p.assignee}
-                  </div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
+                  <IconCheck className="h-5 w-5 text-primary" aria-hidden="true" />
                 </div>
+                <div>
+                  <h2 className="text-[15px] font-semibold mb-1.5">Position secured.</h2>
+                  <p className="text-[13px] text-muted-foreground leading-relaxed">
+                    Your reservation is confirmed. Expect contact from the Volant team within 48 hours.
+                  </p>
+                </div>
+                <div className="rounded-lg bg-muted/50 px-4 py-3.5">
+                  <p className="text-[10px] tracking-[0.18em] uppercase text-muted-foreground mb-1">
+                    Reservation reference
+                  </p>
+                  <p className="text-xl font-bold tracking-[0.08em]">{refNum}</p>
+                </div>
+                <p className="text-[11px] text-muted-foreground leading-relaxed">
+                  {selectedPowertrain.label} · {selectedExterior.label} · {selectedInterior.label}
+                </p>
               </div>
-            ))}
-          </CardContent>
-        </Card>
+            ) : (
+              /* ── Reserve form ──────────────────────────────────── */
+              <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
+                <p className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground">
+                  Secure your position
+                </p>
 
-        {/* Deadlines */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-semibold">Deadlines</CardTitle>
-              <IconClock className="h-3.5 w-3.5 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0 px-3 pb-3 space-y-2.5">
-            {DEADLINES.map((d, i) => (
-              <div key={i} className="group">
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-xs font-medium truncate">{d.name}</p>
-                  <span className={cn("text-[10px] px-1.5 py-0.5 rounded-full font-medium ml-2 shrink-0", DEADLINE_COLOR[d.status])}>
-                    {d.daysLeft}d
-                  </span>
-                </div>
-                <div className="flex items-center justify-between">
-                  <span className="text-[10px] text-muted-foreground">{d.date}</span>
-                  <div className="w-20 h-1 rounded-full bg-muted overflow-hidden">
-                    <div
-                      className={cn("h-full rounded-full", d.status === "at-risk" ? "bg-orange-500" : "bg-green-500")}
-                      style={{ width: `${Math.max(8, 100 - (d.daysLeft / 30) * 100)}%` }}
-                    />
-                  </div>
-                </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
-
-        {/* Category breakdown */}
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-sm font-semibold">By category</CardTitle>
-              <IconTrendingUp className="h-3.5 w-3.5 text-muted-foreground" />
-            </div>
-          </CardHeader>
-          <CardContent className="pt-0 px-3 pb-3 space-y-2.5">
-            {CATEGORY_BREAKDOWN.map((c, i) => (
-              <div key={i}>
-                <div className="flex items-center justify-between mb-1">
-                  <p className="text-[11px] text-muted-foreground truncate">{c.label}</p>
-                  <span className="text-[11px] font-semibold tabular-nums ml-2 shrink-0">{c.count}</span>
-                </div>
-                <div className="w-full h-1.5 rounded-full bg-muted overflow-hidden">
-                  <div
-                    className="h-full rounded-full bg-primary"
-                    style={{ width: `${c.pct}%` }}
+                <div className="space-y-1.5">
+                  <Label htmlFor="vol-name" className="text-[12px]">Full name</Label>
+                  <Input
+                    id="vol-name"
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                    onBlur={() => { if (!name.trim()) setNameErr("Name is required."); else setNameErr(""); }}
+                    placeholder="James Whitmore"
+                    autoComplete="name"
+                    aria-describedby={nameErr ? "vol-name-err" : undefined}
+                    className={cn(nameErr && "border-destructive focus-visible:ring-destructive")}
                   />
+                  {nameErr && (
+                    <p id="vol-name-err" role="alert" className="text-[11px] text-destructive">{nameErr}</p>
+                  )}
                 </div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="vol-email" className="text-[12px]">Email address</Label>
+                  <Input
+                    id="vol-email"
+                    type="email"
+                    inputMode="email"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                    onBlur={() => {
+                      if (!email.trim()) setEmailErr("Email is required.");
+                      else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) setEmailErr("Enter a valid email.");
+                      else setEmailErr("");
+                    }}
+                    placeholder="james@example.com"
+                    autoComplete="email"
+                    aria-describedby={emailErr ? "vol-email-err" : undefined}
+                    className={cn(emailErr && "border-destructive focus-visible:ring-destructive")}
+                  />
+                  {emailErr && (
+                    <p id="vol-email-err" role="alert" className="text-[11px] text-destructive">{emailErr}</p>
+                  )}
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full mt-1"
+                  disabled={formState === "loading"}
+                >
+                  {formState === "loading" ? (
+                    <>
+                      <IconLoader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+                      Confirming reservation…
+                    </>
+                  ) : (
+                    <>
+                      Reserve your Volant One
+                      <IconArrowRight className="h-3.5 w-3.5" />
+                    </>
+                  )}
+                </Button>
+
+                <p className="text-[11px] text-muted-foreground text-center leading-relaxed">
+                  A £10,000 deposit will be requested upon confirmation.
+                  <br />Fully refundable within 14 days.
+                </p>
+              </form>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );
 }
 
-// ── Root with page transitions ────────────────────────────────────────────────
-
+// ── Root ──────────────────────────────────────────────────────────────────────
 export function MarketingBlock() {
-  const [activePage,  setActivePage]  = useState<Page>("marketing");
-  const [displayPage, setDisplayPage] = useState<Page>("marketing");
+  const [activePage,  setActivePage]  = useState<Page>("landing");
+  const [displayPage, setDisplayPage] = useState<Page>("landing");
   const [phase,       setPhase]       = useState<Phase>("idle");
-  const pending = useRef<Page>("marketing");
+  const pending = useRef<Page>("landing");
 
   const navigate = (next: Page) => {
     if (next === activePage || phase !== "idle") return;
@@ -542,25 +580,21 @@ export function MarketingBlock() {
     }
   };
 
-  const goToWorkspace  = () => navigate("workspace");
-  const goToMarketing  = () => navigate("marketing");
-
   return (
     <div className="min-h-full overflow-hidden">
       <div
         key={displayPage}
         style={{
-          animation: phase === "exiting"
-            ? "var(--anim-page-exit)"
-            : phase === "entering"
-              ? "var(--anim-page-enter)"
-              : undefined,
+          animation:
+            phase === "exiting"  ? "var(--anim-page-exit)"  :
+            phase === "entering" ? "var(--anim-page-enter)" :
+            undefined,
         }}
         onAnimationEnd={handleAnimationEnd}
       >
-        {displayPage === "marketing"
-          ? <MarketingPage  onNavigate={goToWorkspace} />
-          : <WorkspacePage  onNavigate={goToMarketing} />
+        {displayPage === "landing"
+          ? <LandingPage   onNavigate={() => navigate("configure")} />
+          : <ConfigurePage onNavigate={() => navigate("landing")}   />
         }
       </div>
     </div>
