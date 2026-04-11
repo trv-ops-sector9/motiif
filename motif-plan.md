@@ -155,20 +155,23 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 
 ---
 
-## 13. P2 — Token Page
+## ~~13. P2 — Token Page~~ ✓
 
-- [ ] 13a: Evaluate card wrappers — do they add value or just visual noise? Consider stripping to flat sections with dividers.
+- [x] 13a: Card wrappers stripped. Duration and Curves get subtle `bg-muted/30` well (interactive widget treatment). All other sections: flat div + heading + separator. Separator between motion sub-groups. Badge format updated: `motion-Standard` / `design-Drive-dark`.
 
 ---
 
-## 14. P3 — Fleet Ops (flagship for AV startup)
+## ~~14. P3 — Fleet Ops (flagship for AV startup)~~ ✓
 
-> Make the flagship page look sick. This is the centerpiece.
+> Branch: `feature/polish-r3`. PR #17 open.
 
-- [ ] 14a: Combine stat cards + map into single dense row
-- [ ] 14b: Map SVG redesign — current design is weak
-- [ ] 14c: Clickable vehicle detail entry higher up (not buried in table)
-- [ ] 14d: Consider a third Fleet page (already have overview + vehicle detail — maybe fleet analytics or route planning)
+- [x] 14a: Stat cards + map combined into Mission Control hero row (`lg:grid-cols-[1fr_300px]`)
+- [x] 14b: Map SVG redesigned — tactical dark, dot grid, zone glows, marching dashed routes, chevron markers with sonar rings, coordinate watermark.
+- [x] 14c: Vehicle mini-panel appears in stat column when vehicle selected on map. Vehicle list below with direct row access.
+- [x] 14d: Incident Review page — third Fleet page. KPI row (count-up), stacked bar timeline (6h windows × 5 types), category breakdown, filterable event log with 10 AV-domain incidents. Accessible from "Incidents" button in overview header.
+- [x] 14e: Fleet map replaced SVG with Leaflet + CartoDB tiles — real SF coordinates, geofences, route polylines, incident markers.
+- [x] 14f: Fleet map theme-aware color system — per-theme tint overlay (Drive=blue, Vapor=purple, Lux=gold etc.), grayscale tile neutralization, React 19 CSS var fix, boosted light theme contrast, enlarged markers for easier clicking.
+- [x] 14g: Vehicle panel layout — moved above stat tiles, fixed static height (h-[148px] + overflow-hidden), no layout shift on vehicle select or content difference. Map panned south to show SF label, height increased to h-[352px].
 
 ---
 
