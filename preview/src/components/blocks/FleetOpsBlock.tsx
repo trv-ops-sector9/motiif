@@ -150,11 +150,11 @@ const COVERAGE_ZONE: LatLngTuple[] = [
 
 // Incident locations (Seattle area)
 const INCIDENT_COORDS: { id: string; coords: LatLngTuple; severity: AlertSeverity }[] = [
-  { id: "INC-0041", coords: [47.608,  -122.341], severity: "critical" },
-  { id: "INC-0042", coords: [47.580,  -122.326], severity: "critical" },
-  { id: "INC-0043", coords: [47.617,  -122.335], severity: "warning"  },
-  { id: "INC-0044", coords: [47.628,  -122.338], severity: "warning"  },
-  { id: "INC-0048", coords: [47.571,  -122.225], severity: "critical" },
+  { id: "INC-0041", coords: [47.601,  -122.334], severity: "critical" },  // Pioneer Square — no vehicle here
+  { id: "INC-0042", coords: [47.582,  -122.328], severity: "critical" },  // AV-008 (Offline) — both red, consistent
+  { id: "INC-0043", coords: [47.617,  -122.335], severity: "warning"  },  // Eastlake — no vehicle here
+  { id: "INC-0044", coords: [47.630,  -122.341], severity: "warning"  },  // SLU north — no vehicle here
+  { id: "INC-0048", coords: [47.565,  -122.219], severity: "critical" },  // Mercer Island south — no vehicle here
 ];
 
 /** Syncs tile layer when theme changes (react-leaflet doesn't re-render TileLayer on url change) */
@@ -267,6 +267,7 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
         }
         .fleet-marker-tooltip .leaflet-tooltip::before,
         .fleet-map .leaflet-tooltip::before { display: none; }
+        .fleet-map .leaflet-interactive { outline: none; }
         .fleet-map .leaflet-tooltip {
           font-size: 10px !important;
           padding: 3px 7px !important;
@@ -352,7 +353,7 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
                   fillColor: incColor,
                   fillOpacity: isIncSelected ? 0.9 : 0.7,
                   opacity: 1,
-                  className: inc.severity === "critical" ? "fleet-dot-offline" : "fleet-dot-idle",
+                  className: "",
                 }}
                 eventHandlers={{ click: () => onSelectIncident(isIncSelected ? null : inc.id) }}
               >
@@ -366,7 +367,8 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
 
           {/* Vehicle markers — on top of everything */}
           {vehicles.map((v) => {
-            const color = STATUS_COLOR_HEX[v.status];
+            const hasAlert = ALERTS.some(a => a.vehicle === v.id);
+            const color = hasAlert ? "#ef4444" : STATUS_COLOR_HEX[v.status];
             const isSelected = selectedId === v.id;
             const isOffline = v.status === "Offline" || v.status === "Maintenance";
 
@@ -382,7 +384,7 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
                     color: color,
                     weight: 1.5,
                     fillColor: color,
-                    fillOpacity: 0.06,
+                    fillOpacity: 0,
                     opacity: 1,
                     className: "fleet-sonar-ring",
                   }}
@@ -393,11 +395,12 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
                 radius={isSelected ? 9 : isOffline ? 5 : 7}
                 pathOptions={{
                   color: color,
-                  weight: isSelected ? 2 : 1,
+                  stroke: !isSelected,
+                  weight: 1,
                   fillColor: color,
                   fillOpacity: isOffline ? 0.3 : isSelected ? 1 : 0.85,
                   opacity: 1,
-                  className: `fleet-dot-${v.status.toLowerCase()}`,
+                  className: hasAlert ? "fleet-dot-offline" : `fleet-dot-${v.status.toLowerCase()}`,
                 }}
                 eventHandlers={{
                   click: () => onSelect(isSelected ? null : v.id),
@@ -801,7 +804,7 @@ function IncidentListCard({ selectedId, onSelect }: {
             <div
               key={inc.id}
               onClick={() => onSelect(isSelected ? null : inc.id)}
-              className={`flex items-start gap-2.5 px-3 py-2.5 cursor-pointer transition-colors ${isSelected ? "bg-destructive/8 border-l-2 border-destructive" : "hover:bg-muted/40"}`}
+              className={`flex items-start gap-2.5 px-3 py-2.5 cursor-pointer transition-colors ${isSelected ? "bg-muted/60" : "hover:bg-muted/40"}`}
               style={{
                 animation: "var(--anim-fade-in)",
                 animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i * 0.4})`,
