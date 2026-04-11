@@ -163,7 +163,7 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 
 ## ~~14. P3 — Fleet Ops (flagship for AV startup)~~ ✓
 
-> Branch: `feature/polish-r3`. PR #17 open.
+> Branch: `feature/polish-r3` merged as PR #17. `feature/polish-r4` in progress.
 
 - [x] 14a: Stat cards + map combined into Mission Control hero row (`lg:grid-cols-[1fr_300px]`)
 - [x] 14b: Map SVG redesigned — tactical dark, dot grid, zone glows, marching dashed routes, chevron markers with sonar rings, coordinate watermark.
@@ -172,6 +172,14 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 - [x] 14e: Fleet map replaced SVG with Leaflet + CartoDB tiles — real SF coordinates, geofences, route polylines, incident markers.
 - [x] 14f: Fleet map theme-aware color system — per-theme tint overlay (Drive=blue, Vapor=purple, Lux=gold etc.), grayscale tile neutralization, React 19 CSS var fix, boosted light theme contrast, enlarged markers for easier clicking.
 - [x] 14g: Vehicle panel layout — moved above stat tiles, fixed static height (h-[148px] + overflow-hidden), no layout shift on vehicle select or content difference. Map panned south to show SF label, height increased to h-[352px].
+
+**branch: `feature/polish-r4` (in progress, not yet PR'd)**
+- [x] 14h: Fleet map routes redesigned — street-following with right-angle grid turns. Each route distinct: AV-001 Market diagonal NW, AV-002 Mariposa→7th→Market, AV-004 Embarcadero north→Market, AV-007 16th→Mission south→24th east, AV-009 Octavia north→McAllister→Larkin south.
+- [x] 14i: Card consistency — Vehicle Detail and Incident Review pages converted from shadcn `<Card>` to `rounded-lg border bg-muted/20` matching Fleet Overview.
+- [x] 14j: Selected vehicle sonar ring — pulsing `@keyframes fleet-sonar` outer ring (radius 26) + inner marker radius 9→13. "View Details" button: slide animation replaced with animate-ping border ring.
+- [x] 14k: Drive light shadows halved (sm 0.18→0.08). Route lines thicker/more opaque for light mode visibility. Map recentered to [37.772, -122.408].
+- [x] 14l: Gallery Tabs default 7, Tooltip delayDuration 100ms.
+- [ ] 14m: Selected vehicle sonar ring — user wants revision. Needs new session with full prompt.
 
 ---
 
