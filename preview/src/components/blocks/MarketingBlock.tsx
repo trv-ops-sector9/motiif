@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import volantOneImg from "@/assets/volant-one.jpg";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type Page  = "landing" | "configure";
@@ -63,71 +64,29 @@ const HERO_KEYFRAMES = `
 }
 `;
 
-// ── SVG silhouette ────────────────────────────────────────────────────────────
+// ── Car image with theme tint ─────────────────────────────────────────────────
 function CarSilhouette({ className }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 800 280"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
-      {/* Body fill */}
-      <path
-        d="M90 210 C90 210 120 210 155 207 L175 207 C190 207 205 198 220 183 L255 150 C272 128 305 112 360 107 L465 105 C510 105 548 112 578 128 L628 155 C648 168 665 190 670 198 L688 205 L700 208 L712 210 L90 210 Z"
-        fill="var(--foreground)"
-        opacity="0.04"
+    <div className={cn("relative overflow-hidden rounded-sm", className)}>
+      <img
+        src={volantOneImg}
+        alt="Volant One"
+        className="w-full object-cover"
+        draggable={false}
       />
-      {/* Cabin fill */}
-      <path
-        d="M255 150 C265 135 285 118 322 110 L405 106 L488 106 C525 106 550 116 574 134 L614 155 L255 150 Z"
-        fill="var(--primary)"
-        opacity="0.08"
+      {/* Primary color tint — shifts with each theme automatically */}
+      <div
+        className="absolute inset-0"
+        style={{ background: "var(--primary)", mixBlendMode: "color", opacity: 0.08 }}
+        aria-hidden="true"
       />
-      {/* Cabin outline */}
-      <path
-        d="M255 150 C265 135 285 118 322 110 L405 106 L488 106 C525 106 550 116 574 134 L614 155"
-        stroke="var(--primary)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        fill="none"
+      {/* Bottom fade into page background */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-1/3"
+        style={{ background: "linear-gradient(to bottom, transparent, var(--background))" }}
+        aria-hidden="true"
       />
-      {/* Body outline */}
-      <path
-        d="M108 208 L160 207 C178 207 198 202 215 188 L255 150 L614 155 L648 176 C662 186 672 198 680 204 L706 208"
-        stroke="var(--foreground)"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        fill="none"
-        opacity="0.45"
-      />
-      {/* Rear overhang */}
-      <path d="M90 210 L78 210 L76 214 L92 214 Z" fill="var(--foreground)" opacity="0.18" />
-      {/* Front splitter */}
-      <path d="M710 208 L748 210 L748 214 L708 214 Z" fill="var(--foreground)" opacity="0.18" />
-      {/* Headlight */}
-      <path d="M718 186 L738 190 L736 198 L717 194 Z" fill="var(--primary)" opacity="0.5" />
-      {/* Taillight */}
-      <path d="M96 185 L80 188 L81 196 L98 193 Z" fill="var(--primary)" opacity="0.5" />
-      {/* Door seam A */}
-      <path d="M300 152 L287 208" stroke="var(--foreground)" strokeWidth="0.75" strokeDasharray="4 3" opacity="0.18" />
-      {/* Door seam B */}
-      <path d="M450 153 L462 208" stroke="var(--foreground)" strokeWidth="0.75" strokeDasharray="4 3" opacity="0.18" />
-      {/* Rear wheel */}
-      <circle cx="210" cy="214" r="32" stroke="var(--foreground)" strokeWidth="1.5" fill="none" opacity="0.55" />
-      <circle cx="210" cy="214" r="20" stroke="var(--foreground)" strokeWidth="1"   fill="none" opacity="0.25" />
-      <circle cx="210" cy="214" r="5"  fill="var(--foreground)" opacity="0.35" />
-      {/* Front wheel */}
-      <circle cx="618" cy="214" r="32" stroke="var(--foreground)" strokeWidth="1.5" fill="none" opacity="0.55" />
-      <circle cx="618" cy="214" r="20" stroke="var(--foreground)" strokeWidth="1"   fill="none" opacity="0.25" />
-      <circle cx="618" cy="214" r="5"  fill="var(--foreground)" opacity="0.35" />
-      {/* Ground shadow */}
-      <ellipse cx="210" cy="248" rx="42" ry="5" fill="var(--foreground)" opacity="0.05" />
-      <ellipse cx="618" cy="248" rx="42" ry="5" fill="var(--foreground)" opacity="0.05" />
-      {/* Ground line */}
-      <line x1="40" y1="248" x2="780" y2="248" stroke="var(--foreground)" strokeWidth="0.5" opacity="0.12" />
-    </svg>
+    </div>
   );
 }
 
@@ -185,6 +144,19 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
           backgroundSize: "64px 64px",
         }}
       >
+        {/* Grid fade — top */}
+        <div
+          className="absolute inset-x-0 top-0 h-32 pointer-events-none z-10"
+          aria-hidden="true"
+          style={{ background: "linear-gradient(to bottom, var(--background), transparent)" }}
+        />
+        {/* Grid fade — bottom */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-10"
+          aria-hidden="true"
+          style={{ background: "linear-gradient(to top, var(--background), transparent)" }}
+        />
+
         {/* Gradient mesh — extended past edges so drift never clips */}
         <div
           className="absolute pointer-events-none"
@@ -245,9 +217,9 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
               className={cn(
                 "group inline-flex items-center gap-3 cursor-pointer",
                 "text-[13px] font-semibold tracking-wide text-foreground",
-                "border-b border-foreground/60 pb-0.5",
-                "hover:border-primary hover:text-primary transition-colors duration-200",
-                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded-sm",
+                "px-5 py-2.5 rounded-full border border-foreground/25",
+                "hover:border-foreground/60 hover:text-foreground transition-colors duration-200",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring",
               )}
             >
               Configure yours
@@ -371,9 +343,9 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
       <div className="grid lg:grid-cols-[1fr_320px]">
         {/* Left: silhouette + spec pickers */}
         <div className="px-8 py-10 border-r">
-          <CarSilhouette className="w-full max-w-2xl mb-12" />
+          <CarSilhouette className="w-full mb-10 mr-8" />
 
-          <div className="max-w-2xl space-y-10">
+          <div className="space-y-10">
             {/* Powertrain */}
             <fieldset>
               <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
@@ -428,9 +400,9 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
         </div>
 
         {/* Right: summary + form */}
-        <div className="px-8 py-10 flex flex-col">
+        <div className="px-6 py-8 flex flex-col min-h-[600px]">
           {/* Live spec summary */}
-          <div className="mb-8">
+          <div className="mb-6 rounded-lg bg-muted/30 px-4 py-4">
             <p className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-4">
               Your configuration
             </p>
@@ -450,9 +422,10 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
               ))}
             </div>
           </div>
+          </div>
 
-          {/* Divider */}
-          <div className="border-t pt-6 flex-1 flex flex-col">
+          {/* Form area — stable height, no layout jump */}
+          <div className="flex-1 flex flex-col min-h-[340px]">
             {formState === "success" ? (
               /* ── Success state ─────────────────────────────────── */
               <div
