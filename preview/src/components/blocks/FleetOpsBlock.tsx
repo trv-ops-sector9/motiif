@@ -117,7 +117,7 @@ const STATUS_COLOR_HEX: Record<VehicleStatus, string> = {
   Offline:     "#ef4444",
 };
 
-const MAP_CENTER: LatLngTuple = [37.770, -122.405];
+const MAP_CENTER: LatLngTuple = [37.758, -122.405];
 const MAP_ZOOM = 13;
 
 // Tile URLs — CartoDB Positron (light) and Dark Matter (dark)
@@ -202,19 +202,35 @@ function FleetMap({ vehicles, selectedId, onSelect }: {
   selectedId: string | null;
   onSelect: (id: string | null) => void;
 }) {
-  const [dark, setDark] = useState(() => {
-    const theme = document.documentElement.getAttribute("data-theme") || "default";
-    return theme.includes("dark");
-  });
+  const [theme, setTheme] = useState(() =>
+    document.documentElement.getAttribute("data-theme") || "default"
+  );
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      const theme = document.documentElement.getAttribute("data-theme") || "default";
-      setDark(theme.includes("dark"));
+      setTheme(document.documentElement.getAttribute("data-theme") || "default");
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     return () => observer.disconnect();
   }, []);
+
+  const dark = theme.includes("dark");
+
+  // Per-theme map tint — matches the background palette, not the accent/primary color.
+  const THEME_TINT: Record<string, [r: number, g: number, b: number]> = {
+    "default":       [100, 110, 130],
+    "dark-minimal":  [ 90,  95, 110],
+    "drive":         [ 80, 100, 180],
+    "drive-dark":    [ 60,  80, 160],
+    "brutalist":     [ 30,  30,  30],
+    "brutalist-dark":[  0,   0,   0],
+    "lux":           [160, 140,  90],
+    "lux-dark":      [ 90,  75,  50],
+    "vapor":         [110,  60, 190],
+    "vapor-dark":    [ 80,  40, 200],
+  };
+  const [tr, tg, tb] = THEME_TINT[theme] ?? [80, 90, 120];
+  const tintColor = `rgb(${tr} ${tg} ${tb} / ${dark ? 0.10 : 0.06})`;
 
   const geofenceColor = dark ? "rgba(255,255,255,0.08)" : "rgba(0,0,0,0.04)";
   const geofenceStroke = dark ? "rgba(255,255,255,0.15)" : "rgba(0,0,0,0.1)";
@@ -222,23 +238,30 @@ function FleetMap({ vehicles, selectedId, onSelect }: {
   const coverageStroke = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
   const coverageFill = dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)";
 
+  // Dynamic values go on the div as CSS custom properties — static <style> reads them via var().
+  // This avoids React 19 style deduplication swallowing dynamic template-literal style tags.
+  const mapCssVars = {
+    "--fleet-map-bg":      dark ? "#0d0d0d"                                        : "#f2f2f2",
+    "--fleet-tile-filter": dark ? "grayscale(1) brightness(0.70) contrast(1.10)"  : "grayscale(1) brightness(0.97) contrast(1.15)",
+  } as React.CSSProperties;
+
   return (
-    <div className="relative w-full h-full rounded-lg overflow-hidden border">
+    <div className="relative w-full h-full rounded-lg overflow-hidden border" style={mapCssVars}>
       <style>{`
-        .fleet-map .leaflet-container { background: var(--color-card, ${dark ? "#0a0a0f" : "#f8f9fa"}); }
-        .fleet-map .leaflet-tile-pane { filter: saturate(0) ${dark ? "brightness(0.85)" : "brightness(1.02)"}; }
+        .fleet-map .leaflet-container { background: var(--fleet-map-bg) !important; }
+        .fleet-map .leaflet-tile-pane { filter: var(--fleet-tile-filter) !important; }
         .fleet-map .leaflet-control-attribution { font-size: 7px !important; opacity: 0.3; background: transparent !important; }
         .fleet-map .leaflet-control-attribution a { color: inherit !important; }
         .fleet-marker-tooltip .leaflet-tooltip,
         .fleet-map .leaflet-tooltip {
-          background: ${dark ? "hsl(0 0% 8% / 0.88)" : "hsl(0 0% 98% / 0.92)"};
-          border: 1px solid ${dark ? "hsl(0 0% 18%)" : "hsl(0 0% 82%)"};
-          color: ${dark ? "hsl(0 0% 65%)" : "hsl(0 0% 40%)"};
+          background: var(--color-card) !important;
+          border: 1px solid var(--color-border) !important;
+          color: var(--color-muted-foreground) !important;
           font-size: 9px;
           font-family: ui-monospace, monospace;
           padding: 2px 5px;
           border-radius: 3px;
-          box-shadow: 0 1px 4px ${dark ? "hsl(0 0% 0% / 0.4)" : "hsl(0 0% 0% / 0.06)"};
+          box-shadow: var(--shadow-sm, 0 1px 4px rgba(0,0,0,0.08));
           letter-spacing: 0.02em;
         }
         .fleet-marker-tooltip .leaflet-tooltip::before,
@@ -319,7 +342,7 @@ function FleetMap({ vehicles, selectedId, onSelect }: {
             <CircleMarker
               key={inc.id}
               center={inc.coords}
-              radius={inc.severity === "critical" ? 3 : 2}
+              radius={inc.severity === "critical" ? 6 : 4}
               pathOptions={{
                 color: inc.severity === "critical" ? "#ef4444" : "#f59e0b",
                 weight: 0.5,
@@ -344,10 +367,10 @@ function FleetMap({ vehicles, selectedId, onSelect }: {
               <CircleMarker
                 key={v.id}
                 center={v.coords}
-                radius={isSelected ? 5 : isOffline ? 2.5 : 3.5}
+                radius={isSelected ? 9 : isOffline ? 5 : 7}
                 pathOptions={{
                   color: isSelected ? "white" : color,
-                  weight: isSelected ? 1.5 : 0.5,
+                  weight: isSelected ? 2 : 1,
                   fillColor: color,
                   fillOpacity: isOffline ? 0.25 : isSelected ? 1 : 0.85,
                   opacity: isSelected ? 0.9 : 0.7,
@@ -372,6 +395,12 @@ function FleetMap({ vehicles, selectedId, onSelect }: {
           })}
         </MapContainer>
       </div>
+
+      {/* Per-theme tint overlay — matches map tone to the background palette */}
+      <div
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: tintColor, zIndex: 450 }}
+      />
 
       {/* Legend — bottom left overlay */}
       <div className="absolute bottom-5 left-2 z-[1000] flex items-center gap-2 bg-background/80 backdrop-blur-sm rounded px-2 py-1 border text-[8px]">
@@ -536,7 +565,7 @@ function VehicleMiniPanel({ vehicle, onOpenDetail }: { vehicle: Vehicle; onOpenD
 
   return (
     <div
-      className="rounded-lg border bg-muted/20 p-3 space-y-2"
+      className="h-full rounded-lg border bg-muted/20 p-3 space-y-2 overflow-hidden"
       style={{ animation: "var(--anim-expand-in)", animationFillMode: "both" }}
     >
       <div className="flex items-center justify-between">
@@ -1045,29 +1074,32 @@ function FleetOverviewPage({ onSelectVehicle, onGoToIncidents }: { onSelectVehic
         }}
       >
         {/* Tactical map */}
-        <div className="h-[280px]">
+        <div className="h-[352px]">
           <FleetMap vehicles={VEHICLES} selectedId={selectedVehicle} onSelect={setSelectedVehicle} />
         </div>
 
-        {/* Right column: stat tiles + selected vehicle panel */}
+        {/* Right column: vehicle panel (top) + stat tiles (below) */}
         <div className="flex flex-col gap-3">
-          <div className="grid grid-cols-2 gap-2">
+          {/* Vehicle panel — fixed height always, content never shifts layout */}
+          <div className="h-[148px] shrink-0 overflow-hidden">
+            {selectedV ? (
+              <VehicleMiniPanel
+                vehicle={selectedV}
+                onOpenDetail={() => onSelectVehicle(selectedV.id)}
+              />
+            ) : (
+              <div className="h-full rounded-lg border bg-muted/10 px-4 text-center flex flex-col items-center justify-center gap-2">
+                <IconNavigation className="h-5 w-5 text-muted-foreground/40" />
+                <p className="text-xs text-muted-foreground/60">Select a vehicle on the map</p>
+              </div>
+            )}
+          </div>
+
+          <div className="grid grid-cols-2 gap-2 flex-1">
             {STATS.map((s, i) => (
               <StatTile key={s.label} stat={s} delay={i} />
             ))}
           </div>
-
-          {selectedV ? (
-            <VehicleMiniPanel
-              vehicle={selectedV}
-              onOpenDetail={() => onSelectVehicle(selectedV.id)}
-            />
-          ) : (
-            <div className="rounded-lg border bg-muted/10 px-4 py-5 text-center flex flex-col items-center gap-2 flex-1">
-              <IconNavigation className="h-5 w-5 text-muted-foreground/40" />
-              <p className="text-xs text-muted-foreground/60">Select a vehicle on the map</p>
-            </div>
-          )}
         </div>
       </div>
 
