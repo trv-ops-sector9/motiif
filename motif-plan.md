@@ -1,8 +1,10 @@
-# Motif — Plan
+# Motiif — Plan
 
 ## Context
 
-Motif is a motion token system for Tailwind v4, prepared as a portfolio piece targeting Waabi (Senior Product Designer, Driverless Ops). Ships 4 motion themes and 3 color theme pairs (Graphite, Guchi, Tactical). **Live:** https://trv-ops-sector9.github.io/motif/
+Motiif is a motion token system for Tailwind v4, prepared as a portfolio piece targeting Waabi (Senior Product Designer, Driverless Ops). Ships 4 motion themes and 3 color theme pairs (Graphite, Guchi, Tactical). **Live:** https://trv-ops-sector9.github.io/motif/
+
+**Deadline: 2026-04-12 (today)**
 
 ---
 
@@ -10,7 +12,7 @@ Motif is a motion token system for Tailwind v4, prepared as a portfolio piece ta
 
 - [x] Cleanup (dead deps, legacy themes)
 - [x] Revise motion themes — Standard, Dense, Expressive, Precision
-- [x] Color themes — Default, Dark Default, Drive, Brutalist, Lux, Vapor (original 6 pairs)
+- [x] Color themes — 3 pairs (Graphite, Guchi, Tactical)
 - [x] Fleet Ops dashboard — stat cards, chart, alert feed, vehicle table, Leaflet map
 - [x] Shared lib/motion.ts
 - [x] UI Polish — sidebar rebrand, page headers, page transitions, stagger animations
@@ -31,51 +33,38 @@ Motif is a motion token system for Tailwind v4, prepared as a portfolio piece ta
 - [x] Graphite theme — new default, Figma/Cursor aesthetic, borderless surfaces (PR #22)
 - [x] Default theme removed from switcher
 - [x] Fix fleet map dot glow — tint overlay z-index was hiding markers (PR #23)
-- [x] Incident button — replaced noisy pulsing button with calm pill badge + chevron
-- [x] Header layout — LIVE indicator moved next to title, incidents button isolated right
+- [x] Incident button — calm pill badge + chevron (PR #24)
+- [x] Header layout — LIVE indicator next to title, incidents button right-aligned
 - [x] README rewritten for portfolio
 - [x] CLAUDE.md updated to current state
 - [x] Mobile spot-check — sidebar collapse on small screens
+- [x] Splash page — modal overlay with section cards, logo mark (PR #25)
+- [x] Rename to Motiif + MotiifMark logo (PR #26)
+- [x] Choose vehicle from list → centers on map
 
 ---
 
-## Remaining — prioritized
+## Today's focus — in order
 
-### P0 — Ship blockers
+### 1. Fleet Ops polish (Waabi-relevant — do first)
 
-- [ ] **Splash page** — intro screen on first load. Brief hero, what Motif is, 3-4 clickable cards pointing to Fleet Ops / Components / Tokens / Brand. Guides the demo user.
-- [ ] **Commit + deploy current uncommitted work** (incident button, header layout changes)
-
-### P1 — Fleet Ops polish (Waabi-relevant)
-
-- [ ] **Event log stagger + refresh fix** — animation on new entries
+- [ ] **Event log stagger + refresh fix** — staggered entry animation on new event feed items
 - [ ] **Vehicle card transition** — animate out/in when selecting a new vehicle
-- [ ] **Choose vehicle from list → centers on map**
 
-### P2 — UI polish
+### 2. Brand page design pass (weakest view — needs attention)
 
-- [ ] **Collapsed sidebar controls** — dark/light mode icon in collapsed state, popout dropdown for theme controls
-- [ ] **Component design & motion audit** — full audit across all views
+- [ ] **Brand page revision** — design audit + polish so it holds up next to Fleet Ops. Use ui-ux-pro-max skill.
 
-### P3 — Brand page polish
+### 3. Quick audit (if time)
 
-- [ ] **Inner page image gallery**
-- [ ] **Landing page image strip**
-- [ ] **Press incident list card → open incident page**
+- [ ] **Component design & motion audit** — fast sweep across all views for visual issues
 
-### P4 — Theme refinements
+### Skip today
 
-- [ ] **Graphite dark** — user feels it's still too dark, may need further lightness bump toward true Figma/Cursor canvas values
-
-### P5 — Portfolio (outside this repo)
-
-- [ ] **Update LinkedIn profile**
-- [ ] **Rewrite F2 case study**
-- [ ] **Add note about 3D video work**
-- [ ] **Motion token generator under Experiments (if time)**
-- [ ] **Add other 3D work to Experiments**
-- [ ] **CV-style message in About**
-- [ ] **Work history**
+- Collapsed sidebar controls — nice-to-have, not interview-relevant
+- Graphite dark lightness — good enough
+- Brand inner page gallery, landing strip, incident page link — scope creep
+- Portfolio items (LinkedIn, case study, etc.) — outside this repo
 
 ---
 

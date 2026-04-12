@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
 import volantOneImg from "@/assets/volant-one.jpg";
+import volantTwoImg from "@/assets/volant-one_2.jpg";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 type Page  = "landing" | "configure";
@@ -65,11 +66,14 @@ const HERO_KEYFRAMES = `
 `;
 
 // ── Car image with theme tint ─────────────────────────────────────────────────
-function CarSilhouette({ className }: { className?: string }) {
+function CarSilhouette({ className, src }: { className?: string; src?: string }) {
   return (
-    <div className={cn("relative overflow-hidden rounded-sm", className)}>
+    <div
+      className={cn("relative overflow-hidden rounded-sm", className)}
+      style={{ animation: "var(--anim-fade-in)", animationFillMode: "both" }}
+    >
       <img
-        src={volantOneImg}
+        src={src ?? volantOneImg}
         alt="Volant One"
         className="w-full object-cover"
         draggable={false}
@@ -128,36 +132,34 @@ function SpecCard({
 function LandingPage({ onNavigate }: { onNavigate: () => void }) {
   return (
     <div className="min-h-full">
-      <style>{HERO_KEYFRAMES}</style>
+      {/* ── Hero with full-bleed car image ── */}
+      <section className="relative min-h-[75vh] overflow-hidden">
+        <style>{HERO_KEYFRAMES}</style>
 
-      {/* ── Hero ── */}
-      {/* ── Hero ── */}
-      {/* Grid baked into section bg — static, no z-index needed */}
-      <section
-        className="relative min-h-[88vh] overflow-hidden"
-        style={{
-          backgroundColor: "var(--background)",
-          backgroundImage: [
-            "linear-gradient(color-mix(in oklch, var(--border) var(--volant-grid-mix, 80%), transparent) 1px, transparent 1px)",
-            "linear-gradient(90deg, color-mix(in oklch, var(--border) var(--volant-grid-mix, 80%), transparent) 1px, transparent 1px)",
-          ].join(", "),
-          backgroundSize: "64px 64px",
-        }}
-      >
-        {/* Grid fade — top */}
-        <div
-          className="absolute inset-x-0 top-0 h-32 pointer-events-none z-10"
+        {/* Car image — full bleed background */}
+        <img
+          src={volantTwoImg}
+          alt=""
           aria-hidden="true"
-          style={{ background: "linear-gradient(to bottom, var(--background), transparent)" }}
+          draggable={false}
+          className="absolute inset-0 w-full h-full object-cover"
         />
-        {/* Grid fade — bottom */}
+
+        {/* Scrim — heavier on the left where text sits, lighter on the right to show the car */}
         <div
-          className="absolute inset-x-0 bottom-0 h-32 pointer-events-none z-10"
+          className="absolute inset-0"
+          aria-hidden="true"
+          style={{ background: "linear-gradient(to right, var(--background) 25%, color-mix(in oklch, var(--background) 60%, transparent) 55%, color-mix(in oklch, var(--background) 30%, transparent) 100%)" }}
+        />
+
+        {/* Bottom fade */}
+        <div
+          className="absolute inset-x-0 bottom-0 h-40 pointer-events-none"
           aria-hidden="true"
           style={{ background: "linear-gradient(to top, var(--background), transparent)" }}
         />
 
-        {/* Gradient mesh — extended past edges so drift never clips */}
+        {/* Gradient mesh — drifting color blobs */}
         <div
           className="absolute pointer-events-none"
           aria-hidden="true"
@@ -165,15 +167,14 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
             inset: "-30%",
             animation: "volant-drift 14s ease-in-out infinite",
             background: [
-              "radial-gradient(ellipse 65% 55% at 12% 55%, color-mix(in oklch, var(--primary) 22%, transparent), transparent 60%)",
-              "radial-gradient(ellipse 60% 75% at 88% 25%, color-mix(in oklch, var(--primary) 10%, transparent), transparent 55%)",
-              "radial-gradient(ellipse 35% 35% at 55% 85%, color-mix(in oklch, var(--muted-foreground) 6%, transparent), transparent 50%)",
+              "radial-gradient(ellipse 65% 55% at 12% 55%, color-mix(in oklch, var(--primary) 18%, transparent), transparent 60%)",
+              "radial-gradient(ellipse 60% 75% at 88% 25%, color-mix(in oklch, var(--primary) 8%, transparent), transparent 55%)",
             ].join(", "),
           }}
         />
 
-        {/* Content — position relative paints above gradient */}
-        <div className="relative flex flex-col justify-end min-h-[88vh] px-8 pb-20 pt-8">
+        {/* Content */}
+        <div className="relative flex flex-col justify-end min-h-[75vh] px-8 pb-12 pt-8">
           {/* Brand mark */}
           <div className="absolute top-8 left-8">
             <span className="text-[11px] font-semibold tracking-[0.22em] uppercase text-muted-foreground">
@@ -194,14 +195,14 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
             </div>
           </div>
 
-          {/* Headline block — flush left, asymmetric */}
-          <div className="max-w-4xl">
+          {/* Headline block — flush left */}
+          <div className="max-w-xl" style={{ animation: "var(--anim-fade-in)" }}>
             <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-primary mb-5">
               Series I · 2026
             </p>
             <h1
               className="font-bold leading-[0.9] tracking-[-0.04em] text-foreground mb-7"
-              style={{ fontSize: "clamp(3.2rem, 8.5vw, 7.5rem)" }}
+              style={{ fontSize: "clamp(2.8rem, 7vw, 5.5rem)" }}
             >
               Amplified.<br />
               Electric.<br />
@@ -230,16 +231,21 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
       </section>
 
       {/* ── Features — staggered numeral list ── */}
-      <section className="px-8 py-24 max-w-3xl">
+      <section className="px-8 py-16 max-w-3xl">
         <p className="text-[10px] font-semibold tracking-[0.28em] uppercase text-muted-foreground mb-16">
           The specification
         </p>
         <div className="space-y-16">
-          {FEATURES.map((f) => (
+          {FEATURES.map((f, i) => (
             <div
               key={f.num}
               className="grid items-start gap-8"
-              style={{ gridTemplateColumns: "72px 1fr" }}
+              style={{
+                gridTemplateColumns: "72px 1fr",
+                animation: "var(--anim-slide-up-in)",
+                animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i + 1})`,
+                animationFillMode: "both",
+              }}
             >
               <span
                 className="font-bold text-foreground/10 leading-none select-none tabular-nums"
@@ -262,7 +268,7 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
       </section>
 
       {/* ── Bottom CTA bar ── */}
-      <div className="border-t px-8 py-7 flex items-center justify-between gap-4">
+      <div className="px-8 py-7 flex items-center justify-between gap-4">
         <p className="text-[11px] text-muted-foreground">
           Deliveries begin Q4 2026 · UK &amp; EU
         </p>
@@ -347,7 +353,7 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
 
           <div className="space-y-10">
             {/* Powertrain */}
-            <fieldset>
+            <fieldset style={{ animation: "var(--anim-slide-up-in)", animationDelay: "calc(var(--motion-duration-ultra-fast) * 2)", animationFillMode: "both" }}>
               <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
                 Powertrain
               </legend>
@@ -364,7 +370,7 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
             </fieldset>
 
             {/* Exterior */}
-            <fieldset>
+            <fieldset style={{ animation: "var(--anim-slide-up-in)", animationDelay: "calc(var(--motion-duration-ultra-fast) * 3)", animationFillMode: "both" }}>
               <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
                 Exterior
               </legend>
@@ -381,7 +387,7 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
             </fieldset>
 
             {/* Interior */}
-            <fieldset>
+            <fieldset style={{ animation: "var(--anim-slide-up-in)", animationDelay: "calc(var(--motion-duration-ultra-fast) * 4)", animationFillMode: "both" }}>
               <legend className="text-[10px] font-semibold tracking-[0.22em] uppercase text-muted-foreground mb-3">
                 Interior
               </legend>

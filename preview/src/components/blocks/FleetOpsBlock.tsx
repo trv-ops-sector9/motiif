@@ -1216,7 +1216,7 @@ function IncidentReviewPage({ onBack }: { onBack: () => void }) {
             })}
           </div>
         </div>
-        <div className="px-3 pt-4 pb-3 space-y-1">
+        <div key={`${typeFilter}-${unresolvedOnly}`} className="px-3 pt-4 pb-3 space-y-1">
           {filtered.length === 0 ? (
             <p className="text-xs text-muted-foreground text-center py-8">No events match the current filter</p>
           ) : (
@@ -1350,6 +1350,7 @@ function FleetOverviewPage({ onSelectVehicle, onGoToIncidents }: { onSelectVehic
           <div className="h-[148px] shrink-0 overflow-hidden">
             {selectedV ? (
               <VehicleMiniPanel
+                key={selectedV.id}
                 vehicle={selectedV}
                 onOpenDetail={() => onSelectVehicle(selectedV.id)}
               />
