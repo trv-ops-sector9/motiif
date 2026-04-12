@@ -9,7 +9,6 @@ import {
   IconMapPin,
   IconClock,
   IconAlertTriangle,
-  IconAlertTriangleFilled,
   IconActivity,
   IconNavigation,
   IconGauge,
@@ -28,6 +27,7 @@ import {
   IconChartBar,
   IconWifiOff,
   IconArrowRight,
+  IconChevronRight,
 } from "@tabler/icons-react";
 
 import { cssMs, cssCurve } from "@/lib/motion";
@@ -1303,30 +1303,25 @@ function FleetOverviewPage({ onSelectVehicle, onGoToIncidents }: { onSelectVehic
         style={{ animation: "var(--anim-fade-in)" }}
       >
         <div>
-          <h1 className="text-xl font-bold tracking-tight">Fleet Operations</h1>
+          <div className="flex items-center gap-2.5">
+            <h1 className="text-xl font-bold tracking-tight">Fleet Operations</h1>
+            <span className="flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
+              </span>
+              <span className="text-[10px] font-mono text-muted-foreground tracking-widest">LIVE</span>
+            </span>
+          </div>
           <p className="text-xs text-muted-foreground">Seattle Metro · {VEHICLES.length} vehicles</p>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            onClick={onGoToIncidents}
-            className="flex items-center gap-1.5 text-[10px] font-mono tracking-widest text-destructive border rounded-full px-3 py-1.5 cursor-pointer transition-all hover:scale-105 active:scale-95"
-            style={{ animation: "fleet-incident-pulse 2s ease-in-out infinite" }}
-          >
-            <span className="relative flex items-center">
-              <IconAlertTriangleFilled className="h-4 w-4 text-destructive animate-ping absolute opacity-40" />
-              <IconAlertTriangleFilled className="h-4 w-4 text-destructive relative" style={{ animation: "fleet-icon-glow 2s ease-in-out infinite" }} />
-            </span>
-            INCIDENTS
-            <span className="font-mono font-bold text-destructive">
-              {INCIDENTS.filter((i) => i.severity === "critical").length}
-            </span>
-          </button>
-          <span className="relative flex h-2 w-2">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
-          </span>
-          <span className="text-[10px] font-mono text-muted-foreground tracking-widest">LIVE</span>
-        </div>
+        <button
+          onClick={onGoToIncidents}
+          className="flex items-center gap-1.5 shrink-0 text-[10px] font-bold bg-destructive/15 text-destructive px-2.5 py-1 rounded-full cursor-pointer transition-colors hover:bg-destructive/25"
+        >
+          Incidents · {INCIDENTS.filter((i) => !i.resolved).length} unresolved
+          <IconChevronRight className="h-3 w-3" />
+        </button>
       </div>
 
       {/* ── Hero row: Map + Stats ─────────────────────────────────────────── */}
@@ -1674,23 +1669,6 @@ export function FleetOpsBlock() {
 
   return (
     <div className="min-h-full overflow-hidden">
-      <style>{`
-        @keyframes fleet-incident-pulse {
-          0%, 100% {
-            box-shadow: 0 0 0 0 color-mix(in oklch, var(--destructive, #ef4444) 15%, transparent);
-            border-color: color-mix(in oklch, var(--destructive, #ef4444) 40%, transparent);
-          }
-          50% {
-            box-shadow: 0 0 0 3px color-mix(in oklch, var(--destructive, #ef4444) 10%, transparent),
-                        0 0 8px 1px color-mix(in oklch, var(--destructive, #ef4444) 15%, transparent);
-            border-color: color-mix(in oklch, var(--destructive, #ef4444) 75%, transparent);
-          }
-        }
-        @keyframes fleet-icon-glow {
-          0%, 100% { filter: drop-shadow(0 0 0px color-mix(in oklch, var(--destructive, #ef4444) 0%, transparent)); }
-          50%       { filter: drop-shadow(0 0 4px color-mix(in oklch, var(--destructive, #ef4444) 55%, transparent)); }
-        }
-      `}</style>
       <div
         key={displayPage}
         style={{
