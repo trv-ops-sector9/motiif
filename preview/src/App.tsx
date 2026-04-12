@@ -12,14 +12,14 @@ const FleetOpsBlock    = lazy(() => import("@/components/blocks/FleetOpsBlock").
 function useActiveThemes() {
   const [themes, setThemes] = useState(() => ({
     motion: document.documentElement.getAttribute("data-motion-theme") || "standard",
-    color:  document.documentElement.getAttribute("data-theme") || "default",
+    color:  document.documentElement.getAttribute("data-theme") || "graphite-dark",
   }));
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
       setThemes({
         motion: document.documentElement.getAttribute("data-motion-theme") || "standard",
-        color:  document.documentElement.getAttribute("data-theme") || "default",
+        color:  document.documentElement.getAttribute("data-theme") || "graphite-dark",
       });
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-motion-theme", "data-theme"] });

@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 const THEMES = [
-  { value: "default", label: "Default", light: "default", dark: "dark-minimal" },
+  { value: "graphite", label: "Graphite", light: "graphite", dark: "graphite-dark" },
   { value: "guchi", label: "Guchi", light: "guchi", dark: "guchi-dark" },
   { value: "tactical", label: "Tactical", light: "tactical", dark: "tactical-dark" },
 ] as const;
@@ -19,7 +19,7 @@ type ThemeValue = (typeof THEMES)[number]["value"];
 type ColorMode = "light" | "dark";
 
 /** Shared state so the theme picker and mode toggle stay in sync */
-let currentThemeValue: ThemeValue = "default";
+let currentThemeValue: ThemeValue = "graphite";
 let currentMode: ColorMode = "dark";
 let listeners: (() => void)[] = [];
 

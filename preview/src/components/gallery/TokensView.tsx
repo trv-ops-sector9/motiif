@@ -669,7 +669,7 @@ function SpacingSection() {
 
 function collectTokens() {
   const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "standard";
-  const colorTheme = document.documentElement.getAttribute("data-theme") || "default";
+  const colorTheme = document.documentElement.getAttribute("data-theme") || "graphite-dark";
 
   const durations: Record<string, string> = {};
   for (const t of DURATION_TOKENS) {
@@ -749,7 +749,7 @@ export function TokensView() {
   useTokenValues();
 
   const motionTheme = document.documentElement.getAttribute("data-motion-theme") || "standard";
-  const colorTheme = document.documentElement.getAttribute("data-theme") || "default";
+  const colorTheme = document.documentElement.getAttribute("data-theme") || "graphite-dark";
 
   return (
     <div className="p-6 space-y-6 max-w-5xl">

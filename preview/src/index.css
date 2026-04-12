@@ -200,12 +200,12 @@
   animation: fleet-pulse var(--motion-duration-ultra-slow) var(--motion-curve-ease-out) infinite;
 }
 
-@import "./themes/default.css";
-@import "./themes/dark-minimal.css";
 @import "./themes/guchi.css";
 @import "./themes/guchi-dark.css";
 @import "./themes/tactical.css";
 @import "./themes/tactical-dark.css";
+@import "./themes/graphite.css";
+@import "./themes/graphite-dark.css";
 
 @theme inline {
   --color-background: var(--background);
