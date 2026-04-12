@@ -1,4 +1,4 @@
-/* Dark Minimal — Vercel/Linear aesthetic. Near-black backgrounds,
+/* Default Dark — Vercel/Linear aesthetic. Near-black backgrounds,
    desaturated accents, muted foregrounds. Developer-tool calm. */
 [data-theme="dark-minimal"] {
   --background: oklch(0.088 0 0);

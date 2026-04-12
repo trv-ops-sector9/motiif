@@ -255,12 +255,12 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
   onSelectIncident: (id: string | null) => void;
 }) {
   const [theme, setTheme] = useState(() =>
-    document.documentElement.getAttribute("data-theme") || "default"
+    document.documentElement.getAttribute("data-theme") || "graphite-dark"
   );
 
   useEffect(() => {
     const observer = new MutationObserver(() => {
-      setTheme(document.documentElement.getAttribute("data-theme") || "default");
+      setTheme(document.documentElement.getAttribute("data-theme") || "graphite-dark");
     });
     observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
     return () => observer.disconnect();
@@ -270,12 +270,12 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
 
   // Per-theme map tint — matches the background palette, not the accent/primary color.
   const THEME_TINT: Record<string, [r: number, g: number, b: number]> = {
-    "default":        [100, 110, 130],
-    "dark-minimal":   [ 90,  95, 110],
     "guchi":          [160, 140,  90],
     "guchi-dark":     [ 90,  75,  50],
     "tactical":       [ 70,  90,  60],
     "tactical-dark":  [ 40,  70,  30],
+    "graphite":       [ 95, 95, 100],
+    "graphite-dark":  [ 75,  75,  80],
   };
   const [tr, tg, tb] = THEME_TINT[theme] ?? [80, 90, 120];
   const tintColor = `rgb(${tr} ${tg} ${tb} / ${dark ? 0.10 : 0.06})`;
@@ -811,7 +811,7 @@ function VehicleList({ vehicles, selectedId, onSelect, onOpenDetail, globalFilte
   );
 
   return (
-    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+    <div className="rounded-lg border overflow-hidden flex flex-col">
       <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Vehicles</h2>
         <div className="relative">
@@ -883,7 +883,7 @@ function AlertsPanel({ alerts, filter, onFilterChange, onSelectVehicle }: {
   const criticalCount = alerts.filter((a) => a.severity === "critical").length;
 
   return (
-    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+    <div className="rounded-lg border overflow-hidden flex flex-col">
       <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <div className="flex items-center gap-2">
           <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Alerts</h2>
@@ -946,7 +946,7 @@ function IncidentListCard({ selectedId, onSelect }: {
 }) {
   const active = INCIDENTS.filter((i) => !i.resolved || i.severity === "critical").slice(0, 6);
   return (
-    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+    <div className="rounded-lg border overflow-hidden flex flex-col">
       <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <div className="flex items-center gap-2">
           <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Incidents</h2>
