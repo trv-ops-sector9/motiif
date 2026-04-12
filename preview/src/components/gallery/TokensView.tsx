@@ -27,6 +27,9 @@ function useTokenValues() {
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
   useEffect(() => {
+    // Force a re-read after mount so CSS vars are resolved
+    refresh();
+
     // Re-read tokens when data-motion-theme or data-theme changes
     const observer = new MutationObserver((mutations) => {
       for (const m of mutations) {
