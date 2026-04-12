@@ -1,5 +1,12 @@
 import { lazy, Suspense, useEffect, useRef, useState } from "react";
-import { IconLayoutSidebarLeftCollapse, IconLayoutSidebarLeftExpand } from "@tabler/icons-react";
+import {
+  IconLayoutSidebarLeftCollapse,
+  IconLayoutSidebarLeftExpand,
+  IconRoute,
+  IconComponents,
+  IconColorSwatch,
+  IconSpeakerphone,
+} from "@tabler/icons-react";
 import { AppSidebar, type View } from "@/components/layout/AppSidebar";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Toaster } from "@/components/ui/sonner";
@@ -77,9 +84,62 @@ function ActiveView({ view }: { view: View }) {
   }
 }
 
+const SPLASH_CARDS: { view: View; icon: React.ComponentType<{ className?: string }>; title: string; description: string }[] = [
+  { view: "fleet-ops",  icon: IconRoute,        title: "Fleet Ops",   description: "Mission control dashboard with live map and vehicle telemetry" },
+  { view: "marketing",  icon: IconSpeakerphone,  title: "Brand",       description: "Product landing page with theme-adaptive transitions" },
+  { view: "components", icon: IconComponents,    title: "Components",  description: "Interactive gallery of motion-wired UI primitives" },
+  { view: "tokens",     icon: IconColorSwatch,   title: "Tokens",      description: "Live reference of every duration, curve, and alias" },
+];
+
+function SplashOverlay({ onSelect }: { onSelect: (view: View) => void }) {
+  return (
+    <div
+      className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm"
+      style={{ animation: "var(--anim-fade-in)" }}
+    >
+      <div
+        className="w-full max-w-lg mx-4 rounded-xl border bg-card p-8 shadow-xl"
+        style={{ animation: "var(--anim-expand-in)" }}
+      >
+        <div className="mb-6">
+          <h1
+            className="text-2xl font-bold tracking-wide text-foreground"
+            style={{ fontFamily: "var(--font-brand)" }}
+          >
+            Motif
+          </h1>
+          <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
+            A pure CSS token system for motion and visual identity. Four motion themes and three design themes ship out of the box — swap either live and everything updates instantly. Built to be expanded with new themes. Use the sidebar to switch.
+          </p>
+          <p className="mt-1.5 text-xs text-muted-foreground/60">
+            Motion Token Generator coming soon — create themes from a guided Q&amp;A flow.
+          </p>
+          <p className="mt-3 text-xs text-muted-foreground/70">
+            by Traver Phillips
+          </p>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {SPLASH_CARDS.map(({ view, icon: Icon, title, description }) => (
+            <button
+              key={view}
+              onClick={() => onSelect(view)}
+              className="group flex flex-col items-start gap-2 rounded-lg border bg-background p-4 text-left cursor-pointer transition-colors hover:bg-accent hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+            >
+              <Icon className="h-5 w-5 text-primary" />
+              <span className="text-sm font-semibold text-foreground">{title}</span>
+              <span className="text-xs leading-relaxed text-muted-foreground">{description}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 type Phase = "idle" | "exiting" | "entering";
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
   const [activeView, setActiveView] = useState<View>("components");
   const [displayView, setDisplayView] = useState<View>("components");
   const [phase, setPhase] = useState<Phase>("idle");
@@ -97,6 +157,15 @@ export default function App() {
     setPhase("exiting");
   };
 
+  const handleSplashSelect = (view: View) => {
+    setShowSplash(false);
+    if (view !== activeView) {
+      pending.current = view;
+      setActiveView(view);
+      setDisplayView(view);
+    }
+  };
+
   const handleAnimationEnd = (e: React.AnimationEvent) => {
     // Only respond to animations on the wrapper div itself, not bubbled from children
     if (e.target !== e.currentTarget) return;
@@ -112,10 +181,14 @@ export default function App() {
 
   return (
     <TooltipProvider delayDuration={400}>
-      <div className="flex h-screen flex-col overflow-hidden bg-background">
-        <TopBar sidebarCollapsed={sidebarCollapsed} onToggleSidebar={() => setSidebarCollapsed(c => !c)} />
+      <div className="relative flex h-screen flex-col overflow-hidden bg-background">
+        {!showSplash && (
+          <TopBar sidebarCollapsed={sidebarCollapsed} onToggleSidebar={() => setSidebarCollapsed(c => !c)} />
+        )}
         <div className="flex flex-1 overflow-hidden">
-          <AppSidebar activeView={activeView} onViewChange={handleViewChange} collapsed={sidebarCollapsed} />
+          {!showSplash && (
+            <AppSidebar activeView={activeView} onViewChange={handleViewChange} collapsed={sidebarCollapsed} />
+          )}
           <main
             ref={mainRef}
             className="flex-1 overflow-y-auto"
@@ -126,24 +199,27 @@ export default function App() {
               } : {}),
             }}
           >
-            <div
-              key={displayView}
-              style={{
-                animation: phase === "exiting"
-                  ? "var(--anim-page-exit)"
-                  : phase === "entering"
-                    ? "var(--anim-page-enter)"
-                    : undefined,
-              }}
-              onAnimationEnd={handleAnimationEnd}
-            >
-              <Suspense>
-                <ActiveView view={displayView} />
-              </Suspense>
-            </div>
+            {!showSplash && (
+              <div
+                key={displayView}
+                style={{
+                  animation: phase === "exiting"
+                    ? "var(--anim-page-exit)"
+                    : phase === "entering"
+                      ? "var(--anim-page-enter)"
+                      : undefined,
+                }}
+                onAnimationEnd={handleAnimationEnd}
+              >
+                <Suspense>
+                  <ActiveView view={displayView} />
+                </Suspense>
+              </div>
+            )}
           </main>
         </div>
-<Toaster />
+        {showSplash && <SplashOverlay onSelect={handleSplashSelect} />}
+        <Toaster />
       </div>
     </TooltipProvider>
   );
