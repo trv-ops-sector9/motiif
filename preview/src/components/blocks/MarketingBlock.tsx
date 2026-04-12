@@ -92,7 +92,7 @@ function CarSilhouette({ className }: { className?: string }) {
 
 // ── Spec selector card ────────────────────────────────────────────────────────
 function SpecCard({
-  id, label, desc, selected, onSelect,
+  label, desc, selected, onSelect,
 }: {
   id: string; label: string; desc: string; selected: boolean; onSelect: () => void;
 }) {

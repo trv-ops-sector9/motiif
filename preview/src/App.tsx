@@ -52,10 +52,10 @@ function TopBar({ sidebarCollapsed, onToggleSidebar }: { sidebarCollapsed: boole
         Motif
       </span>
       <div className="ml-auto flex items-center gap-2">
-        <span className="inline-flex items-center rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+        <span className="hidden sm:inline-flex items-center rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
           motion-{motionTheme.charAt(0).toUpperCase() + motionTheme.slice(1)}
         </span>
-        <span className="inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
+        <span className="hidden sm:inline-flex items-center gap-1.5 rounded-full border bg-background px-2.5 py-0.5 text-[11px] font-medium text-foreground">
           <span className="h-1.5 w-1.5 rounded-full bg-primary" />
           design-{colorTheme.charAt(0).toUpperCase() + colorTheme.slice(1)}
         </span>
@@ -83,7 +83,7 @@ export default function App() {
   const [activeView, setActiveView] = useState<View>("components");
   const [displayView, setDisplayView] = useState<View>("components");
   const [phase, setPhase] = useState<Phase>("idle");
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => window.innerWidth < 768);
   const pending = useRef<View>("components");
   const mainRef = useRef<HTMLElement>(null);
 

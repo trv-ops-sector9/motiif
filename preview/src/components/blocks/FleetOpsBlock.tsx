@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { CartesianGrid, XAxis, YAxis, Bar, BarChart, Line, LineChart, Area, AreaChart } from "recharts";
+import { CartesianGrid, XAxis, YAxis, Line, LineChart, Area, AreaChart } from "recharts";
 import { MapContainer, TileLayer, Circle, CircleMarker, Marker, Polygon, Tooltip, ZoomControl, useMap } from "react-leaflet";
 import { divIcon, type LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
@@ -33,13 +33,6 @@ import {
 import { cssMs, cssCurve } from "@/lib/motion";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   ChartContainer,
   ChartLegend,
@@ -716,22 +709,6 @@ function StatTile({ stat, delay }: { stat: typeof STATS[number]; delay: number }
       </div>
     </div>
   );
-}
-
-// ── Theme detection hook ─────────────────────────────────────────────────────
-
-function useTheme(): string {
-  const [theme, setTheme] = useState(() =>
-    document.documentElement.getAttribute("data-theme") || "default"
-  );
-  useEffect(() => {
-    const observer = new MutationObserver(() => {
-      setTheme(document.documentElement.getAttribute("data-theme") || "default");
-    });
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
-    return () => observer.disconnect();
-  }, []);
-  return theme;
 }
 
 // ─── Selected vehicle mini-panel ─────────────────────────────────────────────

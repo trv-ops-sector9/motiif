@@ -616,7 +616,7 @@ function ShadowsSection() {
     <div>
       <h3 className="text-sm font-semibold">Shadows</h3>
       <p className="text-xs text-muted-foreground mt-0.5">Elevation scale — 4 stops</p>
-      <div className="mt-3 grid grid-cols-4 gap-4">
+      <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-4">
         {SHADOW_TOKENS.map((s) => {
           const raw = getCSSVar(s.name);
           return (
