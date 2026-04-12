@@ -27,8 +27,8 @@ function useTokenValues() {
   const refresh = useCallback(() => setTick((t) => t + 1), []);
 
   useEffect(() => {
-    // Force a re-read after mount so CSS vars are resolved
-    refresh();
+    // Force a re-read after paint so CSS vars are resolved
+    const raf = requestAnimationFrame(() => refresh());
 
     // Re-read tokens when data-motion-theme or data-theme changes
     const observer = new MutationObserver((mutations) => {
@@ -43,7 +43,7 @@ function useTokenValues() {
       }
     });
     observer.observe(document.documentElement, { attributes: true });
-    return () => observer.disconnect();
+    return () => { cancelAnimationFrame(raf); observer.disconnect(); };
   }, [refresh]);
 
   return { getCSSVar };
