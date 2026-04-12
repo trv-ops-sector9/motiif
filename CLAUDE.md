@@ -51,23 +51,21 @@ preview/
 
 ## Color theme architecture
 
-**6 theme pairs** (light + dark each) in `preview/src/themes/`. All colors in OkLCh. Activated via `data-theme` attribute.
+**3 theme pairs** (light + dark each) in `preview/src/themes/`. All colors in OkLCh. Activated via `data-theme` attribute.
 
 | Theme | Mood | Radius | Shadows | Font | Border | Tracking |
 |-------|------|--------|---------|------|--------|----------|
 | **Default** | Neutral baseline | `0.625rem` | Standard | System sans | `1px` | `0em` |
-| **Dark Minimal** | Vercel/Linear dev-tool calm | `0.375rem` | Dark sharp | Inter | `1px` | `-0.011em` |
-| **Drive** | Premium automotive | `0.5rem` | Sharp, precise | Outfit | `1px` | `-0.01em` |
-| **Brutalist** | Editorial print, anti-design | `0rem` | None | Space Mono | `2px` | `-0.01em` |
-| **Lux** | Luxury fashion house | `1.25rem` | Warm diffused | DM Sans | `0.5px` | `0.02em` |
-| **Vapor** | Neon cyberpunk / dev tool | `0.25rem` | Colored glow | JetBrains Mono | `1px` | `-0.005em` |
+| **Dark Default** | Vercel/Linear dev-tool calm | `0.375rem` | Dark sharp | Inter | `1px` | `-0.011em` |
+| **Guchi** | Luxury fashion house | `1.25rem` | Warm diffused | DM Sans | `0.5px` | `0.02em` |
+| **Tactical** | FUI command-and-control | `0.125rem` | None | Quantico | `1px` | `0.02em` |
 
 **Design tokens per theme** (beyond color):
 - `--radius` — border-radius scale anchor
 - `--border-width` — base border width (overrides Tailwind `border` utility)
 - `--letter-spacing` — applied on `body`
 - `--font-weight-heading` / `--font-weight-body` — applied on `h1-h6` and `body`
-- `--shadow-sm/md/lg/xl` — elevation scale, varies from none (Brutalist) to warm-tinted (Lux) to colored glow (Vapor)
+- `--shadow-sm/md/lg/xl` — elevation scale, varies from none (Tactical) to warm-tinted (Guchi)
 - `--font-sans` / `--font-mono` — font stack per theme
 
 **Border-width override:** `.border`, `.border-t/b/l/r` rules live outside `@layer` in `index.css` to beat Tailwind's hardcoded `1px` utilities. Explicit width classes (`border-2`, `border-0`) are unaffected.

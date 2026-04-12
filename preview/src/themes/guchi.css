@@ -1,6 +1,6 @@
-/* Lux Light — Premium fashion house. Warm cream surfaces, diffused
+/* Guchi Light — Premium fashion house. Warm cream surfaces, diffused
    warm shadows, burnished gold accent, pillow-soft radius. */
-[data-theme="lux"] {
+[data-theme="guchi"] {
   --background: oklch(0.975 0.005 80);
   --foreground: oklch(0.18 0.01 50);
   --card: oklch(0.995 0.003 80);

@@ -84,8 +84,11 @@ export default function App() {
   const [displayView, setDisplayView] = useState<View>("components");
   const [phase, setPhase] = useState<Phase>("idle");
   const [sidebarCollapsed, setSidebarCollapsed] = useState(() => window.innerWidth < 768);
+  const { color: colorTheme } = useActiveThemes();
   const pending = useRef<View>("components");
   const mainRef = useRef<HTMLElement>(null);
+
+  const showTacticalGradient = colorTheme === "tactical-dark" && displayView !== "marketing";
 
   const handleViewChange = (next: View) => {
     if (next === activeView || phase !== "idle") return;
@@ -113,7 +116,16 @@ export default function App() {
         <TopBar sidebarCollapsed={sidebarCollapsed} onToggleSidebar={() => setSidebarCollapsed(c => !c)} />
         <div className="flex flex-1 overflow-hidden">
           <AppSidebar activeView={activeView} onViewChange={handleViewChange} collapsed={sidebarCollapsed} />
-          <main ref={mainRef} className="flex-1 overflow-y-auto" style={{ scrollbarGutter: "stable" }}>
+          <main
+            ref={mainRef}
+            className="flex-1 overflow-y-auto"
+            style={{
+              scrollbarGutter: "stable",
+              ...(showTacticalGradient ? {
+                background: "linear-gradient(to bottom, var(--background) 30%, oklch(0.18 0.06 135) 100%)",
+              } : {}),
+            }}
+          >
             <div
               key={displayView}
               style={{
@@ -131,7 +143,7 @@ export default function App() {
             </div>
           </main>
         </div>
-        <Toaster />
+<Toaster />
       </div>
     </TooltipProvider>
   );

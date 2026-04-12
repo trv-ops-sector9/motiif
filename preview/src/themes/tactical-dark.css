@@ -1,0 +1,51 @@
+/* Tactical Dark — Dark ops console. Near-black olive canvas, bright
+   thin borders, Quantico mil-spec type. Lime-green accent for HUD
+   attention areas. Zero shadows — all depth from stroke hierarchy. */
+[data-theme="tactical-dark"] {
+  --volant-grid-mix: 12%;
+  --background: oklch(0.085 0.018 130);
+  --foreground: oklch(0.68 0.015 130);
+  --card: oklch(0.105 0.018 130);
+  --card-foreground: oklch(0.68 0.015 130);
+  --popover: oklch(0.105 0.018 130);
+  --popover-foreground: oklch(0.68 0.015 130);
+  --primary: oklch(0.78 0.16 135);
+  --primary-foreground: oklch(0.085 0.018 130);
+  --secondary: oklch(0.22 0.02 130);
+  --secondary-foreground: oklch(0.55 0.012 130);
+  --muted: oklch(0.17 0.02 130);
+  --muted-foreground: oklch(0.42 0.010 130);
+  --accent: oklch(0.78 0.16 135);
+  --accent-foreground: oklch(0.085 0.018 130);
+  --destructive: oklch(0.55 0.20 25);
+  --destructive-foreground: oklch(0.99 0 0);
+  --border: oklch(0.32 0.035 130);
+  --input: oklch(0.32 0.035 130);
+  --ring: oklch(0.78 0.16 135);
+  --sidebar: oklch(0.075 0.018 130);
+  --sidebar-foreground: oklch(0.55 0.012 130);
+  --sidebar-primary: oklch(0.78 0.16 135);
+  --sidebar-primary-foreground: oklch(0.085 0.018 130);
+  --sidebar-accent: oklch(0.12 0.015 130);
+  --sidebar-accent-foreground: oklch(0.68 0.015 130);
+  --sidebar-border: oklch(0.32 0.035 130);
+  --sidebar-ring: oklch(0.78 0.16 135);
+  --chart-1: oklch(0.78 0.16 135);
+  --chart-2: oklch(0.55 0.08 130);
+  --chart-3: oklch(0.65 0.10 155);
+  --chart-4: oklch(0.48 0.04 130);
+  --chart-5: oklch(0.72 0.12 145);
+  --radius: 0.125rem;
+  --spacing: 0.18rem;
+  --border-width: 1px;
+  --letter-spacing: 0.02em;
+  --font-weight-heading: 700;
+  --font-weight-body: 400;
+  --font-sans: "Quantico", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+  --shadow-xl: none;
+  color-scheme: dark;
+}

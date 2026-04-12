@@ -202,14 +202,10 @@
 
 @import "./themes/default.css";
 @import "./themes/dark-minimal.css";
-@import "./themes/drive.css";
-@import "./themes/drive-dark.css";
-@import "./themes/brutalist.css";
-@import "./themes/brutalist-dark.css";
-@import "./themes/lux.css";
-@import "./themes/lux-dark.css";
-@import "./themes/vapor.css";
-@import "./themes/vapor-dark.css";
+@import "./themes/guchi.css";
+@import "./themes/guchi-dark.css";
+@import "./themes/tactical.css";
+@import "./themes/tactical-dark.css";
 
 @theme inline {
   --color-background: var(--background);

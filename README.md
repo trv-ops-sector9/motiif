@@ -21,13 +21,11 @@ There are four motion themes, each with its own curve vocabulary:
 
 Every theme supports reduced motion via both `@media (prefers-reduced-motion)` and a `data-motion-theme="reduced"` override.
 
-Six color theme pairs (light + dark each) run independently on a separate `data-theme` attribute. Each pair varies far more than hue — border-radius, shadow style, font family, border-width, letter-spacing, and font-weight all change per theme to make each feel like a different product:
+Three color theme pairs (light + dark each) run independently on a separate `data-theme` attribute. Each pair varies far more than hue — border-radius, shadow style, font family, border-width, letter-spacing, and font-weight all change per theme to make each feel like a different product:
 
-- **Default** / **Dark Minimal** — neutral baseline / Vercel-style developer calm
-- **Drive** — premium automotive. Cool slate, sharp shadows, Outfit font, performance red accent
-- **Brutalist** — editorial print. Zero radius, no shadows, Space Mono, 2px borders, vermillion accent
-- **Lux** — luxury fashion. Pillow-soft 1.25rem radius, warm diffused shadows, DM Sans, 0.5px borders, gold accent
-- **Vapor** — neon cyberpunk. Tight radius, colored glow shadows, JetBrains Mono, violet/cyan accents
+- **Default** / **Dark Default** — neutral baseline / Vercel-style developer calm
+- **Guchi** — luxury fashion. Pillow-soft 1.25rem radius, warm diffused shadows, DM Sans, 0.5px borders, gold accent
+- **Tactical** — FUI command-and-control. Tight radius, no shadows, Quantico font, olive drab palette, lime accent
 
 An accent color picker overrides the primary palette at runtime. A spacing slider scales every gap, padding, and margin in the UI proportionally.
 

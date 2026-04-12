@@ -110,6 +110,7 @@ const ALERTS: Alert[] = [
   { severity: "warning",  message: "Battery below 30% threshold",                  vehicle: "AV-010", time: "42m ago" },
   { severity: "info",     message: "Geofence boundary approached — Colman Dock",   vehicle: "AV-004", time: "1h ago"  },
   { severity: "warning",  message: "Passenger no-show — trip auto-cancelled",      vehicle: "AV-005", time: "1h ago"  },
+  { severity: "warning",  message: "Traffic warning — SR-520 bridge congestion, speeds below 15 mph", vehicle: "AV-009", time: "1h 30m ago" },
   { severity: "info",     message: "Route recalculated — traffic on I-5",          vehicle: "AV-002", time: "2h ago"  },
   { severity: "critical", message: "Emergency stop triggered — pedestrian",         vehicle: "AV-007", time: "3h ago"  },
   { severity: "info",     message: "Scheduled maintenance reminder",                vehicle: "AV-006", time: "4h ago"  },
@@ -125,8 +126,8 @@ const STATUS_COLOR_HEX: Record<VehicleStatus, string> = {
   Offline:     "#ff3333",
 };
 
-const MAP_CENTER: LatLngTuple = [47.600, -122.255];
-const MAP_ZOOM = 9.5;
+const MAP_CENTER: LatLngTuple = [47.610, -122.280];
+const MAP_ZOOM = 10.5;
 
 // Tile URLs — CartoDB Positron (light) and Dark Matter (dark)
 const TILE_LIGHT = "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png";
@@ -178,6 +179,34 @@ const TRAFFIC_WARNING_ICON = divIcon({
   iconAnchor: [7, 7],
   tooltipAnchor: [0, -8],
 });
+
+/** Pans map to selected vehicle */
+function FlyToVehicle({ vehicles, selectedId }: { vehicles: Vehicle[]; selectedId: string | null }) {
+  const map = useMap();
+  const prev = useRef<string | null>(null);
+  useEffect(() => {
+    if (selectedId && selectedId !== prev.current) {
+      const v = vehicles.find((v) => v.id === selectedId);
+      if (v) map.flyTo(v.coords, map.getZoom(), { duration: 0.6 });
+    }
+    prev.current = selectedId;
+  }, [selectedId, vehicles, map]);
+  return null;
+}
+
+/** Pans map to selected incident */
+function FlyToIncident({ selectedId }: { selectedId: string | null }) {
+  const map = useMap();
+  const prev = useRef<string | null>(null);
+  useEffect(() => {
+    if (selectedId && selectedId !== prev.current) {
+      const inc = INCIDENT_COORDS.find((c) => c.id === selectedId);
+      if (inc) map.flyTo(inc.coords, map.getZoom(), { duration: 0.6 });
+    }
+    prev.current = selectedId;
+  }, [selectedId, map]);
+  return null;
+}
 
 /** Syncs tile layer when theme changes (react-leaflet doesn't re-render TileLayer on url change) */
 function TileSync({ isDark }: { isDark: boolean }) {
@@ -241,16 +270,12 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
 
   // Per-theme map tint — matches the background palette, not the accent/primary color.
   const THEME_TINT: Record<string, [r: number, g: number, b: number]> = {
-    "default":       [100, 110, 130],
-    "dark-minimal":  [ 90,  95, 110],
-    "drive":         [ 80, 100, 180],
-    "drive-dark":    [ 60,  80, 160],
-    "brutalist":     [ 30,  30,  30],
-    "brutalist-dark":[  0,   0,   0],
-    "lux":           [160, 140,  90],
-    "lux-dark":      [ 90,  75,  50],
-    "vapor":         [110,  60, 190],
-    "vapor-dark":    [ 80,  40, 200],
+    "default":        [100, 110, 130],
+    "dark-minimal":   [ 90,  95, 110],
+    "guchi":          [160, 140,  90],
+    "guchi-dark":     [ 90,  75,  50],
+    "tactical":       [ 70,  90,  60],
+    "tactical-dark":  [ 40,  70,  30],
   };
   const [tr, tg, tb] = THEME_TINT[theme] ?? [80, 90, 120];
   const tintColor = `rgb(${tr} ${tg} ${tb} / ${dark ? 0.10 : 0.06})`;
@@ -261,11 +286,16 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
   const coverageStroke = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.06)";
   const coverageFill = dark ? "rgba(255,255,255,0.02)" : "rgba(0,0,0,0.01)";
 
+  // Per-theme map background — matches the canvas color instead of generic black/white.
+  const MAP_BG: Record<string, string> = {
+    "tactical-dark": "#0a0f08",
+  };
+
   // Dynamic values go on the div as CSS custom properties — static <style> reads them via var().
   // This avoids React 19 style deduplication swallowing dynamic template-literal style tags.
   const mapCssVars = {
-    "--fleet-map-bg":      dark ? "#0d0d0d"                                        : "#f2f2f2",
-    "--fleet-tile-filter": dark ? "grayscale(1) brightness(0.70) contrast(1.10)"  : "grayscale(1) brightness(0.97) contrast(1.15)",
+    "--fleet-map-bg":      MAP_BG[theme] ?? (dark ? "#0d0d0d" : "#f2f2f2"),
+    "--fleet-tile-filter": dark ? "grayscale(1) brightness(0.70) contrast(1.10)" : "grayscale(1) brightness(0.97) contrast(1.15)",
   } as React.CSSProperties;
 
   return (
@@ -356,6 +386,8 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
         >
           <TileLayer url={dark ? TILE_DARK : TILE_LIGHT} attribution={TILE_ATTR} />
           <TileSync isDark={dark} />
+          <FlyToVehicle vehicles={vehicles} selectedId={selectedId} />
+          <FlyToIncident selectedId={selectedIncidentId} />
           <ZoomControl position="bottomright" />
 
           {/* Operational coverage zone — subtle boundary */}
@@ -779,8 +811,8 @@ function VehicleList({ vehicles, selectedId, onSelect, onOpenDetail, globalFilte
   );
 
   return (
-    <div className="rounded-lg border overflow-hidden flex flex-col">
-      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted/20 shrink-0">
+    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Vehicles</h2>
         <div className="relative">
           <IconSearch className="absolute left-2 top-1/2 -translate-y-1/2 h-3 w-3 text-muted-foreground" />
@@ -799,7 +831,7 @@ function VehicleList({ vehicles, selectedId, onSelect, onOpenDetail, globalFilte
           return (
             <div
               key={v.id}
-              className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer transition-colors hover:bg-muted/40 ${isSelected ? "bg-muted/60" : ""}`}
+              className={`flex items-center gap-2.5 px-3 py-2 cursor-pointer transition-colors hover:bg-muted ${isSelected ? "bg-secondary" : ""}`}
               onClick={() => onSelect(isSelected ? null : v.id)}
               style={{
                 animation: "var(--anim-fade-in)",
@@ -828,7 +860,7 @@ function VehicleList({ vehicles, selectedId, onSelect, onOpenDetail, globalFilte
           );
         })}
       </div>
-      <div className="flex items-center gap-4 px-3 py-2 border-t bg-muted/10 shrink-0">
+      <div className="flex items-center gap-4 px-3 py-2 border-t bg-muted/20 shrink-0">
         {FLEET_SUMMARY.map(({ icon: Icon, label, count }) => (
           <span key={label} className="flex items-center gap-1 text-[10px] text-muted-foreground">
             <Icon className="h-3 w-3" />{count} {label}
@@ -841,17 +873,18 @@ function VehicleList({ vehicles, selectedId, onSelect, onOpenDetail, globalFilte
 
 // ─── Alerts panel ─────────────────────────────────────────────────────────────
 
-function AlertsPanel({ alerts, filter, onFilterChange }: {
+function AlertsPanel({ alerts, filter, onFilterChange, onSelectVehicle }: {
   alerts: Alert[];
   filter: "all" | AlertSeverity;
   onFilterChange: (f: "all" | AlertSeverity) => void;
+  onSelectVehicle: (id: string) => void;
 }) {
   const filtered = filter === "all" ? alerts : alerts.filter((a) => a.severity === filter);
   const criticalCount = alerts.filter((a) => a.severity === "critical").length;
 
   return (
-    <div className="rounded-lg border overflow-hidden flex flex-col">
-      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted/20 shrink-0">
+    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <div className="flex items-center gap-2">
           <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Alerts</h2>
           {criticalCount > 0 && (
@@ -881,7 +914,8 @@ function AlertsPanel({ alerts, filter, onFilterChange }: {
           return (
             <div
               key={i}
-              className="flex items-start gap-2.5 px-3 py-2.5 hover:bg-muted/40 transition-colors"
+              onClick={() => onSelectVehicle(alert.vehicle)}
+              className="flex items-start gap-2.5 px-3 py-2.5 hover:bg-muted transition-colors cursor-pointer"
               style={{
                 animation: "var(--anim-fade-in)",
                 animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i * 0.4})`,
@@ -912,8 +946,8 @@ function IncidentListCard({ selectedId, onSelect }: {
 }) {
   const active = INCIDENTS.filter((i) => !i.resolved || i.severity === "critical").slice(0, 6);
   return (
-    <div className="rounded-lg border overflow-hidden flex flex-col">
-      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted/20 shrink-0">
+    <div className="rounded-lg border bg-card overflow-hidden flex flex-col">
+      <div className="flex items-center justify-between px-3 py-2.5 border-b bg-muted shrink-0">
         <div className="flex items-center gap-2">
           <h2 className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">Incidents</h2>
           <span className="text-[9px] font-bold bg-destructive/15 text-destructive px-1.5 py-0.5 rounded-full">
@@ -932,7 +966,7 @@ function IncidentListCard({ selectedId, onSelect }: {
             <div
               key={inc.id}
               onClick={() => onSelect(isSelected ? null : inc.id)}
-              className={`flex items-start gap-2.5 px-3 py-2.5 cursor-pointer transition-colors ${isSelected ? "bg-muted/60" : "hover:bg-muted/40"}`}
+              className={`flex items-start gap-2.5 px-3 py-2.5 cursor-pointer transition-colors ${isSelected ? "bg-secondary" : "hover:bg-muted"}`}
               style={{
                 animation: "var(--anim-fade-in)",
                 animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i * 0.4})`,
@@ -988,7 +1022,7 @@ function IncidentReviewPage({ onBack }: { onBack: () => void }) {
         className="flex items-center gap-3"
         style={{ animation: "var(--anim-fade-in)" }}
       >
-        <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back to fleet overview">
+        <Button variant="default" size="icon" onClick={onBack} aria-label="Back to fleet overview">
           <IconArrowLeft className="h-4 w-4" />
         </Button>
         <div className="flex-1 min-w-0">
@@ -1195,7 +1229,7 @@ function IncidentReviewPage({ onBack }: { onBack: () => void }) {
               return (
                 <div
                   key={incident.id}
-                  className="flex items-start gap-3 rounded-lg px-3 py-3 hover:bg-muted/40 transition-colors"
+                  className="flex items-start gap-3 rounded-lg px-3 py-3 hover:bg-muted transition-colors"
                   style={{
                     animation: "var(--anim-fade-in)",
                     animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i * 0.3})`,
@@ -1366,6 +1400,7 @@ function FleetOverviewPage({ onSelectVehicle, onGoToIncidents }: { onSelectVehic
           alerts={ALERTS}
           filter={alertFilter}
           onFilterChange={setAlertFilter}
+          onSelectVehicle={setSelectedVehicle}
         />
       </div>
     </div>
@@ -1382,7 +1417,7 @@ function VehicleDetailPage({ vehicleId, onBack }: { vehicleId: string; onBack: (
     <div className="flex flex-col gap-4 p-4 lg:p-6">
       {/* Header */}
       <div className="flex items-center gap-3" style={{ animation: "var(--anim-fade-in)" }}>
-        <Button variant="ghost" size="icon" onClick={onBack} aria-label="Back to fleet overview">
+        <Button variant="default" size="icon" onClick={onBack} aria-label="Back to fleet overview">
           <IconArrowLeft className="h-4 w-4" />
         </Button>
         <div>
@@ -1545,7 +1580,7 @@ function VehicleDetailPage({ vehicleId, onBack }: { vehicleId: string; onBack: (
             {VEHICLE_EVENTS.map((evt, i) => (
               <div
                 key={i}
-                className="flex items-start gap-2.5 rounded-lg px-2.5 py-2 hover:bg-muted/40 transition-colors"
+                className="flex items-start gap-2.5 rounded-lg px-2.5 py-2 hover:bg-muted transition-colors"
                 style={{
                   animation: "var(--anim-fade-in)",
                   animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i})`,
@@ -1576,7 +1611,7 @@ function VehicleDetailPage({ vehicleId, onBack }: { vehicleId: string; onBack: (
               return (
                 <div
                   key={i}
-                  className="flex items-start gap-2.5 rounded-lg px-2.5 py-2 hover:bg-muted/40 transition-colors"
+                  className="flex items-start gap-2.5 rounded-lg px-2.5 py-2 hover:bg-muted transition-colors"
                   style={{
                     animation: "var(--anim-fade-in)",
                     animationDelay: `calc(var(--motion-duration-ultra-fast) * ${i})`,

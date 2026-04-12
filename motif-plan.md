@@ -97,10 +97,10 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 - Fixed: custom track+thumb styling (range inputs were invisible on dark themes), use React state for override values instead of CSS queries, removed unnecessary `style` MutationObserver
 
 ### ~~8b. Accent colors~~ ✓
-- Root cause: `--primary` (the most visible color — buttons, active states) was achromatic for Drive/Lux. The `--accent` CSS var was themed but only used for subtle hover backgrounds.
-- Fix: gave Drive and Lux themed `--primary` + `--sidebar-primary` colors matching their personality hues:
+- Root cause: `--primary` (the most visible color — buttons, active states) was achromatic for Drive/Guchi. The `--accent` CSS var was themed but only used for subtle hover backgrounds.
+- Fix: gave Drive and Guchi themed `--primary` + `--sidebar-primary` colors matching their personality hues:
   - Drive: performance red (oklch hue 25)
-  - Lux: warm gold (oklch hue 75)
+  - Guchi: warm gold (oklch hue 75)
   - Brutalist: stays monochrome (intentional identity)
   - Vapor: already had colored primary
 
@@ -112,7 +112,7 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 
 ### ~~8d. Dark theme background variation~~ ✓
 - Drive dark: 0.10 → 0.14 (slate-blue tinted)
-- Lux dark: 0.10 → 0.15 (warm chocolate)
+- Guchi dark: 0.10 → 0.15 (warm chocolate)
 - Vapor dark: 0.07 → 0.11 (purple-tinted, bumped chroma)
 - Brutalist + Dark Minimal: kept near-black (intentional identity)
 
@@ -126,7 +126,7 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 
 ## ~~10. Per-Theme Spacing~~ ✓
 
-> Removed global spacing slider. Added `--spacing` per theme: Drive/Vapor `0.22rem`, Dark Minimal `0.23rem`, Brutalist `0.24rem`, Default `0.25rem`, Lux `0.3rem`. Fixed `:root` override bug in index.css.
+> Removed global spacing slider. Added `--spacing` per theme: Drive/Vapor `0.22rem`, Dark Minimal `0.23rem`, Brutalist `0.24rem`, Default `0.25rem`, Guchi `0.3rem`. Fixed `:root` override bug in index.css.
 
 ---
 
@@ -170,7 +170,7 @@ Motif is a motion token system for Tailwind v4, being prepared as a portfolio pi
 - [x] 14c: Vehicle mini-panel appears in stat column when vehicle selected on map. Vehicle list below with direct row access.
 - [x] 14d: Incident Review page — third Fleet page. KPI row (count-up), stacked bar timeline (6h windows × 5 types), category breakdown, filterable event log with 10 AV-domain incidents. Accessible from "Incidents" button in overview header.
 - [x] 14e: Fleet map replaced SVG with Leaflet + CartoDB tiles — real SF coordinates, geofences, route polylines, incident markers.
-- [x] 14f: Fleet map theme-aware color system — per-theme tint overlay (Drive=blue, Vapor=purple, Lux=gold etc.), grayscale tile neutralization, React 19 CSS var fix, boosted light theme contrast, enlarged markers for easier clicking.
+- [x] 14f: Fleet map theme-aware color system — per-theme tint overlay (Drive=blue, Vapor=purple, Guchi=gold etc.), grayscale tile neutralization, React 19 CSS var fix, boosted light theme contrast, enlarged markers for easier clicking.
 - [x] 14g: Vehicle panel layout — moved above stat tiles, fixed static height (h-[148px] + overflow-hidden), no layout shift on vehicle select or content difference. Map panned south to show SF label, height increased to h-[352px].
 
 **branch: `feature/polish-r4` (in progress, not yet PR'd)**

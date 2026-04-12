@@ -465,7 +465,7 @@ const FAQ_ITEMS = [
   {
     value: "spacing",
     question: "What controls the global spacing?",
-    answer: "Tailwind v4 generates all spacing utilities as calc(var(--spacing) * N). Each visual theme sets its own --spacing value — from tight (Drive) to generous (Lux) — so density adapts automatically when you switch themes.",
+    answer: "Tailwind v4 generates all spacing utilities as calc(var(--spacing) * N). Each visual theme sets its own --spacing value — from tight (Tactical) to generous (Guchi) — so density adapts automatically when you switch themes.",
   },
   {
     value: "accessibility",
