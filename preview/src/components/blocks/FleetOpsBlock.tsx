@@ -187,7 +187,7 @@ function FlyToVehicle({ vehicles, selectedId }: { vehicles: Vehicle[]; selectedI
   useEffect(() => {
     if (selectedId && selectedId !== prev.current) {
       const v = vehicles.find((v) => v.id === selectedId);
-      if (v) map.flyTo(v.coords, map.getZoom(), { duration: 0.6 });
+      if (v) map.panTo(v.coords, { duration: 0.6, animate: true });
     }
     prev.current = selectedId;
   }, [selectedId, vehicles, map]);
@@ -201,7 +201,7 @@ function FlyToIncident({ selectedId }: { selectedId: string | null }) {
   useEffect(() => {
     if (selectedId && selectedId !== prev.current) {
       const inc = INCIDENT_COORDS.find((c) => c.id === selectedId);
-      if (inc) map.flyTo(inc.coords, map.getZoom(), { duration: 0.6 });
+      if (inc) map.panTo(inc.coords, { duration: 0.6, animate: true });
     }
     prev.current = selectedId;
   }, [selectedId, map]);
@@ -320,6 +320,7 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
         .fleet-marker-tooltip .leaflet-tooltip::before,
         .fleet-map .leaflet-tooltip::before { display: none; }
         .fleet-map .leaflet-interactive { outline: none; }
+        .fleet-map .leaflet-tooltip { transition: none !important; }
         .fleet-map .leaflet-tooltip {
           font-size: 10px !important;
           padding: 3px 7px !important;
@@ -1307,7 +1308,7 @@ function FleetOverviewPage({ onSelectVehicle, onGoToIncidents }: { onSelectVehic
             <h1 className="text-xl font-bold tracking-tight">Fleet Operations</h1>
             <span className="flex items-center gap-1.5">
               <span className="relative flex h-2 w-2">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75" />
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75 motion-reduce:hidden" />
                 <span className="relative inline-flex h-2 w-2 rounded-full bg-green-500" />
               </span>
               <span className="text-[10px] font-mono text-muted-foreground tracking-widest">LIVE</span>

@@ -189,7 +189,7 @@ function LandingPage({ onNavigate }: { onNavigate: () => void }) {
             </p>
             <div className="h-px w-28 bg-border overflow-hidden ml-auto">
               <div
-                className="h-full bg-primary transition-all"
+                className="h-full bg-primary transition-[width]"
                 style={{ width: `${(REMAINING / TOTAL) * 100}%` }}
               />
             </div>
@@ -435,6 +435,7 @@ function ConfigurePage({ onNavigate }: { onNavigate: () => void }) {
               /* ── Success state ─────────────────────────────────── */
               <div
                 className="flex flex-col gap-5"
+                role="status"
                 style={{ animation: "var(--anim-slide-up-in)" }}
               >
                 <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">

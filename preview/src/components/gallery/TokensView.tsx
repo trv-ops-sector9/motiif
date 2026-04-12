@@ -176,7 +176,7 @@ function DurationSection() {
                 {isOverridden && (
                   <button
                     onClick={() => resetOne(token.name)}
-                    className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer focus-visible:outline-none"
+                    className="text-muted-foreground hover:text-foreground transition-colors cursor-pointer focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring rounded-sm"
                     title="Reset to theme default"
                   >
                     <IconRotate className="h-3 w-3" />
