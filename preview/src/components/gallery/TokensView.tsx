@@ -61,8 +61,37 @@ const DURATION_TOKENS = [
   { name: "--motion-duration-ultra-slow", label: "Ultra Slow" },
 ];
 
+function readDurationValues(): Record<string, number> {
+  const result: Record<string, number> = {};
+  for (const token of DURATION_TOKENS) {
+    result[token.name] = parseInt(getComputedStyle(document.documentElement).getPropertyValue(token.name).trim()) || 0;
+  }
+  return result;
+}
+
 function DurationSection() {
-  const { getCSSVar } = useTokenValues();
+  const [values, setValues] = useState<Record<string, number>>({});
+
+  useEffect(() => {
+    let timer: ReturnType<typeof setTimeout>;
+
+    const tryRead = () => {
+      const result = readDurationValues();
+      const allResolved = DURATION_TOKENS.every((t) => (result[t.name] ?? 0) > 0);
+      setValues(result);
+      if (!allResolved) {
+        timer = setTimeout(tryRead, 80);
+      }
+    };
+
+    tryRead();
+
+    // Re-read when motion theme or color theme changes
+    const observer = new MutationObserver(() => { tryRead(); });
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-motion-theme", "data-theme"] });
+
+    return () => { clearTimeout(timer); observer.disconnect(); };
+  }, []);
 
   return (
     <div className="bg-muted/30 rounded-lg px-4 pt-4 pb-6">
@@ -74,7 +103,7 @@ function DurationSection() {
       </p>
       <div className="space-y-2.5">
         {DURATION_TOKENS.map((token) => {
-          const ms = parseInt(getCSSVar(token.name)) || 0;
+          const ms = values[token.name] ?? 0;
           const pct = Math.round(((ms - 10) / (1000 - 10)) * 100);
 
           return (
@@ -83,11 +112,11 @@ function DurationSection() {
               <div className="flex-1 rounded-full h-1.5 bg-muted overflow-hidden">
                 <div
                   className="h-full rounded-full bg-primary transition-[width] duration-300"
-                  style={{ width: `${pct}%` }}
+                  style={{ width: `${Math.max(0, pct)}%` }}
                 />
               </div>
               <code className="text-xs font-mono tabular-nums text-muted-foreground w-16 shrink-0 text-right">
-                {ms}ms
+                {ms > 0 ? `${ms}ms` : "—"}
               </code>
             </div>
           );
