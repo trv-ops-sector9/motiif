@@ -66,80 +66,65 @@ export function SidebarThemePicker() {
       <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
         Visual Theme
       </p>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            aria-label="Switch visual theme"
-            className={cn(
-              "flex w-full cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-sidebar px-2.5 py-1.5 text-xs transition-colors",
-              "text-sidebar-foreground hover:bg-sidebar-accent",
-              "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
-            )}
-          >
-            <span className="flex-1 truncate text-left">{currentLabel}</span>
-            <IconChevronDown className="h-3 w-3 shrink-0 opacity-50" />
-          </button>
-        </DropdownMenuTrigger>
+      <div className="flex items-center gap-1.5">
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <button
+              aria-label="Switch visual theme"
+              className={cn(
+                "flex flex-1 cursor-pointer items-center gap-2 rounded-md border border-sidebar-border bg-sidebar px-2.5 py-1.5 text-xs transition-colors",
+                "text-sidebar-foreground hover:bg-sidebar-accent",
+                "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+              )}
+            >
+              <span className="flex-1 truncate text-left">{currentLabel}</span>
+              <IconChevronDown className="h-3 w-3 shrink-0 opacity-50" />
+            </button>
+          </DropdownMenuTrigger>
 
-        <DropdownMenuContent
-          side="bottom"
-          align="start"
-          sideOffset={4}
-          className="w-44"
-        >
-          <DropdownMenuRadioGroup value={theme} onValueChange={handleChange}>
-            {THEMES.map((t) => (
-              <DropdownMenuRadioItem key={t.value} value={t.value}>
-                {t.label}
-              </DropdownMenuRadioItem>
-            ))}
-          </DropdownMenuRadioGroup>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          <DropdownMenuContent
+            side="bottom"
+            align="start"
+            sideOffset={4}
+            className="w-44"
+          >
+            <DropdownMenuRadioGroup value={theme} onValueChange={handleChange}>
+              {THEMES.map((t) => (
+                <DropdownMenuRadioItem key={t.value} value={t.value}>
+                  {t.label}
+                </DropdownMenuRadioItem>
+              ))}
+            </DropdownMenuRadioGroup>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        <SidebarModeToggle />
+      </div>
     </div>
   );
 }
 
 /* ─── Light / Dark mode toggle ──────────────────────────────────────────── */
 
-export function SidebarModePicker() {
+export function SidebarModeToggle() {
   const { mode } = useThemeSync();
+  const nextMode = mode === "dark" ? "light" : "dark";
 
   return (
-    <div className="px-2">
-      <p className="pt-1.5 text-[10px] font-medium uppercase tracking-wider text-muted-foreground/70 mb-0.5">
-        Mode
-      </p>
-      <div className="inline-flex w-full rounded-md border border-sidebar-border">
-        <button
-          onClick={() => applyTheme(currentThemeValue, "light")}
-          aria-label="Light mode"
-          className={cn(
-            "flex flex-1 cursor-pointer items-center justify-center rounded-l-md py-1.5 text-xs",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:z-10",
-            mode === "light"
-              ? "bg-sidebar-primary text-sidebar-primary-foreground"
-              : "bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent",
-          )}
-        >
-          <IconSun className="h-3.5 w-3.5" />
-        </button>
-        <span className="w-px bg-sidebar-border" />
-        <button
-          onClick={() => applyTheme(currentThemeValue, "dark")}
-          aria-label="Dark mode"
-          className={cn(
-            "flex flex-1 cursor-pointer items-center justify-center rounded-r-md py-1.5 text-xs",
-            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring focus-visible:z-10",
-            mode === "dark"
-              ? "bg-sidebar-primary text-sidebar-primary-foreground"
-              : "bg-sidebar text-sidebar-foreground hover:bg-sidebar-accent",
-          )}
-        >
-          <IconMoon className="h-3.5 w-3.5" />
-        </button>
-      </div>
-    </div>
+    <button
+      onClick={() => applyTheme(currentThemeValue, nextMode)}
+      aria-label={`Switch to ${nextMode} mode`}
+      className={cn(
+        "flex shrink-0 cursor-pointer items-center justify-center rounded-md p-1.5 transition-colors",
+        "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent",
+        "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+      )}
+    >
+      {mode === "dark" ? (
+        <IconSun className="h-3.5 w-3.5" />
+      ) : (
+        <IconMoon className="h-3.5 w-3.5" />
+      )}
+    </button>
   );
 }
 
@@ -246,7 +231,6 @@ export function SidebarThemeControls({ collapsed }: { collapsed: boolean }) {
       {open && (
         <div className="mt-1 flex flex-col">
           <SidebarThemePicker />
-          <SidebarModePicker />
           <SidebarMotionPicker />
         </div>
       )}
