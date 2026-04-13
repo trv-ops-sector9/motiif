@@ -145,6 +145,32 @@
   /* Focus control — blur + overlay depth */
   --motion-blur-radius:       2px;
   --motion-overlay-opacity:   0.5;
+
+  /* ── Alias tokens — vanilla CSS (no Tailwind required) ──────────────────
+     Use directly: animation: var(--animate-standard-fade-in)
+     Tailwind v4 users get these via @theme below — both are equivalent.    */
+  --animate-standard-fade-in:          standard-fade-in          var(--motion-duration-fast)     var(--motion-curve-ease-out)   both;
+  --animate-standard-fade-out:         standard-fade-out          var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-up-in:      standard-slide-up-in       var(--motion-duration-normal)   var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-up-out:     standard-slide-up-out      var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-down-in:    standard-slide-down-in     var(--motion-duration-normal)   var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-down-out:   standard-slide-down-out    var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
+  --animate-standard-expand-in:        standard-expand-in         var(--motion-duration-normal)   var(--motion-curve-ease-out)   both;
+  --animate-standard-expand-out:       standard-expand-out        var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
+  --animate-standard-collapse-in:      standard-collapse-in       var(--motion-duration-normal)   var(--motion-curve-ease-out)   both;
+  --animate-standard-collapse-out:     standard-collapse-out      var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
+  --animate-standard-page-enter:       standard-page-enter        var(--motion-duration-slow)     var(--motion-curve-ease-out)   both;
+  --animate-standard-page-exit:        standard-page-exit         var(--motion-duration-normal)   var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-left-in:    standard-slide-left-in     var(--motion-duration-slow)     var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-left-out:   standard-slide-left-out    var(--motion-duration-normal)   var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-right-in:   standard-slide-right-in    var(--motion-duration-slow)     var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-right-out:  standard-slide-right-out   var(--motion-duration-normal)   var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-top-in:     standard-slide-top-in      var(--motion-duration-slow)     var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-top-out:    standard-slide-top-out     var(--motion-duration-normal)   var(--motion-curve-ease-in)    both;
+  --animate-standard-slide-bottom-in:  standard-slide-bottom-in   var(--motion-duration-slow)     var(--motion-curve-ease-out)   both;
+  --animate-standard-slide-bottom-out: standard-slide-bottom-out  var(--motion-duration-normal)   var(--motion-curve-ease-in)    both;
+  --animate-standard-overlay-in:       standard-overlay-in        var(--motion-duration-normal)   var(--motion-curve-ease-out)   both;
+  --animate-standard-overlay-out:      standard-overlay-out       var(--motion-duration-fast)     var(--motion-curve-ease-in)    both;
 }
 
 

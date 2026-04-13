@@ -152,6 +152,32 @@
   /* Focus control — blur + overlay depth */
   --motion-blur-radius:       4px;
   --motion-overlay-opacity:   0.4;
+
+  /* ── Alias tokens — vanilla CSS (no Tailwind required) ──────────────────
+     Use directly: animation: var(--animate-expressive-fade-in)
+     Tailwind v4 users get these via @theme below — both are equivalent.    */
+  --animate-expressive-fade-in:          expressive-fade-in          var(--motion-duration-normal)    var(--motion-curve-spring)       both;
+  --animate-expressive-fade-out:         expressive-fade-out         var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-up-in:      expressive-slide-up-in      var(--motion-duration-moderate)  var(--motion-curve-spring)       both;
+  --animate-expressive-slide-up-out:     expressive-slide-up-out     var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-down-in:    expressive-slide-down-in    var(--motion-duration-moderate)  var(--motion-curve-spring)       both;
+  --animate-expressive-slide-down-out:   expressive-slide-down-out   var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-expand-in:        expressive-expand-in        var(--motion-duration-slow)      var(--motion-curve-spring-tight) both;
+  --animate-expressive-expand-out:       expressive-expand-out       var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-collapse-in:      expressive-collapse-in      var(--motion-duration-slow)      var(--motion-curve-spring-tight) both;
+  --animate-expressive-collapse-out:     expressive-collapse-out     var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-page-enter:       expressive-page-enter       var(--motion-duration-slower)    var(--motion-curve-spring)       both;
+  --animate-expressive-page-exit:        expressive-page-exit        var(--motion-duration-normal)    var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-left-in:    expressive-slide-left-in    var(--motion-duration-slow)      var(--motion-curve-spring)       both;
+  --animate-expressive-slide-left-out:   expressive-slide-left-out   var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-right-in:   expressive-slide-right-in   var(--motion-duration-slow)      var(--motion-curve-spring)       both;
+  --animate-expressive-slide-right-out:  expressive-slide-right-out  var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-top-in:     expressive-slide-top-in     var(--motion-duration-slow)      var(--motion-curve-spring)       both;
+  --animate-expressive-slide-top-out:    expressive-slide-top-out    var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-slide-bottom-in:  expressive-slide-bottom-in  var(--motion-duration-slow)      var(--motion-curve-spring)       both;
+  --animate-expressive-slide-bottom-out: expressive-slide-bottom-out var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
+  --animate-expressive-overlay-in:       expressive-overlay-in       var(--motion-duration-moderate)  var(--motion-curve-ease-out)     both;
+  --animate-expressive-overlay-out:      expressive-overlay-out      var(--motion-duration-fast)      var(--motion-curve-ease-in)      both;
 }
 
 
