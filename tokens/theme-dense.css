@@ -145,6 +145,32 @@
   /* Focus control — blur + overlay depth */
   --motion-blur-radius:       0;
   --motion-overlay-opacity:   0.5;
+
+  /* ── Alias tokens — vanilla CSS (no Tailwind required) ──────────────────
+     Use directly: animation: var(--animate-dense-fade-in)
+     Tailwind v4 users get these via @theme below — both are equivalent.    */
+  --animate-dense-fade-in:          dense-fade-in          var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-fade-out:         dense-fade-out         var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-slide-up-in:      dense-slide-up-in      var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-up-out:     dense-slide-up-out     var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-slide-down-in:    dense-slide-down-in    var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-down-out:   dense-slide-down-out   var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-expand-in:        dense-expand-in        var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-expand-out:       dense-expand-out       var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-collapse-in:      dense-collapse-in      var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-collapse-out:     dense-collapse-out     var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
+  --animate-dense-page-enter:       dense-page-enter       var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-page-exit:        dense-page-exit        var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-left-in:    dense-slide-left-in    var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-left-out:   dense-slide-left-out   var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-right-in:   dense-slide-right-in   var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-right-out:  dense-slide-right-out  var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-top-in:     dense-slide-top-in     var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-top-out:    dense-slide-top-out    var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-slide-bottom-in:  dense-slide-bottom-in  var(--motion-duration-normal)      var(--motion-curve-snap) both;
+  --animate-dense-slide-bottom-out: dense-slide-bottom-out var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-overlay-in:       dense-overlay-in       var(--motion-duration-fast)        var(--motion-curve-snap) both;
+  --animate-dense-overlay-out:      dense-overlay-out      var(--motion-duration-ultra-fast)  var(--motion-curve-snap) both;
 }
 
 

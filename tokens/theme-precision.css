@@ -60,6 +60,32 @@
   /* Focus control — heaviest blur, maximum focus isolation */
   --motion-blur-radius:       8px;
   --motion-overlay-opacity:   0.6;
+
+  /* ── Alias tokens — vanilla CSS (no Tailwind required) ──────────────────
+     Use directly: animation: var(--animate-precision-fade-in)
+     Tailwind v4 users get these via @theme below — both are equivalent.    */
+  --animate-precision-fade-in:          precision-fade-in   var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-fade-out:         precision-fade-out  var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-slide-up-in:      precision-fade-in   var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-up-out:     precision-fade-out  var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-slide-down-in:    precision-fade-in   var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-down-out:   precision-fade-out  var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-expand-in:        precision-fade-in   var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-expand-out:       precision-fade-out  var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-collapse-in:      precision-fade-in   var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-collapse-out:     precision-fade-out  var(--motion-duration-fast)     var(--motion-curve-ease-out) both;
+  --animate-precision-page-enter:       precision-fade-in   var(--motion-duration-moderate) var(--motion-curve-ease-out) both;
+  --animate-precision-page-exit:        precision-fade-out  var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-left-in:    precision-fade-in   var(--motion-duration-moderate) var(--motion-curve-ease-out) both;
+  --animate-precision-slide-left-out:   precision-fade-out  var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-right-in:   precision-fade-in   var(--motion-duration-moderate) var(--motion-curve-ease-out) both;
+  --animate-precision-slide-right-out:  precision-fade-out  var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-top-in:     precision-fade-in   var(--motion-duration-moderate) var(--motion-curve-ease-out) both;
+  --animate-precision-slide-top-out:    precision-fade-out  var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-slide-bottom-in:  precision-fade-in   var(--motion-duration-moderate) var(--motion-curve-ease-out) both;
+  --animate-precision-slide-bottom-out: precision-fade-out  var(--motion-duration-normal)   var(--motion-curve-ease-out) both;
+  --animate-precision-overlay-in:       precision-overlay-in  var(--motion-duration-normal) var(--motion-curve-ease-out) both;
+  --animate-precision-overlay-out:      precision-overlay-out var(--motion-duration-fast)   var(--motion-curve-ease-out) both;
 }
 
 
