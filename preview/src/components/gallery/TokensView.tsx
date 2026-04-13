@@ -61,10 +61,17 @@ const DURATION_TOKENS = [
   { name: "--motion-duration-ultra-slow", label: "Ultra Slow" },
 ];
 
+function parseDurationMs(raw: string): number {
+  const v = raw.trim();
+  if (v.endsWith("ms")) return parseFloat(v);
+  if (v.endsWith("s"))  return parseFloat(v) * 1000;
+  return 0;
+}
+
 function readDurationValues(): Record<string, number> {
   const result: Record<string, number> = {};
   for (const token of DURATION_TOKENS) {
-    result[token.name] = parseInt(getComputedStyle(document.documentElement).getPropertyValue(token.name).trim()) || 0;
+    result[token.name] = parseDurationMs(getComputedStyle(document.documentElement).getPropertyValue(token.name));
   }
   return result;
 }
