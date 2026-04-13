@@ -104,14 +104,15 @@ function ActiveView({ view }: { view: View }) {
   }
 }
 
-const SPLASH_CARDS: { view: View; icon: React.ComponentType<{ className?: string }>; title: string; description: string }[] = [
-  { view: "fleet-ops",  icon: IconRoute,        title: "Fleet Ops",   description: "Mission control dashboard with live map and vehicle telemetry" },
+const SPLASH_CARDS: { view: View; icon: React.ComponentType<{ className?: string }>; title: string; description: string; accentColor?: string }[] = [
+  { view: "fleet-ops",  icon: IconRoute,        title: "Fleet Ops",   description: "Mission control dashboard with live map and vehicle telemetry", accentColor: "#D69D4F" },
   { view: "marketing",  icon: IconSpeakerphone,  title: "Brand",       description: "Product landing page with theme-adaptive transitions" },
   { view: "components", icon: IconComponents,    title: "Components",  description: "Interactive gallery of motion-wired UI primitives" },
   { view: "tokens",     icon: IconColorSwatch,   title: "Tokens",      description: "Live reference of every duration, curve, and alias" },
 ];
 
 function SplashOverlay({ onSelect }: { onSelect: (view: View) => void }) {
+  const [hoveredView, setHoveredView] = useState<View | null>(null);
   return (
     <div
       className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-md"
@@ -133,20 +134,23 @@ function SplashOverlay({ onSelect }: { onSelect: (view: View) => void }) {
           </div>
           <p className="mt-1 text-xs text-muted-foreground/70">by Traver Phillips</p>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            A pure CSS token system for motion and visual identity. Four motion themes and three design themes ship out of the box. Swap either live and everything updates instantly. Built to be expanded with new themes. Use the sidebar to switch.
+            A pure CSS token system for motion and visual identity. Five motion themes and three design themes ship out of the box. Swap either live and everything updates instantly. Built to be expanded with new themes. Use the sidebar to switch.
           </p>
           <p className="mt-3 text-xs text-muted-foreground/60 border-l-2 border-primary/40 pl-3">
             Export motion and design theme tokens as drop-in CSS, compatible with any stack — Tailwind v4, vanilla CSS, or anything in between.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-3">
-          {SPLASH_CARDS.map(({ view, icon: Icon, title, description }) => (
+          {SPLASH_CARDS.map(({ view, icon: Icon, title, description, accentColor }) => (
             <button
               key={view}
               onClick={() => onSelect(view)}
+              onMouseEnter={() => setHoveredView(view)}
+              onMouseLeave={() => setHoveredView(null)}
               className="group flex flex-col items-start gap-2 rounded-lg border bg-background p-4 text-left cursor-pointer transition-colors hover:bg-accent hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              style={accentColor && hoveredView === view ? { borderColor: accentColor } : undefined}
             >
-              <Icon className="h-5 w-5 text-primary" />
+              <Icon className="h-5 w-5 text-primary" style={accentColor ? { color: accentColor } : undefined} />
               <span className="text-sm font-semibold text-foreground">{title}</span>
               <span className="text-xs leading-relaxed text-muted-foreground">{description}</span>
             </button>
