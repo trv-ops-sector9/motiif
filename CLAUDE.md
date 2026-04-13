@@ -2,7 +2,7 @@
 
 ## What this project is
 
-Motiif is a **motion token system for Tailwind CSS v4**. It provides four named motion themes (Standard, Dense, Expressive, Precision) as pure CSS files, plus a live preview app that demonstrates all tokens across interactive components and full-page application mock-ups.
+Motiif is a **motion token system for Tailwind CSS v4**. It provides four named motion themes (Standard, Dense, Expressive, Relaxed) as pure CSS files, plus a live preview app that demonstrates all tokens across interactive components and full-page application mock-ups.
 
 The core deliverable is the `tokens/` directory — four CSS files that can be dropped into any Tailwind v4 project. The `preview/` app is a demonstration artifact built in React 19 + Vite.
 
@@ -17,7 +17,7 @@ tokens/
 ├── theme-standard.css     # Default. Neutral ease-out, no personality. Sets :root defaults.
 ├── theme-dense.css        # Compressed durations, minimal transforms
 ├── theme-expressive.css   # Spring overshoot on enter, bounce on press, fast exits
-└── theme-precision.css    # Fade + blur focus control, no transforms, sub-100ms
+└── theme-relaxed.css      # Cinematic, longer durations, X-axis drift, no scale
 
 preview/
 ├── src/
@@ -37,7 +37,7 @@ preview/
 
 **Layer 1 — Primitive tokens** (`:root` and `[data-motion-theme="..."]`)
 - 7 duration stops: `--motion-duration-ultra-fast` through `--motion-duration-ultra-slow`
-- Easing curves per theme: Standard (3), Dense (3), Expressive (6), Precision (2)
+- Easing curves per theme: Standard (3), Dense (3), Expressive (6), Relaxed (3)
 - Focus control tokens: `--motion-blur-radius` (0–8px per theme), `--motion-overlay-opacity` (0.4–0.6)
 
 **Layer 2 — Alias tokens** (`@theme {}` blocks → `animate-*` Tailwind utilities)

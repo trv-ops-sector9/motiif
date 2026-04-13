@@ -134,7 +134,7 @@ function SplashOverlay({ onSelect }: { onSelect: (view: View) => void }) {
           </div>
           <p className="mt-1 text-xs text-muted-foreground/70">by Traver Phillips</p>
           <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-            A pure CSS token system for motion and visual identity. Five motion themes and three design themes ship out of the box. Swap either live and everything updates instantly. Built to be expanded with new themes. Use the sidebar to switch.
+            A pure CSS token system for motion and visual identity. Four motion themes and three design themes ship out of the box. Swap either live and everything updates instantly. Built to be expanded with new themes. Use the sidebar to switch.
           </p>
           <p className="mt-3 text-xs text-muted-foreground/60 border-l-2 border-primary/40 pl-3">
             Export motion and design theme tokens as drop-in CSS, compatible with any stack — Tailwind v4, vanilla CSS, or anything in between.
