@@ -67,13 +67,13 @@
 
 /* Page — horizontal axis only, consistent shared plane */
 @keyframes relaxed-page-enter {
-  from { opacity: 0; transform: translateX(-20px); }
+  from { opacity: 0; transform: translateX(20px); }
   to   { opacity: 1; transform: translateX(0); }
 }
 
 @keyframes relaxed-page-exit {
   from { opacity: 1; transform: translateX(0); }
-  to   { opacity: 0; transform: translateX(-16px); }
+  to   { opacity: 0; transform: translateX(16px); }
 }
 
 /* Full-panel drawer slides */
