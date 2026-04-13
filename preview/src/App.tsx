@@ -150,7 +150,7 @@ function SplashOverlay({ onSelect }: { onSelect: (view: View) => void }) {
               className="group flex flex-col items-start gap-2 rounded-lg border bg-background p-4 text-left cursor-pointer transition-colors hover:bg-accent hover:border-primary/30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               style={accentColor && hoveredView === view ? { borderColor: accentColor } : undefined}
             >
-              <span style={accentColor ? { color: accentColor } : undefined}><Icon className="h-5 w-5 text-primary" /></span>
+              <span className="text-primary" style={accentColor ? { color: accentColor } : undefined}><Icon className="h-5 w-5" /></span>
               <span className="text-sm font-semibold text-foreground">{title}</span>
               <span className="text-xs leading-relaxed text-muted-foreground">{description}</span>
             </button>
