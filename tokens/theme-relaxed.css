@@ -242,6 +242,7 @@
     --motion-duration-slow:       1ms;
     --motion-duration-slower:     1ms;
     --motion-duration-ultra-slow: 1ms;
+    --motion-stagger-step:        0ms;
     --motion-blur-radius:         0;
 
     --animate-relaxed-fade-in:          relaxed-reduced-fade 1ms linear both;
@@ -270,6 +271,8 @@
 }
 
 [data-motion-theme="reduced"] {
+  --motion-stagger-step:        0ms;
+
   --animate-relaxed-fade-in:          relaxed-reduced-fade 1ms linear both;
   --animate-relaxed-fade-out:         relaxed-reduced-fade 1ms linear both;
   --animate-relaxed-slide-up-in:      relaxed-reduced-fade 1ms linear both;

@@ -238,6 +238,7 @@
     --motion-duration-slow:       1ms;
     --motion-duration-slower:     1ms;
     --motion-duration-ultra-slow: 1ms;
+    --motion-stagger-step:        0ms;
     --motion-blur-radius:         0;
 
     --animate-standard-fade-in:        standard-reduced-fade 1ms linear both;
@@ -273,6 +274,7 @@
   --motion-duration-slow:       1ms;
   --motion-duration-slower:     1ms;
   --motion-duration-ultra-slow: 1ms;
+  --motion-stagger-step:        0ms;
   --motion-blur-radius:         0;
 
   --animate-standard-fade-in:        standard-reduced-fade 1ms linear both;
