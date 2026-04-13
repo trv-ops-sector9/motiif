@@ -1,7 +1,7 @@
 /* ============================================================
    theme-expressive.css
-   Emotive and personality-forward — larger movement, longer arcs,
-   spring overshoot on every enter, snappy exits
+   Personality through timing, not scale — spring curve on every
+   enter, snappy exits. Subtle scale (≤3%) to hint at depth.
    Layer 1: Primitive tokens — raw values
    Layer 2: Alias tokens — Tailwind v4 animate-* utilities
    ============================================================ */
@@ -9,98 +9,98 @@
 
 /* ----------------------------------------------------------
    @keyframes — expressive prefix (safe for multi-theme coexistence)
-   Enters: combined translate + scale so spring curve bakes in overshoot
-   Exits:  clean accelerate — fast, out of the way
+   Enters: translate + subtle scale(0.97–0.98) — spring curve does the heavy lifting
+   Exits:  fade or translate only — fast, out of the way, no scale
    ---------------------------------------------------------- */
 
 @keyframes expressive-fade-in {
-  from { opacity: 0; transform: scale(0.92); }
+  from { opacity: 0; transform: scale(0.97); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes expressive-fade-out {
-  from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(0.96); }
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 @keyframes expressive-slide-up-in {
-  from { opacity: 0; transform: translateY(18px) scale(0.95); }
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes expressive-slide-up-out {
   from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-14px); }
+  to   { opacity: 0; transform: translateY(-10px); }
 }
 
 @keyframes expressive-slide-down-in {
-  from { opacity: 0; transform: translateY(-18px) scale(0.95); }
+  from { opacity: 0; transform: translateY(-14px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes expressive-slide-down-out {
   from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 0; transform: translateY(10px); }
 }
 
 @keyframes expressive-expand-in {
-  from { opacity: 0; transform: scale(0.90); }
+  from { opacity: 0; transform: scale(0.97); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes expressive-expand-out {
   from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(1.06); }
+  to   { opacity: 0; transform: scale(1.02); }
 }
 
 @keyframes expressive-collapse-in {
-  from { opacity: 0; transform: scale(1.10); }
+  from { opacity: 0; transform: scale(1.03); }
   to   { opacity: 1; transform: scale(1); }
 }
 
 @keyframes expressive-collapse-out {
   from { opacity: 1; transform: scale(1); }
-  to   { opacity: 0; transform: scale(0.88); }
+  to   { opacity: 0; transform: scale(0.97); }
 }
 
 @keyframes expressive-page-enter {
-  from { opacity: 0; transform: translateY(32px) scale(0.94); }
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 @keyframes expressive-page-exit {
-  from { opacity: 1; transform: translateY(0) scale(1); }
-  to   { opacity: 0; transform: translateY(-20px) scale(0.97); }
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-16px); }
 }
 
-/* Drawer slides — full-panel translate, spring overshoot via scale on enter */
+/* Drawer slides — full-panel translate, no scale (scale distorts panel layout) */
 @keyframes expressive-slide-left-in {
-  from { opacity: 0; transform: translateX(-100%) scale(0.96); }
-  to   { opacity: 1; transform: translateX(0) scale(1); }
+  from { opacity: 0; transform: translateX(-100%); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes expressive-slide-left-out {
   from { opacity: 1; transform: translateX(0); }
   to   { opacity: 0; transform: translateX(-100%); }
 }
 @keyframes expressive-slide-right-in {
-  from { opacity: 0; transform: translateX(100%) scale(0.96); }
-  to   { opacity: 1; transform: translateX(0) scale(1); }
+  from { opacity: 0; transform: translateX(100%); }
+  to   { opacity: 1; transform: translateX(0); }
 }
 @keyframes expressive-slide-right-out {
   from { opacity: 1; transform: translateX(0); }
   to   { opacity: 0; transform: translateX(100%); }
 }
 @keyframes expressive-slide-top-in {
-  from { opacity: 0; transform: translateY(-100%) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(-100%); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes expressive-slide-top-out {
   from { opacity: 1; transform: translateY(0); }
   to   { opacity: 0; transform: translateY(-100%); }
 }
 @keyframes expressive-slide-bottom-in {
-  from { opacity: 0; transform: translateY(100%) scale(0.96); }
-  to   { opacity: 1; transform: translateY(0) scale(1); }
+  from { opacity: 0; transform: translateY(100%); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @keyframes expressive-slide-bottom-out {
   from { opacity: 1; transform: translateY(0); }
