@@ -226,6 +226,18 @@ function TileSync({ isDark }: { isDark: boolean }) {
   return null;
 }
 
+/** Calls invalidateSize() whenever the map container resizes (e.g. sidebar collapse) */
+function MapResizeWatcher() {
+  const map = useMap();
+  useEffect(() => {
+    const container = map.getContainer();
+    const observer = new ResizeObserver(() => map.invalidateSize());
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [map]);
+  return null;
+}
+
 // ── Count-up hook ────────────────────────────────────────────────────────────
 
 function useCountUp(target: number, duration = 900): number {
@@ -387,6 +399,7 @@ function FleetMap({ vehicles, selectedId, onSelect, selectedIncidentId, onSelect
         >
           <TileLayer url={dark ? TILE_DARK : TILE_LIGHT} attribution={TILE_ATTR} />
           <TileSync isDark={dark} />
+          <MapResizeWatcher />
           <FlyToVehicle vehicles={vehicles} selectedId={selectedId} />
           <FlyToIncident selectedId={selectedIncidentId} />
           <ZoomControl position="bottomright" />

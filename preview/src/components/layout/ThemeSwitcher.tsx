@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { IconChevronDown, IconChevronRight, IconPalette, IconSun, IconMoon } from "@tabler/icons-react";
+import { useState, useRef, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
+import { IconChevronDown, IconChevronRight, IconPalette, IconSun, IconMoon, IconDiamond } from "@tabler/icons-react";
 import { cn } from "@/lib/utils";
 import {
   DropdownMenu,
@@ -52,7 +53,7 @@ function useThemeSync() {
   return { theme: currentThemeValue, mode: currentMode };
 }
 
-export function SidebarThemePicker() {
+export function SidebarThemePicker({ hideModeToggle = false }: { hideModeToggle?: boolean }) {
   const { theme } = useThemeSync();
 
   const handleChange = (value: string) => {
@@ -97,7 +98,7 @@ export function SidebarThemePicker() {
             </DropdownMenuRadioGroup>
           </DropdownMenuContent>
         </DropdownMenu>
-        <SidebarModeToggle />
+        {!hideModeToggle && <SidebarModeToggle />}
       </div>
     </div>
   );
@@ -192,16 +193,167 @@ export function SidebarMotionPicker() {
 
 /* ─── Collapsible theme controls wrapper ────────────────────────────────── */
 
+function ThemeOptionList({ label, options, value, onSelect }: {
+  label: string;
+  options: { value: string; label: string }[];
+  value: string;
+  onSelect: (v: string) => void;
+}) {
+  return (
+    <div className="p-1.5">
+      <p className="px-2 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">
+        {label}
+      </p>
+      {options.map((opt) => (
+        <button
+          key={opt.value}
+          onClick={() => onSelect(opt.value)}
+          className={cn(
+            "flex w-full items-center justify-between rounded-md px-2 py-1.5 text-sm cursor-pointer transition-colors",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+            opt.value === value
+              ? "bg-sidebar-accent text-sidebar-accent-foreground font-medium"
+              : "text-sidebar-foreground hover:bg-sidebar-accent/60",
+          )}
+        >
+          {opt.label}
+          {opt.value === value && (
+            <svg className="h-3.5 w-3.5 shrink-0 text-primary" viewBox="0 0 16 16" fill="currentColor">
+              <path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 0 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z" />
+            </svg>
+          )}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function MotionOptionList({ onSelect }: { onSelect: () => void }) {
+  const [motionTheme, setMotionTheme] = useState<string>(
+    document.documentElement.getAttribute("data-motion-theme") ?? "standard"
+  );
+
+  const handleSelect = (v: string) => {
+    setMotionTheme(v);
+    document.documentElement.setAttribute("data-motion-theme", v);
+    onSelect();
+  };
+
+  return (
+    <ThemeOptionList
+      label="Motion Theme"
+      options={MOTION_THEMES.map((t) => ({ value: t.value, label: t.label }))}
+      value={motionTheme}
+      onSelect={handleSelect}
+    />
+  );
+}
+
+function CollapsedPopout({
+  top,
+  left,
+  onClose,
+  children,
+}: {
+  top: number;
+  left: number;
+  onClose: () => void;
+  children: React.ReactNode;
+}) {
+  const panelRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handle = (e: MouseEvent) => {
+      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
+        onClose();
+      }
+    };
+    document.addEventListener("mousedown", handle);
+    return () => document.removeEventListener("mousedown", handle);
+  }, [onClose]);
+
+  return createPortal(
+    <div
+      ref={panelRef}
+      style={{ position: "fixed", top, left, zIndex: 9999 }}
+      className="w-52 rounded-lg border bg-sidebar shadow-lg"
+    >
+      {children}
+    </div>,
+    document.body
+  );
+}
+
 export function SidebarThemeControls({ collapsed }: { collapsed: boolean }) {
   const [open, setOpen] = useState(true);
+  const [activePopout, setActivePopout] = useState<"visual" | "motion" | null>(null);
+  const [popoutPos, setPopoutPos] = useState({ top: 0, left: 0 });
+  const close = useCallback(() => setActivePopout(null), []);
+
+  const handlePopoutClick = (type: "visual" | "motion", e: React.MouseEvent<HTMLButtonElement>) => {
+    if (activePopout === type) {
+      setActivePopout(null);
+      return;
+    }
+    const rect = e.currentTarget.getBoundingClientRect();
+    setPopoutPos({ top: rect.top, left: rect.right + 8 });
+    setActivePopout(type);
+  };
 
   if (collapsed) {
     return (
-      <div
-        title="Theme Controls"
-        className="flex h-8 w-8 mx-auto items-center justify-center text-sidebar-foreground/40 select-none"
-      >
-        <IconPalette className="h-4 w-4" />
+      <div className="flex flex-col items-center gap-1">
+        {/* Mode toggle — direct action */}
+        <SidebarModeToggle />
+
+        {/* Visual theme button */}
+        <button
+          onClick={(e) => handlePopoutClick("visual", e)}
+          aria-label="Visual theme"
+          aria-expanded={activePopout === "visual"}
+          className={cn(
+            "flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+            activePopout === "visual"
+              ? "bg-sidebar-accent text-sidebar-accent-foreground"
+              : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent",
+          )}
+        >
+          <IconPalette className="h-4 w-4" />
+        </button>
+
+        {/* Motion theme button */}
+        <button
+          onClick={(e) => handlePopoutClick("motion", e)}
+          aria-label="Motion theme"
+          aria-expanded={activePopout === "motion"}
+          className={cn(
+            "flex h-8 w-8 cursor-pointer items-center justify-center rounded-md transition-colors",
+            "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-sidebar-ring",
+            activePopout === "motion"
+              ? "bg-sidebar-accent text-sidebar-accent-foreground"
+              : "text-sidebar-foreground/60 hover:text-sidebar-foreground hover:bg-sidebar-accent",
+          )}
+        >
+          <IconDiamond className="h-4 w-4" />
+        </button>
+
+        {/* Portaled popout */}
+        {activePopout === "visual" && (
+          <CollapsedPopout top={popoutPos.top} left={popoutPos.left} onClose={close}>
+            <ThemeOptionList
+              label="Visual Theme"
+              options={THEMES.map((t) => ({ value: t.value, label: t.label }))}
+              value={currentThemeValue}
+              onSelect={(v) => { applyTheme(v as typeof currentThemeValue, currentMode); close(); }}
+            />
+          </CollapsedPopout>
+        )}
+        {activePopout === "motion" && (
+          <CollapsedPopout top={popoutPos.top} left={popoutPos.left} onClose={close}>
+            <MotionOptionList onSelect={close} />
+          </CollapsedPopout>
+        )}
       </div>
     );
   }

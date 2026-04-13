@@ -1,4 +1,4 @@
-# Motif
+# Motiif
 
 A runtime motion and design token system for Tailwind CSS v4. Pure CSS, theme-switchable, reduced-motion aware. No JavaScript runtime, no build step for the tokens themselves.
 
